@@ -1,0 +1,336 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\src\cntr\citer_base.c">
+      <Filter>Source Files\cntr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cntr\citer_cont.c">
+      <Filter>Source Files\cntr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cntr\cntr_234tree.c">
+      <Filter>Source Files\cntr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cntr\cntr_algorithm.c">
+      <Filter>Source Files\cntr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cntr\cntr_array.c">
+      <Filter>Source Files\cntr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cntr\cntr_base.c">
+      <Filter>Source Files\cntr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cntr\cntr_bstree.c">
+      <Filter>Source Files\cntr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cntr\cntr_linear.c">
+      <Filter>Source Files\cntr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cntr\cntr_list.c">
+      <Filter>Source Files\cntr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cntr\cntr_llrb.c">
+      <Filter>Source Files\cntr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cntr\cntr_rbtree.c">
+      <Filter>Source Files\cntr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cntr\_234tree.c">
+      <Filter>Source Files\cntr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\util\bit_math.c">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\memheap\block_common.c">
+      <Filter>Source Files\memheap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\memheap\block_link.c">
+      <Filter>Source Files\memheap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\memheap\heap_buddy.c">
+      <Filter>Source Files\memheap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\memheap\heap_sys.c">
+      <Filter>Source Files\memheap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\memheap\heap_llrb.c">
+      <Filter>Source Files\memheap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\util\list_link.c">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\util\llrb_link.c">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cntr\oos_model.c">
+      <Filter>Source Files\cntr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cntr2\iqueue.c">
+      <Filter>Source Files\cntr2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cntr2\istack.c">
+      <Filter>Source Files\cntr2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cntr2\iset.c">
+      <Filter>Source Files\cntr2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cntr2\iitr.c">
+      <Filter>Source Files\cntr2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cntr2\ilist.c">
+      <Filter>Source Files\cntr2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cntr2\ialgo.c">
+      <Filter>Source Files\cntr2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\memheap\heap_global.c">
+      <Filter>Source Files\memheap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\memheap\heap_factory.c">
+      <Filter>Source Files\memheap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\memheap\heap_wrap.c">
+      <Filter>Source Files\memheap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cntr2\oo_model.c">
+      <Filter>Source Files\cntr2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\memheap\heap_walk.c">
+      <Filter>Source Files\memheap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cntr2\oallocator.c">
+      <Filter>Source Files\cntr2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cntr2\iallocator.c">
+      <Filter>Source Files\cntr2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\util\bst_link.c">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cntr2\ollrb.c">
+      <Filter>Source Files\cntr2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cntr2\olist.c">
+      <Filter>Source Files\cntr2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\memheap\heap_pool.c">
+      <Filter>Source Files\memheap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\util\splay_link.c">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cntr2\osplay.c">
+      <Filter>Source Files\cntr2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\util\skiplist.c">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cntr2\oskiplist.c">
+      <Filter>Source Files\cntr2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lexer\automaton.c">
+      <Filter>Source Files\lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lexer\nfa.c">
+      <Filter>Source Files\lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cntr2\imap.c">
+      <Filter>Source Files\cntr2</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4A183075-02A6-4578-988C-434CB6F73E28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\util">
+      <UniqueIdentifier>{21a55835-1eb3-4e92-8376-7913db8d54ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\cntr">
+      <UniqueIdentifier>{c470f9be-73ef-435c-a63d-2d83c36b3583}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\cntr2">
+      <UniqueIdentifier>{9595d002-0e2d-4fcb-ab1c-bd9400b4b157}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\memheap">
+      <UniqueIdentifier>{ad1e1824-3f67-4597-9455-85f3927d0274}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\lexer">
+      <UniqueIdentifier>{a64cd8cb-5f4a-46cf-991d-66f7c8036f7a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\cntr\_234tree.h">
+      <Filter>Source Files\cntr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr\cattr.h">
+      <Filter>Source Files\cntr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr\citer_base.h">
+      <Filter>Source Files\cntr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr\citer_base.local.h">
+      <Filter>Source Files\cntr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr\citer_cont.h">
+      <Filter>Source Files\cntr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr\citer_cont.local.h">
+      <Filter>Source Files\cntr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr\cntr.h">
+      <Filter>Source Files\cntr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr\cntr_algorithm.h">
+      <Filter>Source Files\cntr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr\cntr_base.h">
+      <Filter>Source Files\cntr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr\cntr_base.local.h">
+      <Filter>Source Files\cntr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr\cntr_factory.h">
+      <Filter>Source Files\cntr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr\cntr_linear.h">
+      <Filter>Source Files\cntr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr\cntr_linear.local.h">
+      <Filter>Source Files\cntr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr\cntr_tree.h">
+      <Filter>Source Files\cntr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr\oo_model.doc.h">
+      <Filter>Source Files\cntr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr\oos_model.doc.h">
+      <Filter>Source Files\cntr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr\oos_model.h">
+      <Filter>Source Files\cntr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\memheap\block_common.h">
+      <Filter>Source Files\memheap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\memheap\block_link.h">
+      <Filter>Source Files\memheap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\memheap\heap_buddy.h">
+      <Filter>Source Files\memheap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\memheap\heap_def.h">
+      <Filter>Source Files\memheap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\memheap\heap_llrb.h">
+      <Filter>Source Files\memheap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\memheap\heap_sys.h">
+      <Filter>Source Files\memheap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\memheap\mem_common.h">
+      <Filter>Source Files\memheap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\util\bit_math.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\util\cominc.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\util\link.doc.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\util\list_link.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\util\llrb_link.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr\oo_model.h">
+      <Filter>Source Files\cntr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr2\oo_model.h">
+      <Filter>Source Files\cntr2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr2\iqueue.h">
+      <Filter>Source Files\cntr2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr2\istack.h">
+      <Filter>Source Files\cntr2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr2\iset.h">
+      <Filter>Source Files\cntr2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr2\iitr.h">
+      <Filter>Source Files\cntr2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr2\ilist.h">
+      <Filter>Source Files\cntr2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr2\ifactory.h">
+      <Filter>Source Files\cntr2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr2\idef.h">
+      <Filter>Source Files\cntr2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr2\ialgo.h">
+      <Filter>Source Files\cntr2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\memheap\heap_factory.h">
+      <Filter>Source Files\memheap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\memheap\heap_global.h">
+      <Filter>Source Files\memheap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\memheap\heap_wrap.h">
+      <Filter>Source Files\memheap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\memheap\heap_walk.h">
+      <Filter>Source Files\memheap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr2\iallocator.h">
+      <Filter>Source Files\cntr2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr2\oallocator.h">
+      <Filter>Source Files\cntr2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\util\bst_link.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\util\math.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\memheap\heap_pool.h">
+      <Filter>Source Files\memheap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\util\splay_link.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\util\skiplist.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr2\olist.h">
+      <Filter>Source Files\cntr2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lexer\automaton.h">
+      <Filter>Source Files\lexer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lexer\nfa.h">
+      <Filter>Source Files\lexer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr2\imap.h">
+      <Filter>Source Files\cntr2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr2\osplay.h">
+      <Filter>Source Files\cntr2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr2\ollrb.h">
+      <Filter>Source Files\cntr2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr2\oskiplist.h">
+      <Filter>Source Files\cntr2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr2\oo_ref.h">
+      <Filter>Source Files\cntr2</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
