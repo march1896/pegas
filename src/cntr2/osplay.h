@@ -28,29 +28,33 @@ void*           splayset_itr_remove      (object* o, iterator itr);
 const_iterator  splayset_itr_begin       (const object* o);
 const_iterator  splayset_itr_end         (const object* o);
 
-/* if alc is NULL, create_v will create an osplay with multi-pool allocator to gain best efficiency */
-object*  splaymap_create_v        (pf_ref_compare ref_comp, allocator alc);
-object*  splaymap_create          (pf_ref_compare ref_comp);
-void     splaymap_destroy         (object* o);
-void     splaymap_clear           (object* o);
-int      splaymap_size            (const object* o);
-bool     splaymap_empty           (const object* o);
-void*    splaymap_insert_s        (object* o, const void* key, void* value);
-void     splaymap_insert_m        (object* o, const void* key, void* value);
-bool     splaymap_contains        (const object* o, const void* key);
-void*    splaymap_findbykey_s     (const object* o, const void* key);
-int      splaymap_count_m         (const object* o, const void* key);
-void*    splaymap_remove_s        (object* o, void* key);
-void    splaymap_remove_m         (object* o, void* key);
+// TODO: should we have the detailed implementation for each container just for a virtual function call 
+// performance?
 
-iterator splaymap_itr_create      (const object* o, itr_pos pos);
-void     splaymap_itr_assign      (const object* o, iterator itr, itr_pos pos);
-void     splaymap_itr_find_s      (const object* o, iterator itr, const void* key);
-void     splaymap_itr_find_lower_m(const object* o, iterator itr, const void* key);
-void     splaymap_itr_find_upper_m(const object* o, iterator itr, const void* key);
-void*    splaymap_itr_remove      (object* o, iterator itr);
+// /* if alc is NULL, create_v will create an osplay with multi-pool allocator to gain best efficiency */
+// object*  splaymap_create_v        (pf_ref_compare ref_comp, allocator alc);
+// object*  splaymap_create          (pf_ref_compare ref_comp);
+// void     splaymap_destroy         (object* o);
+// void     splaymap_clear           (object* o);
+// int      splaymap_size            (const object* o);
+// bool     splaymap_empty           (const object* o);
+// void*    splaymap_insert_s        (object* o, const void* key, void* value);
+// void     splaymap_insert_m        (object* o, const void* key, void* value);
+// bool     splaymap_contains        (const object* o, const void* key);
+// void*    splaymap_findbykey_s     (const object* o, const void* key);
+// int      splaymap_count_m         (const object* o, const void* key);
+// void*    splaymap_remove_s        (object* o, void* key);
+// void     splaymap_remove_m        (object* o, void* key);
+// 
+// iterator splaymap_itr_create      (const object* o, itr_pos pos);
+// void     splaymap_itr_assign      (const object* o, iterator itr, itr_pos pos);
+// void     splaymap_itr_find_s      (const object* o, iterator itr, const void* key);
+// void     splaymap_itr_find_lower_m(const object* o, iterator itr, const void* key);
+// void     splaymap_itr_find_upper_m(const object* o, iterator itr, const void* key);
+// void*    splaymap_itr_remove      (object* o, iterator itr);
+// 
+// const_iterator splaymap_itr_begin (const object* o);
+// const_iterator splaymap_itr_end   (const object* o);
 
-const_iterator splaymap_itr_begin (const object* o);
-const_iterator splaymap_itr_end   (const object* o);
 
 #endif /* _OBJECT_SPLAYTREE_H_ */

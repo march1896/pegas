@@ -85,13 +85,13 @@ static struct imset_vtable __imset_vtable = {
 	splayset_empty,            /* __empty */
 	splayset_insert_m,         /* __insert */
 	splayset_contains,         /* __contains */
-	splayset_count_m,            /* __count */
+	splayset_count_m,          /* __count */
 	splayset_remove,           /* __remove */
 
 	splayset_itr_create,       /* __itr_create */
 	splayset_itr_assign,       /* __itr_assign */
-	splayset_itr_find_lower_m,   /* __itr_find_lower */
-	splayset_itr_find_upper_m,   /* __itr_find_upper */
+	splayset_itr_find_lower_m, /* __itr_find_lower */
+	splayset_itr_find_upper_m, /* __itr_find_upper */
 	splayset_itr_remove,       /* __itr_remove */
 	splayset_itr_begin,        /* __itr_begin */
 	splayset_itr_end           /* __itr_end */
@@ -720,20 +720,6 @@ bool splayset_remove(object* o, void* __ref) {
 
 	return false;
 }
-
-void* osplay_smap_insert(object* o, const void* key, void* value) {
-
-}
-
-void* osplay_smap_findbykey  (object* o, const void* key) {
-
-}
-
-void     osplay_mmap_insert     (object* o, const void* key, void* value);
-int      osplay_mmap_count      (const object* o, const void* __ref);
-bool     osplay_xmap_contans    (object* o, const void* key);
-void*    osplay_xmap_remove     (object* o, void* key);
-
 
 void* splayset_itr_remove(object* o, iterator itr) {
 	struct osplay* osplay    = (struct osplay*)o;

@@ -18,8 +18,7 @@ extern inline bool     imap_empty            (const iobject* ic);
  * will be returned, if not, return NULL. */
 extern inline void*    imap_insert           (iobject* ic, const void* key, void* value);
 extern inline bool     imap_contains         (const iobject* ic, const void* key);
-/* return NULL if the key is not in the map, 
- * TODO: this method should be supplied with iterator, but it's so common in map */
+/* return NULL if the key is not in the map */
 extern inline void*    imap_findbykey        (const iobject* ic, const void* key);
 /* return NULL if key is not in the map, or the <key, value> pair will be removed from the map */
 extern inline void*    imap_remove           (iobject* ic, void* key);
