@@ -52,13 +52,7 @@ typedef bool (*pf_dealloc_v)  (void* pheap, void* buff, const char* file, int li
 
 #define HEAP_MINIMUM_EXPAND_SIZE (4*1024*1024)
 
-typedef struct heap_struct {
-	pf_alloc   __alloc;
-	pf_dealloc __dealloc;
-	void*      __handle;
-} heap;
-
-/* the below methods may or may not be implemented by a heap */
+/* the below methods is optional to heap implementer */
 
 /* below defines method to traverse heap, useful for get the statistic of a heap */
 /* TODO: should the block info defined here? in other words, is every heap have the same 'block' concept.

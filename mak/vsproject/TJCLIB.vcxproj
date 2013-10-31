@@ -298,7 +298,6 @@
     <ClInclude Include="..\..\src\memheap\heap_sys.h" />
     <ClInclude Include="..\..\src\memheap\heap_walk.h" />
     <ClInclude Include="..\..\src\memheap\heap_wrap.h" />
-    <ClInclude Include="..\..\src\memheap\mem_common.h" />
     <ClInclude Include="..\..\src\util\bit_math.h" />
     <ClInclude Include="..\..\src\util\bst_link.h" />
     <ClInclude Include="..\..\src\util\cominc.h" />

@@ -15,7 +15,6 @@
  * block_c describes a common block, no matter its allocated or free*/
 struct heap_llrb_block {
 	struct block_c     common;
-	//struct block_c_clean xx;
 
 	struct llrb_link   link;
 };
@@ -66,8 +65,8 @@ void heap_llrb_get_blockinfo(void* mem_addr, /* out */ struct heap_blockinfo* in
 /* traverse part */
 void heap_llrb_walk     (struct heap_llrb* pheap, pf_process_block per_block_cb, void* param);
 
-void heap_llrb_init     (struct heap_llrb* pheap, void* parent, pf_alloc __alloc, pf_dealloc __dealloc);
-void heap_llrb_init_v   (struct heap_llrb* pheap, void* parent, pf_alloc __alloc, pf_dealloc __dealloc, int __split_threadhold, int __expand_size);
+void heap_llrb_init     (struct heap_llrb* pheap, void* parent, pf_alloc parent_alloc, pf_dealloc parent_dealloc);
+void heap_llrb_init_v   (struct heap_llrb* pheap, void* parent, pf_alloc parent_alloc, pf_dealloc parent_dealloc, int split_threadhold, int expand_size);
 void heap_llrb_deinit   (struct heap_llrb* pheap);
 
 #endif /* _HEAP_LLRB_H_ */

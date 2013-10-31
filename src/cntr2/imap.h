@@ -12,6 +12,7 @@ typedef struct map_pair_t {
 
 extern inline void     imap_destroy          (iobject* ic);
 extern inline void     imap_clear            (iobject* ic);
+extern inline void     imap_clear_v          (iobject* ic, pf_ref_dispose_v dispose, void* context);
 extern inline int      imap_size             (const iobject* ic);
 extern inline bool     imap_empty            (const iobject* ic);
 /* if <key, old_value> pair in the map, the old_value will be updated, and the old_value 
@@ -73,6 +74,7 @@ struct imap_vtable {
  ******************************************************************************/
 extern inline void     immap_destroy    (iobject* i);
 extern inline void     immap_clear      (iobject* i);
+extern inline void     immap_clear_v    (iobject* i, pf_ref_dispose_v dispose, void* context);
 extern inline int      immap_size       (const iobject* i);
 extern inline bool     immap_empty      (const iobject* i);
 extern inline void     immap_insert     (iobject* i, const void* key, void* value);

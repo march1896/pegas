@@ -7,7 +7,7 @@
 /* 
  * This is just a wrap of the system heap, which saves the allocated block in a linked list,
  * which could give more debug information than the raw system heap.
- * Of cource, use more memory to store the debug information 
+ * Of course, use more memory to store the debug information 
  */
 
 /* Implement the following interface one by one */

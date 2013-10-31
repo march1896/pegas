@@ -288,7 +288,7 @@ object* ollrb_create_v(pf_ref_compare ref_compare, allocator alc) {
 	ollrb->sentinel.left   = NULL;
 	ollrb->sentinel.right  = NULL;
 	ollrb->sentinel.parent = NULL;
-	ollrb->sentinel.color  = 55; /* TODO: how to handle this color? */
+	ollrb->sentinel.color  = 55; /* Just a magic color, cause we will never reference it */
 
 
 	ollrb->allocator = alc;

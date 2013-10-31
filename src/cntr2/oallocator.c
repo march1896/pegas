@@ -172,7 +172,7 @@ struct allocator_llrb {
 	address                       __offset;
 	pf_cast                       __cast;
 	
-	iobject         __iftable[e_heap_count];
+	iobject                       __iftable[e_heap_count];
 
 	allocator                     __parent;
 	struct heap_llrb*             __driver;
