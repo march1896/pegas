@@ -15,9 +15,9 @@ struct skip_link {
 struct skiplist {
 	struct skip_link* sentinel;
 
-	pf_skiplink_alloc   __alloc;
-	pf_skiplink_dealloc __dealloc;
-	void*               __alloc_context;
+	pf_alloc          __alloc;
+	pf_dealloc        __dealloc;
+	void*             __heap;
 
 	pf_skiplist_compare __comp;
 };
@@ -33,9 +33,9 @@ static bool skiplink_default_dealloc(void* buff, void* param) {
 	return free(buff);
 }
 
-struct skip_link* skip_link_create(const void* owner, pf_skiplink_alloc __alloc, void* alloc_param);
-struct skip_link* skip_link_create_fixed(const void* owner, int level, pf_skiplink_alloc alc, void* alloc_param);
-void skip_link_destroy(struct skip_link* link, pf_skiplink_dealloc dlc, void* dealloc_param);
+struct skip_link* skip_link_create(const void* owner, pf_alloc __alloc, void* __heap);
+struct skip_link* skip_link_create_fixed(const void* owner, int level, pf_alloc alc, void* alloc_param);
+void skip_link_destroy(struct skip_link* link, pf_dealloc dlc, void* dealloc_param);
 
 void skip_link_insert(struct skip_link* header, struct skip_link* target, pf_skiplist_compare comp);
 struct skip_link* skip_link_insert_s(struct skip_link* header, struct skip_link* target, pf_skiplist_compare comp);
@@ -44,7 +44,7 @@ void skip_link_remove(struct skip_link* header, struct skip_link* target, pf_ski
 void skip_link_debug_check(struct skip_link* root, pf_skiplist_compare comp);
 
 #define SKIP_LINK_MAX_LEVEL 32
-struct skip_link* skip_link_create(const void* owner, pf_skiplink_alloc __alloc, void* alloc_param) {
+struct skip_link* skip_link_create(const void* owner, pf_alloc __alloc, void* __heap) {
 	int r = rand();
 	int level = 1;
 	struct skip_link* link = NULL;
@@ -54,7 +54,7 @@ struct skip_link* skip_link_create(const void* owner, pf_skiplink_alloc __alloc,
 		level ++;
 	}
 
-	link = (struct skip_link*)__alloc(sizeof(struct list_link) * level + offsetof(struct skip_link, levels), alloc_param);
+	link = (struct skip_link*)alloc(__alloc, __heap, sizeof(struct list_link) * level + offsetof(struct skip_link, levels));
 
 	dbg_assert(sizeof(struct skip_link) == offsetof(struct skip_link, levels));
 	dbg_assert((char*)&link->levels[level] == (char*)link + sizeof(struct list_link) * level + offsetof(struct skip_link, levels));
@@ -68,10 +68,10 @@ struct skip_link* skip_link_create(const void* owner, pf_skiplink_alloc __alloc,
 	return link;
 }
 
-struct skip_link* skip_link_create_fixed(const void* owner, int level, pf_skiplink_alloc __alloc, void* alloc_param) {
+struct skip_link* skip_link_create_fixed(const void* owner, int level, pf_alloc __alloc, void* __heap) {
 	struct skip_link* link = NULL;
 
-	link = (struct skip_link*)__alloc(sizeof(struct list_link) * level + offsetof(struct skip_link, levels), alloc_param);
+	link = (struct skip_link*)alloc(__alloc, __heap, sizeof(struct list_link) * level + offsetof(struct skip_link, levels));
 
 	dbg_assert(sizeof(struct skip_link) == offsetof(struct skip_link, levels));
 	dbg_assert((char*)&link->levels[level] == (char*)link + sizeof(struct list_link) * level + offsetof(struct skip_link, levels));
@@ -85,8 +85,8 @@ struct skip_link* skip_link_create_fixed(const void* owner, int level, pf_skipli
 	return link;
 }
 
-void skip_link_destroy(struct skip_link* link, pf_skiplink_dealloc __dealloc, void* dealloc_param) {
-	__dealloc(link, dealloc_param);
+void skip_link_destroy(struct skip_link* link, pf_dealloc __dealloc, void* __heap) {
+	dealloc(__dealloc, __heap, link);
 }
 
 #define SKIPLINK_FROM_LISTLINK(list, level) container_of(((struct list_link*)list - level), struct skip_link, levels)
@@ -179,26 +179,26 @@ struct skiplist* skiplist_create(pf_skiplist_compare comp) {
 	struct skiplist* thelist = (struct skiplist*)skiplink_default_alloc(sizeof(struct skiplist), NULL);
 	
 	dbg_assert(thelist != NULL);
-	thelist->__alloc       = skiplink_default_alloc;
-	thelist->__dealloc     = skiplink_default_dealloc;
-	thelist->__alloc_context = NULL;
+	thelist->__alloc       = __global_default_alloc;
+	thelist->__dealloc     = __global_default_dealloc;
+	thelist->__heap        = __global_default_heap;
 	thelist->__comp        = comp;
 
-	thelist->sentinel = skip_link_create_fixed(NULL, SKIP_LINK_MAX_LEVEL, skiplink_default_alloc, NULL);
+	thelist->sentinel = skip_link_create_fixed(NULL, SKIP_LINK_MAX_LEVEL, thelist->__alloc, thelist->__heap);
 
 	return thelist;
 }
 
-struct skiplist* skiplist_create_v(pf_skiplist_compare comp, pf_skiplink_alloc __alloc, pf_skiplink_dealloc __dealloc, void* alloc_context) {
-	struct skiplist* thelist = (struct skiplist*)__alloc(sizeof(struct skiplist), alloc_context);
+struct skiplist* skiplist_create_v(pf_skiplist_compare comp, pf_alloc __alloc, pf_dealloc __dealloc, void* __heap) {
+	struct skiplist* thelist = (struct skiplist*)alloc(__alloc, __heap, sizeof(struct skiplist));
 
 	dbg_assert(thelist != NULL);
 	thelist->__alloc         = __alloc;
 	thelist->__dealloc       = __dealloc;
-	thelist->__alloc_context = alloc_context;
+	thelist->__heap = __heap;
 	thelist->__comp          = comp;
 
-	thelist->sentinel = skip_link_create_fixed(NULL, SKIP_LINK_MAX_LEVEL, __alloc, alloc_context);
+	thelist->sentinel = skip_link_create_fixed(NULL, SKIP_LINK_MAX_LEVEL, __alloc, __heap);
 
 	return thelist;
 }
@@ -214,7 +214,7 @@ void skiplist_clear(struct skiplist* slist) {
 	while (listlink != listsent) {
 		struct skip_link* skiplink = SKIPLINK_FROM_LISTLINK(listlink, 0);
 		listlink = listlink->next;
-		skip_link_destroy(skiplink, slist->__dealloc, slist->__alloc_context);
+		skip_link_destroy(skiplink, slist->__dealloc, slist->__heap);
 	}
 
 	/* the sentinel node's should be reset */
@@ -252,18 +252,18 @@ void skiplist_destroy(struct skiplist* slist) {
 
 	skiplist_clear(slist);
 
-	skip_link_destroy(slist->sentinel, slist->__dealloc, slist->__alloc_context);
-	slist->__dealloc(slist, slist->__alloc_context);
+	skip_link_destroy(slist->sentinel, slist->__dealloc, slist->__heap);
+	dealloc(slist->__dealloc, slist->__heap, slist);
 }
 
 void skiplist_insert(struct skiplist* slist, const void* data) {
-	struct skip_link* skiplink = skip_link_create(data, slist->__alloc, slist->__alloc_context);
+	struct skip_link* skiplink = skip_link_create(data, slist->__alloc, slist->__heap);
 
 	skip_link_insert(slist->sentinel, skiplink, slist->__comp);
 }
 
 void* skiplist_insert_s(struct skiplist* slist, const void* data) {
-	struct skip_link* toinsert = skip_link_create(data, slist->__alloc, slist->__alloc_context);
+	struct skip_link* toinsert = skip_link_create(data, slist->__alloc, slist->__heap);
 	struct skip_link* inlist = skip_link_insert_s(slist->sentinel, toinsert, slist->__comp);
 
 	if (inlist != toinsert) {
@@ -271,7 +271,7 @@ void* skiplist_insert_s(struct skiplist* slist, const void* data) {
 		const void* old_reference = inlist->reference; 
 		inlist->reference = data;
 
-		skip_link_destroy(toinsert, slist->__dealloc, slist->__alloc_context);
+		skip_link_destroy(toinsert, slist->__dealloc, slist->__heap);
 
 		return (void*)old_reference;
 	}
@@ -376,7 +376,7 @@ bool skiplist_remove(struct skiplist* slist, const void* data) {
 		return false;
 
 	skip_link_remove(slist->sentinel, skiplink, slist->__comp);
-	skip_link_destroy(skiplink, slist->__dealloc, slist->__alloc_context);
+	skip_link_destroy(skiplink, slist->__dealloc, slist->__heap);
 
 	return true;
 }
@@ -385,5 +385,5 @@ void skiplist_remove_link(struct skiplist* slist, struct skip_link* skiplink) {
 	dbg_assert(skiplink != slist->sentinel);
 
 	skip_link_remove(slist->sentinel, skiplink, slist->__comp);
-	skip_link_destroy(skiplink, slist->__dealloc, slist->__alloc_context);
+	skip_link_destroy(skiplink, slist->__dealloc, slist->__heap);
 }

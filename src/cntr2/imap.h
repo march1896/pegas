@@ -37,6 +37,7 @@ extern inline const_iterator imap_itr_end    (const iobject* ic);
 /* the virtual functions that each container should implement */
 typedef       void     (*pf_imap_destroy)    (object* c);
 typedef       void     (*pf_imap_clear)      (object* c);
+typedef       void     (*pf_imap_clear_v)    (object* c, pf_ref_dispose_v dispose, void* context);
 typedef       int      (*pf_imap_size)       (const object* c);
 typedef       bool     (*pf_imap_empty)      (const object* c);
 typedef       void*    (*pf_imap_insert)     (object* c, const void* key, void* value);
@@ -98,6 +99,7 @@ extern inline const_iterator immap_itr_end    (const iobject* i);
 /* the virtual functions that each container should implement */
 typedef       void     (*pf_immap_destroy)    (object* o);
 typedef       void     (*pf_immap_clear)      (object* o);
+typedef       void     (*pf_immap_clear_v)    (object* o, pf_ref_dispose_v dispose, void* context);
 typedef       int      (*pf_immap_size)       (const object* o);
 typedef       bool     (*pf_immap_empty)      (const object* o);
 typedef       void     (*pf_immap_insert)     (object* o, const void* key, void* value);
@@ -117,6 +119,7 @@ struct immap_vtable {
 	/* public */
 	pf_immap_destroy        __destroy;
 	pf_immap_clear          __clear;
+	pf_immap_clear_v        __clear_v;
 	pf_immap_size           __size;
 	pf_immap_empty          __empty;
 	pf_immap_insert         __insert;

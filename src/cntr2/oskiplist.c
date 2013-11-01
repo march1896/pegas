@@ -265,7 +265,7 @@ object* oskiplist_create_v(pf_ref_compare ref_compare, allocator alc) {
 
 	oskiplist->size      = 0;
 	oskiplist->ref_comp  = ref_compare;
-	oskiplist->driver_skiplist  = skiplist_create_v(ref_compare, skiplist_alloc_adapter, skiplist_dealloc_adapter, alc);
+	oskiplist->driver_skiplist  = skiplist_create_v(ref_compare, (pf_alloc)allocator_acquire, (pf_dealloc)allocator_release, alc);
 
 	oskiplist->allocator = alc;
 	oskiplist->allocator_join_ondispose = managed_allocator;

@@ -36,29 +36,28 @@ struct ordmap {
 	
 	iobject                       __iftable[e_mi_count];
 
-	iobject*                      driver_set;
-
 	int                           size;
 	pf_ref_compare                ref_comp;
+
+	iobject*                      driver_set;
 
 	/* methods to manage the inner memory use by the container */
 	allocator                     allocator;
 	bool                          allocator_join_ondispose;
 
-	/* methods to manage the object's lifetime which is stored in the container */
-	pf_ref_dispose                dispose;         
-
 	struct ordmap_itr             itr_begin;
 	struct ordmap_itr             itr_end;
 };
 
-static struct iset_vtable __iset_vtable = {
+static struct imap_vtable __imap_vtable = {
 	ordmap_destroy,          /* __destroy */
 	ordmap_clear,            /* __clear */
+	ordmap_clear_v,          /* __clear_v */
 	ordmap_size,             /* __size */
 	ordmap_empty,            /* __empty */
 	ordmap_insert_s,         /* __insert */
 	ordmap_contains,         /* __contains */
+	ordmap_findbykey,        /* __findbykey */
 	ordmap_remove,           /* __remove */
 
 	ordmap_itr_create,       /* __itr_create */
@@ -69,9 +68,10 @@ static struct iset_vtable __iset_vtable = {
 	ordmap_itr_end           /* __itr_end */
 };
 
-static struct imset_vtable __imset_vtable = {
+static struct immap_vtable __immap_vtable = {
 	ordmap_destroy,          /* __destroy */
 	ordmap_clear,            /* __clear */
+	ordmap_clear_v,          /* __clear_v */
 	ordmap_size,             /* __size */
 	ordmap_empty,            /* __empty */
 	ordmap_insert_m,         /* __insert */
@@ -91,13 +91,13 @@ static struct imset_vtable __imset_vtable = {
 static unknown ordmap_itr_cast(unknown x, unique_id inf_id);
 static unknown ordmap_cast(unknown x, unique_id intf_id);
 
-static void ordmap_itr_destroy(iterator citr);
+static void     ordmap_itr_destroy(iterator citr);
 static iterator ordmap_itr_clone(const_iterator citr);
-static bool ordmap_itr_equals(const_iterator a, const_iterator b);
+static bool     ordmap_itr_equals(const_iterator a, const_iterator b);
 static const void* ordmap_itr_get_ref(const_iterator citr);
-static void ordmap_itr_set_ref(iterator citr, const void* n_ref);
-static void ordmap_itr_to_next(iterator citr);
-static void ordmap_itr_to_prev(iterator citr);
+static void     ordmap_itr_set_ref(iterator citr, const void* n_ref);
+static void     ordmap_itr_to_next(iterator citr);
+static void     ordmap_itr_to_prev(iterator citr);
 
 static struct itr_bidirectional_vtable __itr_vtable = {
 	ordmap_itr_destroy,      /* __destroy */
@@ -121,7 +121,7 @@ static void ordmap_itr_destroy(object* citr) {
 }
 
 static iterator ordmap_itr_clone(const_iterator citr) {
-	struct ordmap_itr* itr = (struct ordmap_itr*)citr;
+	struct ordmap_itr* itr   = (struct ordmap_itr*)citr;
 	struct ordmap_itr* n_itr = NULL;
 
 	dbg_assert(__is_object(citr));
@@ -193,11 +193,11 @@ static unknown ordmap_cast(unknown x, unique_id intf_id) {
 	dbg_assert(__is_object(x));
 
 	switch (intf_id) {
-	case ISET_ID:
-		return (unknown)&o->__iftable[e_set];
+	case IMAP_ID:
+		return (unknown)&o->__iftable[e_map];
 		break;
-	case IMSET_ID:
-		return (unknown)&o->__iftable[e_mset];
+	case IMMAP_ID:
+		return (unknown)&o->__iftable[e_mmap];
 		break;
 	default:
 		break;
@@ -243,8 +243,12 @@ static bool ordmap_dealloc_adapter(void* buff, void* context) {
 	return allocator_dealloc(alc, buff);
 }
 
+static int map_pair_compare(const void* ref_a, const void* ref_b) {
+
+}
+
 static void ordmap_itr_com_init(struct ordmap_itr* itr, struct ordmap* list);
-object* ordmap_create_v(pf_compare ref_compare, allocator alc, pf_dispose dispose) {
+object* ordmap_create_v(pf_ref_compare key_compare, allocator alc, enum ordmap_driver driver_type) {
 	struct ordmap* ordmap = NULL;
 	bool managed_allocator = false;
 
@@ -265,12 +269,22 @@ object* ordmap_create_v(pf_compare ref_compare, allocator alc, pf_dispose dispos
 
 	ordmap->size      = 0;
 	ordmap->ref_comp  = ref_compare;
+
+	switch (driver_type) {
+		case ordmap_by_llrb:
+			break;
+		case ordmap_by_splay:
+			break;
+		case ordmap_by_skiplist:
+			break;
+		default:
+			break;
+	}
+	ordmap->driver_set = 
 	ordmap->__ordmap  = ordmap_create_v(ref_compare, ordmap_alloc_adapter, ordmap_dealloc_adapter, alc);
 
 	ordmap->allocator = alc;
 	ordmap->allocator_join_ondispose = managed_allocator;
-
-	ordmap->dispose   = dispose;
 
 	/* initialize begin/end iterators, the position is reassigned when each query */
 	ordmap_itr_com_init(&ordmap->itr_begin, ordmap);

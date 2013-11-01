@@ -2,21 +2,16 @@
 #define _SKIP_LINK_H_
 
 #include <cominc.h>
+#include <memheap/heap_def.h>
 
 extern inline const struct skip_link* skip_link_next(const struct skip_link* cur);
 extern inline const struct skip_link* skip_link_prev(const struct skip_link* cur);
 extern inline const void*             skip_link_getref(const struct skip_link* slink);
 
 typedef int (*pf_skiplist_compare)(const void* ref_a, const void* ref_b);
-/* we don't directly use pf_alloc/pf_dealloc, to give the change to use other memory
- * management method like allocator */
-typedef void* (*pf_skiplink_alloc)(int size_in_byte, void* param);
-typedef bool (*pf_skiplink_dealloc)(void* buff, void* param);
 
 struct skiplist* skiplist_create(pf_skiplist_compare comp);
-/* the client should handle the life_time of alloc_context */
-struct skiplist* skiplist_create_v(pf_skiplist_compare comp, 
-		pf_skiplink_alloc alc, pf_skiplink_dealloc dlc, void* alloc_context);
+struct skiplist* skiplist_create_v(pf_skiplist_compare comp, pf_alloc alc, pf_dealloc dlc, void* heap);
 void   skiplist_destroy(struct skiplist* list);
 
 void skiplist_insert  (struct skiplist* list, const void* data);
