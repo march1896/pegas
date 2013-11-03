@@ -12,20 +12,25 @@
 #define as_map(obj)   (iobject*)__cast((obj), IMAP_ID)
 #define as_mmap(obj)  (iobject*)__cast((obj), IMMAP_ID)
 
+/* if create without allocator, it will use the global_default_allocator
+ * if the alc == NULL, the create_a will create with a multi-poll allocator for best efficiency */
+
+
 object* cntr_create_olist();
-object* cntr_create_olist_v(allocator alc);
+object* cntr_create_olist_a(allocator alc);
 
 object* cntr_create_ollrb(pf_ref_compare comp);
-/* if alc is NULL, create_v will create with multi-pool allocator to gain best efficiency */
-object* cntr_create_ollrb_v(pf_ref_compare comp, allocator alc);
+object* cntr_create_ollrb_a(pf_ref_compare comp, allocator alc);
+object* cntr_create_ollrb_v(pf_ref_compare_v comp_v, void* comp_context);
+object* cntr_create_ollrb_va(pf_ref_compare_v comp_v, void* comp_context, allocator alc);
 
 object* cntr_create_osplay(pf_ref_compare comp);
-/* if alc is NULL, create_v will create with multi-pool allocator to gain best efficiency */
-object* cntr_create_osplay_v(pf_ref_compare comp, allocator alc);
+object* cntr_create_osplay_a(pf_ref_compare comp, allocator alc);
+object* cntr_create_osplay_v(pf_ref_compare_v comp_v, void* comp_context);
+object* cntr_create_osplay_va(pf_ref_compare_v comp_v, void* comp_context, allocator alc);
 
 object* cntr_create_oskiplist(pf_ref_compare comp);
-/* if alc is NULL, create_v will create with multi-pool allocator to gain best efficiency */
-object* cntr_create_oskiplist_v(pf_ref_compare comp, allocator alc);
+object* cntr_create_oskiplist_a(pf_ref_compare comp, allocator alc);
 
 object* cntr_create_ordmap(pf_ref_compare key_compare);
 enum ordmap_driver {

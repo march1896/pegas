@@ -24,6 +24,14 @@
  * 5, allocator_walk
  */
 
+/* 
+ * oallocator implements iallocator interface, in fact it implements the 'heap interface'
+ * implicitly. recall the heap definition in heap_def.h
+ * it has two method pf_alloc, pf_dealloc and a heap_handle.
+ * allocator has allocator_acquire, allocator_release and allocator, we could pass the above 
+ * three functions to any where that needs a pf_alloc, pf_dealloc and a heap handler.
+ */
+
 /* allocator methods */
 extern inline void  allocator_join     (allocator o); 
 #ifdef _VERBOSE_ALLOC_DEALLOC_
@@ -40,13 +48,8 @@ extern inline bool  allocator_release_c(allocator o, void* buff);
 extern inline allocator allocator_get_parent(allocator o);
 extern inline void      allocator_walk      (allocator o, pf_process_block per_block_cb, void* param);
 
-#ifdef _VERBOSE_ALLOC_DEALLOC_
-#define allocator_alloc(o, size) allocator_acquire_v(o, size, __FILE__, __LINE__)
-#define allocator_dealloc(o, buff) allocator_release_v(o, buff, __FILE__, __LINE__)
-#else 
-#define allocator_alloc(o, size) allocator_acquire_c(o, size)
-#define allocator_dealloc(o, buff) allocator_release_c(o, buff)
-#endif
+#define allocator_alloc(o, size)   alloc(allocator_acquire, o, size)
+#define allocator_dealloc(o, buff) dealloc(allocator_release, o, buff)
 
 /* system default allocator, which can not be spawned or joined */
 extern allocator __global_sysd_allocator;

@@ -17,6 +17,7 @@ struct llrb_link {
 
 typedef int (*pf_llrb_compare)  (const struct llrb_link* l, const struct llrb_link* r);
 typedef int (*pf_llrb_compare_v)(const struct llrb_link* l, const struct llrb_link* r, void* param);
+
 /**
  * @brief insert target into a tree.
  * 		if comp(tree_node, target) == 0, it will directly compare the address of tree_node and target to insert.

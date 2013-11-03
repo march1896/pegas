@@ -39,7 +39,7 @@ struct ordmap {
 	int                           size;
 	pf_ref_compare                ref_comp;
 
-	iobject*                      driver_set;
+	iobject*                      driven_set;
 
 	/* methods to manage the inner memory use by the container */
 	allocator                     allocator;
@@ -280,8 +280,8 @@ object* ordmap_create_v(pf_ref_compare key_compare, allocator alc, enum ordmap_d
 		default:
 			break;
 	}
-	ordmap->driver_set = 
-	ordmap->__ordmap  = ordmap_create_v(ref_compare, ordmap_alloc_adapter, ordmap_dealloc_adapter, alc);
+	ordmap->driven_set = cntr_create_ollrb( 
+	ordmap->__ordmap   = ordmap_create_v(ref_compare, allocator_require, allocator_release, alc);
 
 	ordmap->allocator = alc;
 	ordmap->allocator_join_ondispose = managed_allocator;
@@ -307,6 +307,7 @@ void ordmap_destroy(object* o) {
 	allocator alc = ordmap->allocator;
 	bool join_alc = ordmap->allocator_join_ondispose;
 
+	iset_destroy(ordmap->driven_set);
 	ordmap_clear(o);
 	ordmap_destroy(ordmap->__ordmap);
 	allocator_dealloc(alc, ordmap);

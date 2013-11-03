@@ -62,7 +62,7 @@ struct o_dlist {
 object* cntr_create_olist() {
 	return o_dlist_create();
 }
-object* cntr_create_olist_v(allocator alc) {
+object* cntr_create_olist_a(allocator alc) {
 	return o_dlist_create_v(alc);
 }
 

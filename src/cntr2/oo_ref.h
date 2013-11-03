@@ -39,4 +39,6 @@ typedef pf_ref_process_v pf_ref_dispose_v;
 
 typedef int  (*pf_ref_compare)(const void* ref_a, const void* ref_b);
 
+typedef int  (*pf_ref_compare_v)(const void* ref_a, const void* ref_b, void* context); 
+
 #endif /* _OBJECT_REDUCE_TO_REFERENCE_H_ */

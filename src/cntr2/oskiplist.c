@@ -282,7 +282,7 @@ object* cntr_create_oskiplist(pf_ref_compare comp) {
 	return oskiplist_create(comp);
 }
 
-object* cntr_create_oskiplist_v(pf_ref_compare comp, allocator alc) {
+object* cntr_create_oskiplist_a(pf_ref_compare comp, allocator alc) {
 	return oskiplist_create_v(comp, alc);
 }
 

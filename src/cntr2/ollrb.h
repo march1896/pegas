@@ -4,9 +4,10 @@
 #include <cntr2/oo_model.h>
 #include <cntr2/oallocator.h>
 
-object*  ollrb_create          (pf_ref_compare ref_comp);
-/* if alc is NULL, create_v will create an osplay with multi-pool allocator to gain best efficiency */
-object*  ollrb_create_v        (pf_ref_compare ref_comp, allocator alc);
+/* if alc is NULL, create will create an osplay with multi-pool allocator to gain best efficiency */
+object*  ollrb_create          (pf_ref_compare ref_comp, allocator alc);
+object*  ollrb_create_v        (pf_ref_compare_v ref_comp_v, void* comp_context, allocator alc);
+
 void     ollrb_destroy         (object* o);
 void     ollrb_clear           (object* o);
 void     ollrb_clear_v         (object* o, pf_ref_dispose_v dispose, void* context);
