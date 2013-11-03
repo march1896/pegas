@@ -18,27 +18,22 @@ struct heap_context {
 	void*      heap;
 };
 
-typedef void (*pf_ref_clone)(const void* __ref, struct heap_context* heap);
-
-typedef void (*pf_ref_clone_v)(const void* __ref, pf_alloc alc, void* heap);
+typedef void* (*pf_ref_clone)(const void* __ref);
+typedef void* (*pf_ref_clone_v)(const void* __ref, pf_alloc alc, void* heap);
 
 typedef void (*pf_ref_destroy)(void* __ref);
-
 typedef void (*pf_ref_destroy_v)(void* __ref, pf_dealloc alc, void* heap);
 
 typedef void (*pf_ref_visit)(const void* __ref);
-
 typedef void (*pf_ref_visit_v)(const void* __ref, void* context);
 
 typedef void (*pf_ref_process)(void* __ref);
-
 typedef void (*pf_ref_process_v)(void* __ref, void* context);
 
-typedef pf_ref_process   pf_ref_dispose;
-typedef pf_ref_process_v pf_ref_dispose_v;
+typedef void (*pf_ref_dispose)(void* __ref);
+typedef void (*pf_ref_dispose_v)(void* __ref, void* context);
 
 typedef int  (*pf_ref_compare)(const void* ref_a, const void* ref_b);
-
 typedef int  (*pf_ref_compare_v)(const void* ref_a, const void* ref_b, void* context); 
 
 #endif /* _OBJECT_REDUCE_TO_REFERENCE_H_ */

@@ -40,7 +40,10 @@ struct oskiplist {
 	struct skiplist*              driver_skiplist;
 
 	int                           size;
+
 	pf_ref_compare                ref_comp;
+	pf_ref_compare_v              ref_comp_v;
+	void*                         comp_context;
 
 	/* methods to manage the inner memory use by the container */
 	allocator                     allocator;
@@ -227,24 +230,8 @@ static unknown oskiplist_itr_cast(unknown x, unique_id inf_id) {
 	return NULL;
 }
 
-object* oskiplist_create(pf_ref_compare ref_compare) {
-	return oskiplist_create_v(ref_compare, __global_default_allocator);
-}
-
-static void* skiplist_alloc_adapter(int size, void* context) {
-	allocator alc = (allocator)context;
-
-	return allocator_alloc(alc, size);
-}
-
-static bool skiplist_dealloc_adapter(void* buff, void* context) {
-	allocator alc = (allocator)context;
-
-	return allocator_dealloc(alc, buff);
-}
-
 static void oskiplist_itr_com_init(struct oskiplist_itr* itr, struct oskiplist* list);
-object* oskiplist_create_v(pf_ref_compare ref_compare, allocator alc) {
+object* oskiplist_create_internal(pf_ref_compare comp, pf_ref_compare_v compv, void* cp_context, allocator alc) {
 	struct oskiplist* oskiplist = NULL;
 	bool managed_allocator = false;
 
@@ -264,8 +251,17 @@ object* oskiplist_create_v(pf_ref_compare ref_compare, allocator alc) {
 	oskiplist->__iftable[e_mset].__vtable = &__imset_vtable;
 
 	oskiplist->size      = 0;
-	oskiplist->ref_comp  = ref_compare;
-	oskiplist->driver_skiplist  = skiplist_create_v(ref_compare, (pf_alloc)allocator_acquire, (pf_dealloc)allocator_release, alc);
+
+	dbg_assert(comp != NULL || compv != NULL);
+	oskiplist->ref_comp  = comp;
+	oskiplist->ref_comp_v = compv;
+	oskiplist->comp_context = cp_context;
+
+	if (comp != NULL) {
+		oskiplist->driver_skiplist  = skiplist_create_a(comp, (pf_alloc)allocator_acquire, (pf_dealloc)allocator_release, alc);
+	} else {
+		oskiplist->driver_skiplist  = skiplist_create_va(compv, cp_context, (pf_alloc)allocator_acquire, (pf_dealloc)allocator_release, alc);
+	}
 
 	oskiplist->allocator = alc;
 	oskiplist->allocator_join_ondispose = managed_allocator;
@@ -277,13 +273,25 @@ object* oskiplist_create_v(pf_ref_compare ref_compare, allocator alc) {
 	return (object*)oskiplist;
 }
 
-/* from ifactory.h  */
-object* cntr_create_oskiplist(pf_ref_compare comp) {
-	return oskiplist_create(comp);
+object* oskiplist_create(pf_ref_compare ref_comp, allocator alc) {
+	return oskiplist_create_internal(ref_comp, NULL, NULL, alc);
+}
+object* oskiplist_create_v(pf_ref_compare_v ref_comp_v, void* comp_context, allocator alc) {
+	return oskiplist_create_internal(NULL, ref_comp_v, comp_context, alc);
 }
 
+/* from ifactory.h  */
+object* cntr_create_oskiplist(pf_ref_compare comp) {
+	return oskiplist_create(comp, __global_default_allocator);
+}
 object* cntr_create_oskiplist_a(pf_ref_compare comp, allocator alc) {
-	return oskiplist_create_v(comp, alc);
+	return oskiplist_create(comp, alc);
+}
+object* cntr_create_oskiplist_v(pf_ref_compare_v comp_v, void* comp_context) {
+	return oskiplist_create_v(comp_v, comp_context, __global_default_allocator);
+}
+object* cntr_create_oskiplist_va(pf_ref_compare_v comp_v, void* comp_context, allocator alc) {
+	return oskiplist_create_v(comp_v, comp_context, alc);
 }
 
 void oskiplist_destroy(object* o) {
