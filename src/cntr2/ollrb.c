@@ -84,7 +84,7 @@ static struct iset_vtable __iset_vtable = {
 static struct imset_vtable __imset_vtable = {
 	ollrb_destroy,          /* __destroy */
 	ollrb_clear,            /* __clear */
-	ollrb_clear_v,          /* __clear */
+	ollrb_clear_v,          /* __clear_v */
 	ollrb_size,             /* __size */
 	ollrb_empty,            /* __empty */
 	ollrb_insert_m,         /* __insert */

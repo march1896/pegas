@@ -67,10 +67,12 @@ struct iset_vtable {
 };
 
 /*******************************************************************************
- * iset declaration start 
+ * imset declaration start 
  ******************************************************************************/
 extern inline       void     imset_destroy    (iobject* i);
 extern inline       void     imset_clear      (iobject* i);
+/* NOTE: since we could add the same object to the same more than once, the dispose function may operates
+ * on the same object more than once, you must take the risk on your own */
 extern inline       void     imset_clear_v    (iobject* i, pf_ref_dispose_v dispose, void* context);
 extern inline       int      imset_size       (const iobject* i);
 extern inline       bool     imset_empty      (const iobject* i);
@@ -96,6 +98,8 @@ extern inline const_iterator imset_itr_end    (const iobject* i);
 /* the virtual functions that each container should implement */
 typedef       void     (*pf_imset_destroy)    (object* o);
 typedef       void     (*pf_imset_clear)      (object* o);
+/* TODO: how to handle the duplicated elements in the elements, the dispose often release the memory
+ * back to the heap, how to handle the duplicated release calls on the same block of memory */
 typedef       void     (*pf_imset_clear_v)    (object* o, pf_ref_dispose_v dispose, void* context);
 typedef       int      (*pf_imset_size)       (const object* o);
 typedef       bool     (*pf_imset_empty)      (const object* o);
