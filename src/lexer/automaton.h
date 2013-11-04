@@ -23,9 +23,7 @@ typedef struct automaton_context {
 	pf_dealloc  __dealloc;
 	void*       __heap;
 
-	ilist       atm_pool;      /* when the object of the context is destroyed, they are not dealloc but return to the pool */
-	ilist       state_pool;
-	ilist       trans_pool;
+	ilist       automatons;      
 
 	allocator   cntr_alc;        /* container allocator */
 	bool        join_cntr_alc;
@@ -62,11 +60,12 @@ void         atm_destroy(atm* a);
 bool         atm_check  (atm_context* context, atm* a);
 atm*         atm_clone  (atm* a);
 
+/* after the creation, the new state is already added into the automaton */
 atm_state*   atm_state_create(atm* a);
 void         atm_state_destroy(atm_state* state);
 
 /* after the creation, the transform is already added to the state's trans list */
-atm_trans*   atm_transform_create(atm* a, atm_state* from, atm_state* to, unique_id trans_id);
+void         atm_transform_create(atm* a, atm_state* from, atm_state* to, unique_id trans_id);
 void         atm_transform_destroy(atm_trans* atm_trans);
 
 #endif /* _NONDETERMINSTIC_FINITE_AUTOMATON_H_ */

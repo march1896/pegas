@@ -31,18 +31,13 @@ atm_context* atm_context_create_v(pf_alloc alc, pf_dealloc dlc, void* heap, bool
 		context->join_cntr_alc = false;
 	}
 
-	context->atm_pool   = as_list(cntr_create_olist_a(context->cntr_alc));
-	context->state_pool = as_list(cntr_create_olist_a(context->cntr_alc));
-	context->trans_pool = as_list(cntr_create_olist_a(context->cntr_alc));
-
+	context->automatons = as_list(cntr_create_olist_a(context->cntr_alc));
 
 	return context;
 }
 
 void atm_context_destroy(atm_context* context) {
-	ilist_destroy(context->atm_pool);
-	ilist_destroy(context->state_pool);
-	ilist_destroy(context->trans_pool);
+	foreach(ilist_itr_begin(context->automatons), ilist_itr_end(context->automatons), (pf_ref_visit)atm_destroy);
 
 	if (context->join_cntr_alc == true)
 		allocator_join(context->cntr_alc);
@@ -51,57 +46,40 @@ void atm_context_destroy(atm_context* context) {
 }
 
 atm* atm_create(atm_context* context) {
-	atm* ret;
+	atm* ret = (atm*)alloc(context->__alloc, context->__heap, sizeof(atm));
 
-	if (ilist_empty(context->atm_pool) == false) {
-		atm* ret = (atm*)ilist_remove_back(context->atm_pool);
-		dbg_assert(ret->lifestate == atm_invalid);
-		dbg_assert(ret->context == context);
-		dbg_assert(ret->start_state == NULL);
-		dbg_assert(ret->accept_states != NULL && ilist_empty(ret->accept_states));
-		dbg_assert(ret->states != NULL && ilist_empty(ret->states));
+	ret->start_state   = NULL;
+	ret->accept_states = as_list(cntr_create_olist_a(context->cntr_alc));
+	ret->states        = as_list(cntr_create_olist_a(context->cntr_alc));
 
-		return ret;
-	} else {
-		ret = (atm*)alloc(context->__alloc, context->__heap, sizeof(atm));
+	ret->context       = context;
+	ret->lifestate     = atm_active; 
 
-		ret->start_state   = NULL;
-		ret->accept_states = as_list(cntr_create_olist_a(context->cntr_alc));
-		ret->states        = as_list(cntr_create_olist_a(context->cntr_alc));
-
-		ret->context   = context;
-		ret->lifestate = atm_active; 
-
-		return ret;
-	}
-	dbg_assert(false);
-
-	return NULL;
+	return ret;
 }
 
 void atm_destroy(atm* a) {
 	atm_context* context = a->context;
 	dbg_assert(a != NULL && context != NULL);
 
-	if (a->lifestate == atm_invalid) {
-		return;
-	} else if (a->lifestate == atm_joined) {
+	dbg_assert(a->lifestate < atm_invalid);
+	if (a->lifestate == atm_joined) {
 		/* the states is joined to other automatons */
-		ilist_clear(a->states);
-
+		ilist_destroy(a->states);
 		/* accept_states are just pointers */
-		ilist_clear(a->accept_states);
+		ilist_destroy(a->accept_states);
 	} else if (a->lifestate == atm_active) {
+		/* first destroy each states which belongs to this automaton */
 		foreach(ilist_itr_begin(a->states), ilist_itr_end(a->states), (pf_ref_visit)atm_state_destroy);
-		ilist_clear(a->states);
-
+		ilist_destroy(a->states);
 		/* accept_states are just pointers */
-		ilist_clear(a->accept_states);
+		ilist_destroy(a->accept_states);
 	}
 
 	a->lifestate = atm_invalid;
 
-	ilist_add_back(a->context->atm_pool, (void*)a);
+	dealloc(context->__dealloc, context->__heap, a);
+
 	return;
 }
 
@@ -113,19 +91,31 @@ atm* atm_clone(atm* a) {
 
 }
 
-atm_trans* atm_transform_create(atm* a, atm_state* from, atm_state* to, unique_id trans_id) {
+atm_state* atm_state_create(atm* a) {
 	atm_context* context = a->context;
-	atm_trans* trans = NULL;
+	atm_state* nstate = (atm_state*)alloc(context->__alloc, context->__heap, sizeof(atm_state));
+
+	nstate->container = a;
+	nstate->id        = atm_context_newid(context);
+	nstate->priority  = 0;
+	nstate->transforms = as_list(cntr_create_olist_a(context->cntr_alc));
+
+	ilist_add_back(a->states, nstate);
+
+	return nstate;
+}
+
+void atm_state_destroy(atm_state* state) {
+	foreach(ilist_itr_begin(state->transforms), ilist_itr_end(state->transforms), (pf_ref_visit)atm_transform_destroy);
+
+	ilist_destroy(state->transforms);
+}
+
+
+void atm_transform_create(atm* a, atm_state* from, atm_state* to, unique_id trans_id) {
+	atm_context* context = a->context;
+	atm_trans* trans = (atm_trans*)alloc(context->__alloc, context->__heap, sizeof(atm_trans));;
 	dbg_assert(from != NULL && to != NULL && from != to);
-
-	if (ilist_empty(context->trans_pool) == false) {
-		trans = (atm_trans*)ilist_remove_back(context->trans_pool);
-		dbg_assert(trans->from == NULL);
-		dbg_assert(trans->to   == NULL);
-	} else {
-		trans = (atm_trans*)alloc(context->__alloc, context->__heap, sizeof(atm_trans));
-	}
-
 	dbg_assert(trans != NULL);
 
 	trans->from = from;
@@ -134,47 +124,13 @@ atm_trans* atm_transform_create(atm* a, atm_state* from, atm_state* to, unique_i
 
 	ilist_add_back(from->transforms, trans);
 
-	return trans;
+	return;
 }
 
 void atm_transform_destroy(atm_trans* atm_trans) {
 	atm_context* context = atm_trans->from->container->context;
 	dbg_assert(context == atm_trans->to->container->context);
 
-	atm_trans->from = NULL;
-	atm_trans->to   = NULL;
-
-	ilist_add_back(context->trans_pool, atm_trans);
+	dealloc(context->__dealloc, context->__heap, atm_trans);
 }
 
-atm_state* atm_state_create(atm* a) {
-	atm_context* context = a->context;
-	if (ilist_empty(context->state_pool) == false) {
-		atm_state* pooled = (atm_state*)ilist_remove_back(context->state_pool);
-		dbg_assert(pooled->container->context == context);
-		dbg_assert(pooled->transforms != NULL && ilist_empty(pooled->transforms));
-
-		return pooled;
-	} else {
-		atm_state* nstate = (atm_state*)alloc(context->__alloc, context->__heap, sizeof(atm_state));
-
-		nstate->container = a;
-		nstate->id        = atm_context_newid(context);
-		nstate->priority  = 0;
-		nstate->transforms = as_list(cntr_create_olist_a(context->cntr_alc));
-
-		return nstate;
-	}
-
-	dbg_assert(false);
-
-	return NULL;
-}
-
-void atm_state_destroy(atm_state* state) {
-	foreach(ilist_itr_begin(state->transforms), ilist_itr_end(state->transforms), (pf_ref_visit)atm_transform_destroy);
-
-	ilist_clear(state->transforms);
-
-	ilist_add_back(state->container->context->state_pool, state);
-}

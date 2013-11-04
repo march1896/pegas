@@ -23,8 +23,6 @@ nfa* nfa_concat(nfa* first, nfa* second) {
 	source = atm_state_create(fa);
 	dest   = atm_state_create(fa);
 	dbg_assert(source != NULL && dest != NULL);
-	ilist_add_back(fa->states, source);
-	ilist_add_back(fa->states, dest);
 
 	fa->start_state = source;
 	ilist_add_back(fa->accept_states, dest);
@@ -33,15 +31,10 @@ nfa* nfa_concat(nfa* first, nfa* second) {
 	atm_transform_create(fa, (atm_state*)ilist_front(first->accept_states), second->start_state, Epsilon);
 	atm_transform_create(fa, (atm_state*)ilist_front(second->accept_states), dest, Epsilon);
 
-	ilist_clear(first->accept_states);
-	ilist_clear(first->states);
-	first->start_state = NULL;
 	first->lifestate = atm_joined;
-
-	ilist_clear(second->accept_states);
-	ilist_clear(second->states);
-	second->start_state = NULL;
 	second->lifestate = atm_joined;
+	atm_destroy(first);
+	atm_destroy(second);
 
 	fa->lifestate = atm_active;
 	return fa;
@@ -61,8 +54,6 @@ nfa* nfa_union (nfa* first, nfa* second) {
 	source = atm_state_create(fa);
 	dest   = atm_state_create(fa);
 	dbg_assert(source != NULL && dest != NULL);
-	ilist_add_back(fa->states, source);
-	ilist_add_back(fa->states, dest);
 
 	fa->start_state = source;
 	ilist_add_back(fa->accept_states, dest);
@@ -72,46 +63,32 @@ nfa* nfa_union (nfa* first, nfa* second) {
 	atm_transform_create(fa, (atm_state*)ilist_front(first->accept_states), dest, Epsilon);
 	atm_transform_create(fa, (atm_state*)ilist_front(second->accept_states), dest, Epsilon);
 
-	ilist_clear(first->accept_states);
-	ilist_clear(first->states);
-	first->start_state = NULL;
 	first->lifestate = atm_joined;
-
-	ilist_clear(second->accept_states);
-	ilist_clear(second->states);
-	second->start_state = NULL;
 	second->lifestate = atm_joined;
+	atm_destroy(first);
+	atm_destroy(second);
 
 	fa->lifestate = atm_active;
 	return fa;
 }
 
-nfa* nfa_star  (nfa* old) {
-	atm_context* context = old->context;
-	atm* fa = atm_create(context);
+nfa* nfa_star  (nfa* fa) {
+	atm_context* context = fa->context;
 	atm_state *source, *dest;
 
-	dbg_assert(ilist_size(old->accept_states) == 1);
+	dbg_assert(ilist_size(fa->accept_states) == 1);
 
-	foreach_v(ilist_itr_begin(old->states), ilist_itr_end(old->states), add_state, fa);
 	source = atm_state_create(fa);
 	dest   = atm_state_create(fa);
 	dbg_assert(source != NULL && dest != NULL);
-	ilist_add_back(fa->states, source);
-	ilist_add_back(fa->states, dest);
 
 	fa->start_state = source;
 	ilist_add_back(fa->accept_states, dest);
 
-	atm_transform_create(fa, source, old->start_state, Epsilon);
+	atm_transform_create(fa, source, fa->start_state, Epsilon);
 	atm_transform_create(fa, source, dest, Epsilon);
-	atm_transform_create(fa, (atm_state*)ilist_front(old->accept_states), dest, Epsilon);
-	atm_transform_create(fa, (atm_state*)ilist_front(old->accept_states), old->start_state, Epsilon);
-
-	ilist_clear(old->accept_states);
-	ilist_clear(old->states);
-	old->start_state = NULL;
-	old->lifestate = atm_joined;
+	atm_transform_create(fa, (atm_state*)ilist_front(fa->accept_states), dest, Epsilon);
+	atm_transform_create(fa, (atm_state*)ilist_front(fa->accept_states), fa->start_state, Epsilon);
 
 	fa->lifestate = atm_active;
 	return fa;
