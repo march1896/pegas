@@ -69,7 +69,7 @@ object* cntr_create_olist_a(allocator alc) {
 static struct ilist_vtable __ilist_vtable = {
 	o_dlist_destroy,          /* __destroy */
 	o_dlist_clear,            /* __clear */
-	o_dlist_clear_v,          /* __clear_v */
+	o_dlist_foreach,          /* __clear_v */
 	o_dlist_size,             /* __size */
 	o_dlist_empty,            /* __empty */
 	o_dlist_front,            /* __front */
@@ -94,7 +94,7 @@ static struct ilist_vtable __ilist_vtable = {
 static struct iqueue_vtable __iqueue_vtable = {
 	o_dlist_destroy,          /* __destroy */
 	o_dlist_clear,            /* __clear */
-	o_dlist_clear_v,          /* __clear_v */
+	o_dlist_foreach,          /* __clear_v */
 	o_dlist_size,             /* __size */
 	o_dlist_empty,            /* __empty */
 	o_dlist_front,            /* __front */
@@ -110,7 +110,7 @@ static struct iqueue_vtable __iqueue_vtable = {
 static struct istack_vtable __istack_vtable = {
 	o_dlist_destroy,          /* __destroy */
 	o_dlist_clear,            /* __clear */
-	o_dlist_clear_v,          /* __clear_v */
+	o_dlist_foreach,          /* __clear_v */
 	o_dlist_size,             /* __size */
 	o_dlist_empty,            /* __empty */
 	o_dlist_back,             /* __top */
@@ -329,34 +329,22 @@ void o_dlist_clear(object* o) {
 	olist->size = 0;
 }
 
-struct olistlink_clear_v {
-	pf_ref_dispose_v callback;
+struct olistlink_foreach_pack {
+	pf_ref_process_v callback;
 	void*            context;
-	struct o_dlist*  container;
 };
-static void olistlink_dispose_v(struct list_link* link, void* context) {
+static void olistlink_foreach_v(struct list_link* link, void* context) {
 	struct o_dlist_node* node = container_of(link, struct o_dlist_node, link);
-	struct olistlink_clear_v* params = (struct olistlink_clear_v*)context;
+	struct olistlink_foreach_pack* pack = (struct olistlink_foreach_pack*)context;
 
-	/* first dispose the reference */
-	if (params->callback) {
-		params->callback((void*)node->reference, params->container);
-	}
-
-	/* delete the node it self */
-	dbg_assert(params && params->container && params->container->allocator);
-	allocator_dealloc(params->container->allocator, node);
+	dbg_assert(pack->callback);
+	pack->callback((void*)node->reference, pack->context);
 }
-void o_dlist_clear_v(object* o, pf_ref_dispose_v dispose, void* context) {
+void o_dlist_foreach(object* o, pf_ref_process_v process, void* context) {
 	struct o_dlist* olist = (struct o_dlist*)o;
-	struct olistlink_clear_v clear_params = {
-		dispose, context, olist
-	};
+	struct olistlink_foreach_pack pack = { process, context	};
 
-	list_foreach_v(&olist->sentinel, olistlink_dispose_v, (void*)&clear_params);
-
-	list_init(&olist->sentinel);
-	olist->size = 0;
+	list_foreach_v(&olist->sentinel, olistlink_foreach_v, (void*)&pack);
 }
 
 int o_dlist_size(const object* o) {

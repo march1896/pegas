@@ -34,6 +34,11 @@ object* cntr_create_oskiplist_a(pf_ref_compare comp, allocator alc);
 object* cntr_create_oskiplist_v(pf_ref_compare_v comp_v, void* comp_context);
 object* cntr_create_oskiplist_va(pf_ref_compare_v comp_v, void* comp_context, allocator alc);
 
+struct pair {
+	const void* key;
+	void*       value;
+};
+
 object* cntr_create_ordmap(pf_ref_compare key_compare);
 enum ordmap_driver {
 	ordmap_by_llrb,

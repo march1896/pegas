@@ -12,11 +12,11 @@ inline void ilist_clear(iobject* ilist) {
 
 	((struct ilist_vtable*)ilist->__vtable)->__clear(o);
 }
-inline void ilist_clear_v(iobject* ilist, pf_ref_dispose_v dispose, void* context) {
+inline void ilist_foreach(iobject* ilist, pf_ref_process_v process, void* context) {
 	object* o = __object_from_interface(ilist);
 	dbg_assert(__cast(o, ILIST_ID) == ilist);
 
-	((struct ilist_vtable*)ilist->__vtable)->__clear_v(o, dispose, context);
+	((struct ilist_vtable*)ilist->__vtable)->__foreach(o, process, context);
 }
 inline int  ilist_size(const iobject* ilist) {
 	object* o = __object_from_interface(ilist);

@@ -11,7 +11,7 @@ object*        o_dlist_create_v        (allocator alc);
 
 void           o_dlist_destroy         (      object* o);
 void           o_dlist_clear           (      object* o);
-void           o_dlist_clear_v         (      object* o, pf_ref_dispose_v dispose, void* context);
+void           o_dlist_foreach         (      object* o, pf_ref_process_v process, void* context);
 int            o_dlist_size            (const object* o);
 bool           o_dlist_empty           (const object* o);
 const void*    o_dlist_front           (const object* o);

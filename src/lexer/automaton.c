@@ -6,6 +6,7 @@
 #include <cntr2/ilist.h>
 #include <cntr2/iitr.h>
 #include <cntr2/ialgo.h>
+#include <cntr2/iset.h>
 
 
 atm_context* atm_context_create() {
@@ -87,8 +88,34 @@ bool atm_check(atm_context* context, atm* a) {
 	return true;
 }
 
-atm* atm_clone(atm* a) {
+int pair_pointer_compare(const void* ref_a, const void* ref_b) {
+	struct pair* pa = (struct pair*)ref_a;
+	struct pair* pb = (struct pair*)ref_b;
 
+	if (pa->key < pb->key) 
+		return -1;
+	else if (pa->key > pb->key)
+		return 1;
+
+	return 0;
+}
+
+void pair_release(struct pair* p, void* context) {
+	unused(context);
+}
+
+atm* atm_clone(atm* old_atm) {
+	atm* new_atm = atm_create(old_atm->context);
+	iset states_map = as_set(cntr_create_ollrb_a(pair_pointer_compare, old_atm->context->cntr_alc));
+
+	iterator itr = ilist_itr_create(old_atm->states, itr_begin);
+	for (; itr != ilist_itr_end(old_atm->states); itr_to_next(itr)) {
+		atm_state* state = (atm_state*)itr_get_ref(itr);
+		atm_state* n_state = atm_state_create(new_atm);
+		struct pair map_ele = {state, n_state};
+		iset_insert(states_map, &map_ele);
+	}
+	itr_destroy(itr);
 }
 
 atm_state* atm_state_create(atm* a) {

@@ -14,11 +14,11 @@ inline void istack_clear(iobject* iq) {
 	((struct istack_vtable*)(iq->__vtable))->__clear(o);
 }
 
-inline void istack_clear_v(iobject* iq, pf_ref_dispose_v dispose, void* context) {
+inline void istack_foreach(iobject* iq, pf_ref_process_v process, void* context) {
 	object* o = __object_from_interface(iq);
 	dbg_assert(__cast(o, ISTACK_ID) == iq);
 
-	((struct istack_vtable*)(iq->__vtable))->__clear_v(o, dispose, context);
+	((struct istack_vtable*)(iq->__vtable))->__foreach(o, process, context);
 }
 
 inline int istack_size(const iobject* iq) {

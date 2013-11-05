@@ -7,7 +7,7 @@
 
 extern inline       void     ilist_destroy         (iobject* ilist);
 extern inline       void     ilist_clear           (iobject* ilist);
-extern inline       void     ilist_clear_v         (iobject* ilist, pf_ref_dispose_v dispose, void* context);
+extern inline       void     ilist_foreach         (iobject* ilist, pf_ref_process_v process, void* context);
 extern inline       int      ilist_size            (const iobject* ilist);
 extern inline       void     ilist_add_front       (iobject* ilist, const void* n_ref);
 extern inline       bool     ilist_empty           (const iobject* ilist);
@@ -46,7 +46,7 @@ extern inline       void     ilist_itr_insert_after  (iobject* ilist, iterator i
 /* the virtual functions that each container should implement */
 typedef       void     (*pf_ilist_destroy)      (object* olist);
 typedef       void     (*pf_ilist_clear)        (object* olist);
-typedef       void     (*pf_ilist_clear_v)      (object* olist, pf_ref_dispose_v dispose, void* context);
+typedef       void     (*pf_ilist_foreach)      (object* olist, pf_ref_process_v process, void* context);
 typedef       int      (*pf_ilist_size)         (const object* olist);
 typedef       bool     (*pf_ilist_empty)        (const object* olist);
 typedef const void*    (*pf_ilist_front)        (const object* olist);
@@ -72,7 +72,7 @@ struct ilist_vtable {
 	/* public */
 	pf_ilist_destroy        __destroy;
 	pf_ilist_clear          __clear;
-	pf_ilist_clear_v        __clear_v;
+	pf_ilist_foreach        __foreach;
 	pf_ilist_size           __size;
 	pf_ilist_empty          __empty;
 	pf_ilist_front          __front;
