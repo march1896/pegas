@@ -35,25 +35,25 @@ inline bool istack_empty(const iobject* iq) {
 	return ((struct istack_vtable*)(iq->__vtable))->__empty(o);
 }
 
-inline const void* istack_top(const iobject* iq) {
+inline const_unknown istack_top(const iobject* iq) {
 	object* o = __object_from_interface(iq);
 	dbg_assert(__cast(o, ISTACK_ID) == iq);
 
 	return ((struct istack_vtable*)(iq->__vtable))->__top(o);
 }
 
-inline void istack_push(iobject* iq, const void* __ref) {
+inline void istack_push(iobject* iq, const_unknown __ref) {
 	object* o = __object_from_interface(iq);
 	dbg_assert(__cast(o, ISTACK_ID) == iq);
 
 	((struct istack_vtable*)(iq->__vtable))->__push(o, __ref);
 }
 
-inline void* istack_pop(iobject* iq) {
+inline void istack_pop(iobject* iq) {
 	object* o = __object_from_interface(iq);
 	dbg_assert(__cast(o, ISTACK_ID) == iq);
 
-	return ((struct istack_vtable*)(iq->__vtable))->__pop(o);
+	((struct istack_vtable*)(iq->__vtable))->__pop(o);
 }
 inline iterator istack_itr_create(const iobject* iq, itr_pos pos) {
 	object* o = __object_from_interface(iq);

@@ -10,9 +10,9 @@ extern inline       void     istack_clear       (iobject* iq);
 extern inline       void     istack_foreach     (iobject* iq, pf_ref_process_v process, void* context);
 extern inline       int      istack_size        (const iobject* iq);
 extern inline       bool     istack_empty       (const iobject* iq);
-extern inline const void*    istack_top         (const iobject* iq);
-extern inline       void     istack_push        (iobject* iq, const void* __ref);
-extern inline       void*    istack_pop         (iobject* iq);
+extern inline const_unknown  istack_top         (const iobject* iq);
+extern inline       void     istack_push        (iobject* iq, const_unknown __ref);
+extern inline       void     istack_pop         (iobject* iq);
 
 extern inline       iterator istack_itr_create  (const iobject* iq, itr_pos pos);
 extern inline       void     istack_itr_assign  (const iobject* iq, iterator itr, itr_pos pos);
@@ -26,9 +26,9 @@ typedef       void     (*pf_istack_clear)       (object* c);
 typedef       void     (*pf_istack_foreach)     (object* c, pf_ref_process_v process, void* context);
 typedef       int      (*pf_istack_size)        (const object* c);
 typedef       bool     (*pf_istack_empty)       (const object* c);
-typedef const void*    (*pf_istack_top)         (const object* c);
-typedef       void     (*pf_istack_push)        (object* c, const void* object);
-typedef       void*    (*pf_istack_pop)         (object* c);
+typedef const_unknown  (*pf_istack_top)         (const object* c);
+typedef       void     (*pf_istack_push)        (object* c, const_unknown object);
+typedef       void     (*pf_istack_pop)         (object* c);
 
 typedef       iterator (*pf_istack_itr_create)  (const object* c, itr_pos pos);
 typedef       void     (*pf_istack_itr_assign)  (const object* c, iterator itr, itr_pos pos);

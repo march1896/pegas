@@ -10,30 +10,35 @@
  * NOTE: it's a pity that so many "const" are added only for decoration.
  */
 
-#include <heap_def.h>
+#include <memheap/heap_def.h>
+#include <cntr2/oo_model.h>
 
-struct heap_context {
-	pf_alloc   alloc;
-	pf_dealloc dealloc;
-	void*      heap;
-};
+typedef unknown (*pf_ref_clone)(const_unknown __ref);
+typedef unknown (*pf_ref_clone_v)(const_unknown __ref, pf_alloc alc, void* heap);
 
-typedef void* (*pf_ref_clone)(const void* __ref);
-typedef void* (*pf_ref_clone_v)(const void* __ref, pf_alloc alc, void* heap);
+typedef void (*pf_ref_destroy)(unknown __ref);
+typedef void (*pf_ref_destroy_v)(unknown __ref, pf_dealloc alc, void* heap);
 
-typedef void (*pf_ref_destroy)(void* __ref);
-typedef void (*pf_ref_destroy_v)(void* __ref, pf_dealloc alc, void* heap);
+typedef void (*pf_ref_visit)(const_unknown __ref);
+typedef void (*pf_ref_visit_v)(const_unknown __ref, void* context);
 
-typedef void (*pf_ref_visit)(const void* __ref);
-typedef void (*pf_ref_visit_v)(const void* __ref, void* context);
+typedef void (*pf_ref_process)(unknown __ref);
+typedef void (*pf_ref_process_v)(unknown __ref, void* context);
 
-typedef void (*pf_ref_process)(void* __ref);
-typedef void (*pf_ref_process_v)(void* __ref, void* context);
+typedef void (*pf_ref_dispose)(unknown __ref);
+typedef void (*pf_ref_dispose_v)(unknown __ref, void* context);
 
-typedef void (*pf_ref_dispose)(void* __ref);
-typedef void (*pf_ref_dispose_v)(void* __ref, void* context);
+typedef int  (*pf_ref_compare)(const_unknown ref_a, const_unknown ref_b);
+typedef int  (*pf_ref_compare_v)(const_unknown ref_a, const_unknown ref_b, void* context); 
 
-typedef int  (*pf_ref_compare)(const void* ref_a, const void* ref_b);
-typedef int  (*pf_ref_compare_v)(const void* ref_a, const void* ref_b, void* context); 
+typedef bool (*pf_ref_equals)(const_unknown ref_a, const_unknown ref_b);
+typedef bool (*pf_ref_equals_v)(const_unknown ref_a, const_unknown ref_b, void* context);
+
+void* pointer_clone_v(const_unknown __ref, pf_alloc alc, void* heap);
+void  pointer_destroy_v(unknown __ref, pf_dealloc dlc, void* heap);
+bool  pointer_equals_v(const_unknown ref_a, const_unknown ref_b, void* context);
+
+int   pointer_compare(const_unknown ref_a, const_unknown ref_b);
+int   pointer_compare_v(const_unknown ref_a, const_unknown ref_b, void* context);
 
 #endif /* _OBJECT_REDUCE_TO_REFERENCE_H_ */

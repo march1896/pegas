@@ -35,32 +35,32 @@ inline bool iqueue_empty(const iobject* iq) {
 	return ((struct iqueue_vtable*)(iq->__vtable))->__empty(o);
 }
 
-inline const void* iqueue_front(const iobject* iq) {
+inline const_unknown iqueue_front(const iobject* iq) {
 	object* o = __object_from_interface(iq);
 	dbg_assert(__cast(o, IQUEUE_ID) == iq);
 
 	return ((struct iqueue_vtable*)(iq->__vtable))->__front(o);
 }
 
-inline const void* iqueue_back(const iobject* iq) {
+inline const_unknown iqueue_back(const iobject* iq) {
 	object* o = __object_from_interface(iq);
 	dbg_assert(__cast(o, IQUEUE_ID) == iq);
 
 	return ((struct iqueue_vtable*)(iq->__vtable))->__back(o);
 }
 
-inline void iqueue_push(iobject* iq, const void* __ref) {
+inline void iqueue_push(iobject* iq, const_unknown __ref) {
 	object* o = __object_from_interface(iq);
 	dbg_assert(__cast(o, IQUEUE_ID) == iq);
 
 	((struct iqueue_vtable*)(iq->__vtable))->__push(o, __ref);
 }
 
-inline void* iqueue_pop(iobject* iq) {
+inline void iqueue_pop(iobject* iq) {
 	object* o = __object_from_interface(iq);
 	dbg_assert(__cast(o, IQUEUE_ID) == iq);
 
-	return ((struct iqueue_vtable*)(iq->__vtable))->__pop(o);
+	((struct iqueue_vtable*)(iq->__vtable))->__pop(o);
 }
 inline iterator iqueue_itr_create(const iobject* iq, itr_pos pos) {
 	object* o = __object_from_interface(iq);

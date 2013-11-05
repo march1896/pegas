@@ -14,10 +14,10 @@
 
 /* if create without allocator, it will use the global_default_allocator
  * if the alc == NULL, the create_a will create with a multi-poll allocator for best efficiency */
-
-
 object* cntr_create_olist();
 object* cntr_create_olist_a(allocator alc);
+object* cntr_create_olist_i(pf_ref_clone_v clone, pf_ref_destroy_v destroy, pf_ref_equals_v equals);
+object* cntr_create_olist_ia(pf_ref_clone_v clone, pf_ref_destroy_v destroy, pf_ref_equals_v equals, allocator alc);
 
 object* cntr_create_ollrb(pf_ref_compare comp);
 object* cntr_create_ollrb_a(pf_ref_compare comp, allocator alc);
