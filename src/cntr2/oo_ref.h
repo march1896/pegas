@@ -34,6 +34,21 @@ typedef int  (*pf_ref_compare_v)(const_unknown ref_a, const_unknown ref_b, void*
 typedef bool (*pf_ref_equals)(const_unknown ref_a, const_unknown ref_b);
 typedef bool (*pf_ref_equals_v)(const_unknown ref_a, const_unknown ref_b, void* context);
 
+struct type_traits {
+	pf_ref_clone_v __clone;
+	pf_ref_destroy_v __destroy;
+	pf_ref_equals  __equals;
+	pf_ref_compare __compare;
+};
+
+extern struct type_traits __global_integer_traits;
+extern struct type_traits __global_decimal_traits;
+extern struct type_traits __global_pointer_traits;
+
+#define Integer __global_integer_traits
+#define Decimal __global_decimal_traits
+#define Pointer __global_pointer_traits
+
 void* pointer_clone_v(const_unknown __ref, pf_alloc alc, void* heap);
 void  pointer_destroy_v(unknown __ref, pf_dealloc dlc, void* heap);
 bool  pointer_equals_v(const_unknown ref_a, const_unknown ref_b, void* context);
