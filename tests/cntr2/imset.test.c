@@ -16,7 +16,7 @@ static void foreach_count(const void* __ref, void* param) {
 	counter->sum += (intptr_t)__ref;
 }
 
-static void mset_test_basic_itr_operation(iobject* mset) {
+static void mset_test_basic_itr_operation(_interface mset) {
 	imset_clear(mset);
 	dbg_assert(imset_empty(mset));
 
@@ -159,7 +159,7 @@ static void mset_test_basic_itr_operation(iobject* mset) {
 	return;
 }
 
-static void mset_test_basic_operation(iobject* mset) {
+static void mset_test_basic_operation(_interface mset) {
 	imset_clear(mset);
 	dbg_assert(imset_empty(mset));
 
@@ -253,7 +253,7 @@ static int __num_search;
 static int __data_diff_type; /* number of different values to store in the mset */
 static int __data_max_count; /* max count of a single value */
 
-static iobject* __mset = NULL; /* to be tested */
+static _interface __mset = NULL; /* to be tested */
 static intptr_t* data_count = NULL;
 
 static void __reset_data() {
@@ -337,15 +337,15 @@ static void mset_bench_search_randomly() {
 	imset_clear(__mset);
 }
 
-void mset_test_basic(iobject* mset) {
+void mset_test_basic(_interface mset) {
 	mset_test_basic_operation(mset);
 	mset_test_basic_itr_operation(mset);
 }
 
-void mset_test_memory(iobject* mset) {
+void mset_test_memory(_interface mset) {
 }
 
-void mset_test_bench(iobject* mset) {
+void mset_test_bench(_interface mset) {
 	__mset = mset;
 	__data_diff_type = 100;
 	__data_max_count = 10;

@@ -33,7 +33,7 @@ struct o_dlist_itr {
 	pf_cast                       __cast;
 
 	/* there is always one interface to implement, since the interface is inherited */
-	iobject                       __iftable[1];
+	struct base_interface         __iftable[1];
 
 	struct o_dlist*               container;
 	/* the iterator will never alloc memory, when acquire an iterator, the container will 
@@ -47,7 +47,7 @@ struct o_dlist {
 	address                       __offset;
 	pf_cast                       __cast;
 	
-	iobject                       __iftable[e_l_count];
+	struct base_interface         __iftable[e_l_count];
 
 	struct list_link              sentinel;
 	int                           size;
@@ -267,21 +267,21 @@ static unknown o_dlist_itr_cast(unknown x, unique_id inf_id) {
 }
 
 /* factory method, the only public function in this file */
-object* cntr_create_olist() {
+object cntr_create_olist() {
 	return o_dlist_create(pointer_clone_v, pointer_destroy_v, pointer_equals_v, __global_default_allocator);
 }
-object* cntr_create_olist_a(allocator alc) {
+object cntr_create_olist_a(allocator alc) {
 	return o_dlist_create(pointer_clone_v, pointer_destroy_v, pointer_equals_v, alc);
 }
-object* cntr_create_olist_i(pf_ref_clone_v clone, pf_ref_destroy_v destroy, pf_ref_equals_v equals) {
+object cntr_create_olist_i(pf_ref_clone_v clone, pf_ref_destroy_v destroy, pf_ref_equals_v equals) {
 	return o_dlist_create(clone, destroy, equals, __global_default_allocator);
 }
-object* cntr_create_olist_ia(pf_ref_clone_v clone, pf_ref_destroy_v destroy, pf_ref_equals_v equals, allocator alc) {
+object cntr_create_olist_ia(pf_ref_clone_v clone, pf_ref_destroy_v destroy, pf_ref_equals_v equals, allocator alc) {
 	return o_dlist_create(clone, destroy, equals, alc);
 }
 
 static void o_dlist_itr_com_init(struct o_dlist_itr* itr, struct o_dlist* list);
-object* o_dlist_create(pf_ref_clone_v clone, pf_ref_destroy_v destroy, pf_ref_equals_v equals, allocator alc) {
+object o_dlist_create(pf_ref_clone_v clone, pf_ref_destroy_v destroy, pf_ref_equals_v equals, allocator alc) {
 	struct o_dlist* olist = NULL;
 	bool managed_allocator = false;
 
@@ -316,10 +316,10 @@ object* o_dlist_create(pf_ref_clone_v clone, pf_ref_destroy_v destroy, pf_ref_eq
 	o_dlist_itr_com_init(&olist->itr_begin, olist);
 	o_dlist_itr_com_init(&olist->itr_end, olist);
 
-	return (object*)olist;
+	return (object)olist;
 }
 
-void o_dlist_destroy(object* o) {
+void o_dlist_destroy(object o) {
 	struct o_dlist* olist = (struct o_dlist*)o;
 	allocator alc = olist->allocator;
 	bool join_alc = olist->allocator_join_ondispose;
@@ -342,7 +342,7 @@ static void olistlink_dispose(struct list_link* link, void* context) {
 	/* delete the node it self */
 	allocator_dealloc(olist->allocator, node);
 }
-void o_dlist_clear(object* o) {
+void o_dlist_clear(object o) {
 	struct o_dlist* olist = (struct o_dlist*)o;
 
 	list_foreach_v(&olist->sentinel, olistlink_dispose, (void*)olist);
@@ -362,26 +362,26 @@ static void olistlink_foreach_v(struct list_link* link, void* context) {
 	dbg_assert(pack->callback);
 	pack->callback((void*)node->reference, pack->context);
 }
-void o_dlist_foreach(object* o, pf_ref_process_v process, void* context) {
+void o_dlist_foreach(object o, pf_ref_process_v process, void* context) {
 	struct o_dlist* olist = (struct o_dlist*)o;
 	struct olistlink_foreach_pack pack = { process, context	};
 
 	list_foreach_v(&olist->sentinel, olistlink_foreach_v, (void*)&pack);
 }
 
-int o_dlist_size(const object* o) {
+int o_dlist_size(const_object o) {
 	const struct o_dlist* olist = (const struct o_dlist*)o;
 
 	return olist->size;
 }
 
-bool o_dlist_empty(const object* o) {
+bool o_dlist_empty(const_object o) {
 	const struct o_dlist* olist = (const struct o_dlist*)o;
 
 	return olist->size == 0;
 }
 
-const_unknown o_dlist_front(const object* o) {
+const_unknown o_dlist_front(const_object o) {
 	const struct o_dlist* olist = (const struct o_dlist*)o;
 	struct o_dlist_node* n_node = NULL;
 
@@ -394,7 +394,7 @@ const_unknown o_dlist_front(const object* o) {
 	return n_node->reference;
 }
 
-const_unknown o_dlist_back(const object* o) {
+const_unknown o_dlist_back(const_object o) {
 	const struct o_dlist* olist = (const struct o_dlist*)o;
 	struct o_dlist_node* n_node = NULL;
 
@@ -407,7 +407,7 @@ const_unknown o_dlist_back(const object* o) {
 	return n_node->reference;
 }
 
-void o_dlist_add_front(object* o, const_unknown __ref) {
+void o_dlist_add_front(object o, const_unknown __ref) {
 	struct o_dlist* olist = (struct o_dlist*)o;
 
 	struct o_dlist_node* n_node = (struct o_dlist_node*)
@@ -419,7 +419,7 @@ void o_dlist_add_front(object* o, const_unknown __ref) {
 	olist->size ++;
 }
 
-void o_dlist_add_back(object* o, const_unknown __ref) {
+void o_dlist_add_back(object o, const_unknown __ref) {
 	struct o_dlist* olist = (struct o_dlist*)o;
 
 	struct o_dlist_node* n_node = (struct o_dlist_node*)
@@ -431,7 +431,7 @@ void o_dlist_add_back(object* o, const_unknown __ref) {
 	olist->size ++;
 }
 
-void o_dlist_remove_front(object* o) {
+void o_dlist_remove_front(object o) {
 	struct o_dlist* olist = (struct o_dlist*)o;
 
 	if (olist->size > 0) {
@@ -457,7 +457,7 @@ void o_dlist_remove_front(object* o) {
 	return;
 }
 
-void o_dlist_remove_back(object* o) {
+void o_dlist_remove_back(object o) {
 	struct o_dlist* olist = (struct o_dlist*)o;
 
 	if (olist->size > 0) {
@@ -482,7 +482,7 @@ void o_dlist_remove_back(object* o) {
 	return;
 }
 
-bool o_dlist_contains(const object* o, const_unknown __ref) {
+bool o_dlist_contains(const_object o, const_unknown __ref) {
 	const struct o_dlist* olist  = (const struct o_dlist*)o;
 	const struct list_link* link = olist->sentinel.next;
 
@@ -499,7 +499,7 @@ bool o_dlist_contains(const object* o, const_unknown __ref) {
 	return false;
 }
 
-bool o_dlist_remove(object* o, const_unknown __ref) {
+bool o_dlist_remove(object o, const_unknown __ref) {
 	struct o_dlist* olist  = (struct o_dlist*)o;
 	struct list_link* link = olist->sentinel.next;
 
@@ -541,7 +541,7 @@ static void o_dlist_itr_com_init(struct o_dlist_itr* itr, struct o_dlist* list) 
 	/* itr->__current = NULL; */
 }
 
-const_iterator o_dlist_itr_begin(const object* o) {
+const_iterator o_dlist_itr_begin(const_object o) {
 	struct o_dlist* olist = (struct o_dlist*)o;
 
 	/* if the list is empty, we just return the sentinel node */
@@ -550,7 +550,7 @@ const_iterator o_dlist_itr_begin(const object* o) {
 	return (const_iterator)&olist->itr_begin;
 }
 
-const_iterator o_dlist_itr_end(const object* o) {
+const_iterator o_dlist_itr_end(const_object o) {
 	struct o_dlist* olist = (struct o_dlist*)o;
 
 	olist->itr_end.current = &olist->sentinel;
@@ -558,7 +558,7 @@ const_iterator o_dlist_itr_end(const object* o) {
 	return (const_iterator)&olist->itr_end;
 }
 
-iterator o_dlist_itr_create(const object* o, itr_pos pos) {
+iterator o_dlist_itr_create(const_object o, itr_pos pos) {
 	struct o_dlist* olist = (struct o_dlist*)o;
 	struct o_dlist_itr* n_itr = (struct o_dlist_itr*)
 		allocator_alloc(olist->allocator, sizeof(struct o_dlist_itr));
@@ -581,7 +581,7 @@ iterator o_dlist_itr_create(const object* o, itr_pos pos) {
 	return (iterator)n_itr;
 }
 
-void o_dlist_itr_assign(const object* o, iterator __itr, itr_pos pos) {
+void o_dlist_itr_assign(const_object o, iterator __itr, itr_pos pos) {
 	struct o_dlist* olist = (struct o_dlist*)o;
 	struct o_dlist_itr* itr = (struct o_dlist_itr*)__itr;
 
@@ -607,7 +607,7 @@ void o_dlist_itr_assign(const object* o, iterator __itr, itr_pos pos) {
 	return;
 }
 
-void o_dlist_itr_find(const object* o, iterator itr, const_unknown __ref) {
+void o_dlist_itr_find(const_object o, iterator itr, const_unknown __ref) {
 	struct o_dlist* olist     = (struct o_dlist*)o;
 	struct o_dlist_itr* oitr = (struct o_dlist_itr*)itr;
 	struct list_link* link    = olist->sentinel.next;
@@ -631,7 +631,7 @@ void o_dlist_itr_find(const object* o, iterator itr, const_unknown __ref) {
 	oitr->current = link;
 }
 
-void o_dlist_itr_remove(object* o, iterator itr) {
+void o_dlist_itr_remove(object o, iterator itr) {
 	struct o_dlist* olist     = (struct o_dlist*)o;
 	struct o_dlist_itr* oitr  = (struct o_dlist_itr*)itr;
 	struct o_dlist_node* node = container_of(oitr->current, struct o_dlist_node, link);
@@ -651,7 +651,7 @@ void o_dlist_itr_remove(object* o, iterator itr) {
 	return;
 }
 
-void o_dlist_insert_before(object* o, iterator itr, const_unknown __ref) {
+void o_dlist_insert_before(object o, iterator itr, const_unknown __ref) {
 	struct o_dlist* olist       = (struct o_dlist*)o;
 	struct o_dlist_itr* oitr    = (struct o_dlist_itr*)itr;
 	struct o_dlist_node* node   = container_of(oitr->current, struct o_dlist_node, link);
@@ -668,7 +668,7 @@ void o_dlist_insert_before(object* o, iterator itr, const_unknown __ref) {
 	olist->size ++;
 }
 
-void o_dlist_insert_after(object* o, iterator itr, void* __ref) {
+void o_dlist_insert_after(object o, iterator itr, void* __ref) {
 	struct o_dlist* olist       = (struct o_dlist*)o;
 	struct o_dlist_itr* oitr    = (struct o_dlist_itr*)itr;
 	struct o_dlist_node* node   = container_of(oitr->current, struct o_dlist_node, link);

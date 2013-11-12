@@ -12,16 +12,18 @@ typedef void*        address;
 
 typedef unknown (*pf_cast)(unknown obj, unique_id type_id);
 
-typedef struct base_interface {
+struct base_interface {
 	/* for interface, __offset is the offset of the interface from the object which implements it 
 	 * for example, the first interface's offset is 0, the second is 1. */
 	address                   __offset;
 
 	unknown                   __vtable;
 
-} iobject;
+};
+typedef struct base_interface *_interface;
+typedef const struct base_interface *const_interface;
 
-typedef struct base_object {
+struct base_object {
 	/* for object, address is the abstract address the object */
 	address                   __offset;
 
@@ -39,7 +41,9 @@ typedef struct base_object {
 	int x;
 	struct someobject y;
 	*/
-} object;
+};
+typedef struct base_object *object;
+typedef const struct base_object *const_object;
 
 /* The above definition only defines the memory layout of object and interface, 
  * but does not define some common property of all 'objects' like 
@@ -50,21 +54,21 @@ typedef struct base_object {
 		pf_oo_clone                __clone;
 	};
  */
-typedef void (*pf_oo_destroy)(object* obj);
+typedef void (*pf_oo_destroy)(object obj);
 
 /* An object should know how to clone itself, but the clone method has transitivity.
  * that is, if an object has a clone method, all objects that it inherits or contains should 
  * have clone too, but the oo_model is not completely. 
  * i.e. we can hold non-oo-object in the container, so the container does not 
  * how to clone element stored in the container. */
-typedef object* (*pf_oo_clone)(const object* obj);
+typedef object (*pf_oo_clone)(const_object obj);
 
 
 #define __MAX_NUM_INTERFACE_PER_OBJECT 10
 /* 
  * get the object from a given interface
  */
-extern inline object* __object_from_interface(const iobject* inf);
+extern inline object __object_from_interface(const_interface inf);
 
 /*
  * test if an unknown address is an object.
@@ -91,7 +95,7 @@ extern inline unknown __cast(const_unknown x, unique_id id);
 /* 
  * cast a object to one of its interfaces if you know the offset of the interface in the object.
  */
-extern inline iobject* __fast_cast(const object* x, int ifoffset);
+extern inline _interface __fast_cast(const_object x, int ifoffset);
 
 /*
  * include the raw-pointer-object common processing functions.

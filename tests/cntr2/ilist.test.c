@@ -4,7 +4,7 @@
 #include "ilist.test.h"
 #include "test_util.h"
 
-static void list_test_basic_itr_operation(iobject* list) {
+static void list_test_basic_itr_operation(_interface list) {
 	ilist_clear(list);
 	dbg_assert(ilist_empty(list));
 
@@ -52,9 +52,8 @@ static void list_test_basic_itr_operation(iobject* list) {
 		ilist_itr_find(list, itr, (void*)(intptr_t)4);
 		dbg_assert(!itr_equals(itr, ilist_itr_end(list)));
 
-		current = (intptr_t)ilist_itr_remove(list, itr);
+		ilist_itr_remove(list, itr);
 		/* now the list is { 1, 2, 3,  , 5, 6, 7, 8 } */
-		dbg_assert(current == 4);
 		dbg_assert(ilist_size(list) == 7);
 		for (current = 0; current <= 9; current ++) {
 			ilist_itr_find(list, itr, (void*)current);
@@ -70,9 +69,8 @@ static void list_test_basic_itr_operation(iobject* list) {
 		ilist_itr_find(list, itr, (void*)(intptr_t)5);
 		dbg_assert(!itr_equals(itr, ilist_itr_end(list)));
 
-		current = (intptr_t)ilist_itr_remove(list, itr);
+		ilist_itr_remove(list, itr);
 		/* now the list is { 1, 2, 3,  , 6, 7, 8 } */
-		dbg_assert(current == 5);
 		dbg_assert(ilist_size(list) == 6);
 		for (current = 0; current <= 9; current ++) {
 			ilist_itr_find(list, itr, (void*)current);
@@ -117,7 +115,7 @@ static void list_test_basic_itr_operation(iobject* list) {
 	return;
 }
 
-static void list_test_basic_operation(iobject* list) {
+static void list_test_basic_operation(_interface list) {
 	ilist_clear(list);
 	dbg_assert(ilist_empty(list));
 
@@ -170,49 +168,42 @@ static void list_test_basic_operation(iobject* list) {
 	dbg_assert(ilist_size(list) == 4);
 	{
 		/* now the list is {1, 3, 5, 7} */
-		intptr_t x;
 
 		dbg_assert(ilist_front(list) == (void*)(intptr_t)1);
 		dbg_assert(ilist_back (list) == (void*)(intptr_t)7);
 
-		x = (intptr_t)ilist_remove_front(list);
-		dbg_assert(x == 1);
+		ilist_remove_front(list);
 		dbg_assert(ilist_front(list) == (void*)(intptr_t)3);
 		dbg_assert(ilist_back (list) == (void*)(intptr_t)7);
 		dbg_assert(ilist_size(list) == 3);
 		dbg_assert(ilist_empty(list) == false);
 
-		x = (intptr_t)ilist_remove_back(list);
-		dbg_assert(x == 7);
+		ilist_remove_back(list);
 		dbg_assert(ilist_front(list) == (void*)(intptr_t)3);
 		dbg_assert(ilist_back (list) == (void*)(intptr_t)5);
 		dbg_assert(ilist_size(list) == 2);
 		dbg_assert(ilist_empty(list) == false);
 
-		x = (intptr_t)ilist_remove_front(list);
-		dbg_assert(x == 3);
+		ilist_remove_front(list);
 		dbg_assert(ilist_front(list) == (void*)(intptr_t)5);
 		dbg_assert(ilist_back (list) == (void*)(intptr_t)5);
 		dbg_assert(ilist_size(list) == 1);
 		dbg_assert(ilist_empty(list) == false);
 
-		x = (intptr_t)ilist_remove_back(list);
-		dbg_assert(x == 5);
+		ilist_remove_back(list);
 		dbg_assert(ilist_front(list) == (void*)(intptr_t)NULL);
 		dbg_assert(ilist_back (list) == (void*)(intptr_t)NULL);
 		dbg_assert(ilist_size(list) == 0);
 		dbg_assert(ilist_empty(list));
 
 		/* now the list is empty, trying to remove from an empty list */
-		x = (intptr_t)ilist_remove_front(list);
-		dbg_assert(x == (intptr_t)NULL);
+		ilist_remove_front(list);
 		dbg_assert(ilist_size(list) == 0);
 		dbg_assert(ilist_empty(list) == true);
 		dbg_assert(ilist_front(list) == (void*)(intptr_t)NULL);
 		dbg_assert(ilist_back (list) == (void*)(intptr_t)NULL);
 
-		x = (intptr_t)ilist_remove_back(list);
-		dbg_assert(x == (intptr_t)NULL);
+		ilist_remove_back(list);
 		dbg_assert(ilist_size(list) == 0);
 		dbg_assert(ilist_empty(list) == true);
 		dbg_assert(ilist_front(list) == (void*)(intptr_t)NULL);
@@ -272,17 +263,17 @@ static void list_test_basic_operation(iobject* list) {
 	}
 }
 
-void list_test_basic(iobject* list) {
+void list_test_basic(_interface list) {
 
 	list_test_basic_operation(list);
 
 	list_test_basic_itr_operation(list);
 }
 
-void list_test_memory(iobject* list) {
+void list_test_memory(_interface list) {
 }
 
-void list_test_bench(iobject* list) {
+void list_test_bench(_interface list) {
 	/* should this exist, or it just compares with the raw list_link to show the overhead of 'virtual' funtions */
 }
 

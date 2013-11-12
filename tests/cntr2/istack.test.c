@@ -4,7 +4,7 @@
 #include "istack.test.h"
 #include "test_util.h"
 
-static void stack_test_basic_itr_operation(iobject* stack) {
+static void stack_test_basic_itr_operation(_interface stack) {
 	istack_clear(stack);
 	dbg_assert(istack_size(stack) == 0);
 
@@ -66,7 +66,7 @@ static void stack_test_basic_itr_operation(iobject* stack) {
 	return;
 }
 
-static void stack_test_basic_operation(iobject* stack) {
+static void stack_test_basic_operation(_interface stack) {
 	istack_clear(stack);
 	dbg_assert(istack_size(stack) == 0);
 	dbg_assert(istack_empty(stack));
@@ -86,13 +86,11 @@ static void stack_test_basic_operation(iobject* stack) {
 	{
 		/* now the stack contains { 1, 2, 3, 4, 5, 6, 7, 8 } */
 		intptr_t counter = 1;
-		intptr_t element;
 
 		dbg_assert(istack_top  (stack) == (void*)(intptr_t)8);
 
 		for (counter = 8; counter >= 1; counter --) {
-			element = (intptr_t)istack_pop(stack);
-			dbg_assert(element == counter);
+			istack_pop(stack);
 		}
 	}
 
@@ -108,9 +106,8 @@ static void stack_test_basic_operation(iobject* stack) {
 		dbg_assert(istack_size (stack) == 2);
 		dbg_assert(istack_top  (stack) == (void*)(intptr_t)2);
 
-		element = (intptr_t)istack_pop(stack);
+		istack_pop(stack);
 		/* remove the top one, now is { 1 } */
-		dbg_assert(element == 2);
 		dbg_assert(istack_empty(stack) == false);
 		dbg_assert(istack_size (stack) == 1);
 		dbg_assert(istack_top  (stack) == (void*)(intptr_t)1);
@@ -122,31 +119,27 @@ static void stack_test_basic_operation(iobject* stack) {
 		dbg_assert(istack_size (stack) == 3);
 		dbg_assert(istack_top  (stack) == (void*)(intptr_t)4);
 
-		/* continous pop all of them */
-		element = (intptr_t)istack_pop(stack);
+		/* continuous pop all of them */
+		istack_pop(stack);
 		/* remove the top one, now is { 1, 3 } */
-		dbg_assert(element == 4);
 		dbg_assert(istack_empty(stack) == false);
 		dbg_assert(istack_size (stack) == 2);
 		dbg_assert(istack_top  (stack) == (void*)(intptr_t)3);
 
-		element = (intptr_t)istack_pop(stack);
+		istack_pop(stack);
 		/* remove the top one, now is { 1 } */
-		dbg_assert(element == 3);
 		dbg_assert(istack_empty(stack) == false);
 		dbg_assert(istack_size (stack) == 1);
 		dbg_assert(istack_top  (stack) == (void*)(intptr_t)1);
 
-		element = (intptr_t)istack_pop(stack);
+		istack_pop(stack);
 		/* remove the top one, now is {} */
-		dbg_assert(element == 1);
 		dbg_assert(istack_empty(stack) == true);
 		dbg_assert(istack_size (stack) == 0);
 		dbg_assert(istack_top  (stack) == (void*)(intptr_t)NULL);
 
 		/* trying to pop empty stack */
-		element = (intptr_t)istack_pop(stack);
-		dbg_assert(element == (intptr_t)NULL);
+		istack_pop(stack);
 		dbg_assert(istack_empty(stack) == true);
 		dbg_assert(istack_size (stack) == 0);
 		dbg_assert(istack_top  (stack) == (void*)(intptr_t)NULL);
@@ -160,7 +153,6 @@ static void stack_test_basic_operation(iobject* stack) {
 
 	/* test unique element */
 	{
-		intptr_t element = 0;
 		istack_clear(stack);
 
 		istack_push(stack, (void*)(intptr_t)1);
@@ -171,9 +163,8 @@ static void stack_test_basic_operation(iobject* stack) {
 		dbg_assert(istack_size (stack) == 3);
 		dbg_assert(istack_top  (stack) == (void*)(intptr_t)1);
 
-		element = (intptr_t)istack_pop(stack);
+		istack_pop(stack);
 		/* remove the top one, now is { 1, 1 } */
-		dbg_assert(element == 1);
 		dbg_assert(istack_empty(stack) == false);
 		dbg_assert(istack_size (stack) == 2);
 		dbg_assert(istack_top  (stack) == (void*)(intptr_t)1);
@@ -188,17 +179,17 @@ static void stack_test_basic_operation(iobject* stack) {
 	}
 }
 
-void stack_test_basic(iobject* stack) {
+void stack_test_basic(_interface stack) {
 
 	stack_test_basic_operation(stack);
 
 	stack_test_basic_itr_operation(stack);
 }
 
-void stack_test_memory(iobject* stack) {
+void stack_test_memory(_interface stack) {
 }
 
-void stack_test_bench(iobject* stack) {
+void stack_test_bench(_interface stack) {
 	/* should this exist, or it just compares with the raw stack_link to show the overhead of 'virtual' funtions */
 }
 

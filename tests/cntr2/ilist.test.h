@@ -3,6 +3,6 @@
 
 #include "cntr2/oo_model.h"
 
-void list_test_basic(iobject* list);
+void list_test_basic(_interface list);
 
 #endif /* _CNTR2_ILIST_TEST_H_ */

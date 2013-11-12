@@ -22,15 +22,15 @@ extern inline int  itr_distance        (const_iterator from, const_iterator to);
 /* TODO: should we implement the below functions 
  * these are the 'real' interface functions, the above is not 'interface method',
  * strictly specking, the above functions should not be in this 'interface' file.*/
-extern inline void iitr_destroy        (iobject* iitr);
-extern inline void iitr_clone          (iobject* iitr);
-extern inline bool iitr_equals         (const iobject* ia, const iobject* ib);
-extern inline const void* iitr_get_ref (const iobject* iitr);
-extern inline void iitr_set_ref        (iobject* iitr, const void* __ref);
-extern inline void iitr_to_prev        (iobject* iitr);
-extern inline void iitr_to_next        (iobject* iitr);
-extern inline void iitr_advance        (iobject* iitr, int length);
-extern inline int  iitr_distance       (const iobject* ifrom, const iobject* ito);
+extern inline void iitr_destroy        (_interface iitr);
+extern inline void iitr_clone          (_interface iitr);
+extern inline bool iitr_equals         (const_interface ia, const_interface ib);
+extern inline const void* iitr_get_ref (const_interface iitr);
+extern inline void iitr_set_ref        (_interface iitr, const void* __ref);
+extern inline void iitr_to_prev        (_interface iitr);
+extern inline void iitr_to_next        (_interface iitr);
+extern inline void iitr_advance        (_interface iitr, int length);
+extern inline int  iitr_distance       (const_interface ifrom, const_interface ito);
 
 /* below is only useful for the container implementer */
 /* the virtual functions that each container should implement */

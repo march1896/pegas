@@ -9,21 +9,21 @@
 
 /* the interfaces here is not clear enough because of macros, see oallocator.h for more details */
 
-extern inline void  iallocator_join        (iobject* i); 
+extern inline void  iallocator_join        (_interface i); 
 /* once you get on the boat, you will never get off */
 #ifdef _VERBOSE_ALLOC_DEALLOC_
-extern inline void* iallocator_acquire_v   (iobject* i, int size, const char* file, int line);
-extern inline bool  iallocator_release_v   (iobject* i, void* buff, const char* file, int line);
+extern inline void* iallocator_acquire_v   (_interface i, int size, const char* file, int line);
+extern inline bool  iallocator_release_v   (_interface i, void* buff, const char* file, int line);
 #define pf_iallocator_acquire pf_iallocator_acquire_v
 #define pf_iallocator_release pf_iallocator_release_v
 #else 
-extern inline void* iallocator_acquire_c   (iobject* i, int size);
-extern inline bool  iallocator_release_c   (iobject* i, void* buff);
+extern inline void* iallocator_acquire_c   (_interface i, int size);
+extern inline bool  iallocator_release_c   (_interface i, void* buff);
 #define pf_iallocator_acquire pf_iallocator_acquire_c
 #define pf_iallocator_release pf_iallocator_release_c
 #endif
-extern inline object* iallocator_get_parent(iobject* i);
-extern inline void  iallocator_walk        (iobject* i, pf_process_block per_block_cb, void* param);
+extern inline object iallocator_get_parent(_interface i);
+extern inline void  iallocator_walk        (_interface i, pf_process_block per_block_cb, void* param);
 
 #ifdef _VERBOSE_ALLOC_DEALLOC_
 #define iallocator_alloc(i, size) iallocator_acquire_v(i, size, __FILE__, __LINE__)
@@ -34,13 +34,13 @@ extern inline void  iallocator_walk        (iobject* i, pf_process_block per_blo
 #endif
 
 /* codes below is only useful for allocator implementors */
-typedef void   (*pf_iallocator_join)       (object* o);
-typedef void*  (*pf_iallocator_acquire_v)  (object* o, int size, const char* file, int line);
-typedef bool   (*pf_iallocator_release_v)  (object* o, void* buff, const char* file, int line);
-typedef void*  (*pf_iallocator_acquire_c)  (object* o, int size);
-typedef bool   (*pf_iallocator_release_c)  (object* o, void* buff);
-typedef object*(*pf_iallocator_get_parent) (object* o);
-typedef void   (*pf_iallocator_walk)       (object* o, pf_process_block per_block_cb, void* param);
+typedef void   (*pf_iallocator_join)       (object o);
+typedef void*  (*pf_iallocator_acquire_v)  (object o, int size, const char* file, int line);
+typedef bool   (*pf_iallocator_release_v)  (object o, void* buff, const char* file, int line);
+typedef void*  (*pf_iallocator_acquire_c)  (object o, int size);
+typedef bool   (*pf_iallocator_release_c)  (object o, void* buff);
+typedef object(*pf_iallocator_get_parent) (object o);
+typedef void   (*pf_iallocator_walk)       (object o, pf_process_block per_block_cb, void* param);
 
 struct iallocator_vtable {
 	/* heap doest not contains destroy method */
