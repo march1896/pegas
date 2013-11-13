@@ -13,7 +13,7 @@
 
 static void __correctness_test() {
 	{
-		ilist list = as_list(cntr_create_olist());
+		ilist list = cntr_create_olist();
 		list_test_basic(list);
 		ilist_destroy(list);
 	}

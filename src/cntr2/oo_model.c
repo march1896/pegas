@@ -33,9 +33,9 @@ inline bool __is_interface(const_unknown x) {
 
 inline unknown __cast(const_unknown x, unique_id id) {
 	if (__is_object(x)) {
-		object obj = ((object)x);
+		object obj = (object)x;
 		return obj->__cast(obj, id);
-	}
+	} 
 	else if (__is_interface(x)) {
 		object obj = (object)__object_from_interface((_interface)x);
 		return obj->__cast(obj, id);
@@ -45,9 +45,7 @@ inline unknown __cast(const_unknown x, unique_id id) {
 	return NULL;
 }
 
-inline _interface __fast_cast(const_object x, int ifoffset) {
-	object obj = ((object)x);
-
+inline _interface __fast_cast(const_object obj, int ifoffset) {
 	dbg_assert(__is_object(obj));
 	return (_interface)&obj->__iftable[ifoffset];
 }

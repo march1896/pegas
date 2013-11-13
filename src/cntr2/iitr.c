@@ -66,6 +66,7 @@ inline int  itr_distance(const_iterator from, const_iterator to) {
 }
 
 /* TODO: not implemented yet */
+/*
 inline void iitr_destroy(_interface iitr);
 inline bool iitr_equals(const_interface ia, const_interface ib);
 inline void iitr_to_prev(_interface iitr);
@@ -74,3 +75,4 @@ inline const void* iitr_get_ref(const_interface iitr);
 inline void iitr_set_ref(_interface iitr, const void* __ref);
 inline void iitr_advance(_interface iitr, int length);
 inline int  iitr_distance(const_interface ifrom, const_interface ito);
+*/

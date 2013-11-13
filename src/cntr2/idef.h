@@ -28,7 +28,7 @@
 
 typedef _interface iqueue;
 typedef _interface istack;
-typedef _interface ilist;
+typedef object ilist;
 typedef _interface iset;
 typedef _interface imset;
 

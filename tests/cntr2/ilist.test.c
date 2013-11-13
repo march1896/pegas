@@ -4,7 +4,7 @@
 #include "ilist.test.h"
 #include "test_util.h"
 
-static void list_test_basic_itr_operation(_interface list) {
+static void list_test_basic_itr_operation(ilist list) {
 	ilist_clear(list);
 	dbg_assert(ilist_empty(list));
 
@@ -115,7 +115,7 @@ static void list_test_basic_itr_operation(_interface list) {
 	return;
 }
 
-static void list_test_basic_operation(_interface list) {
+static void list_test_basic_operation(ilist list) {
 	ilist_clear(list);
 	dbg_assert(ilist_empty(list));
 
@@ -263,17 +263,17 @@ static void list_test_basic_operation(_interface list) {
 	}
 }
 
-void list_test_basic(_interface list) {
+void list_test_basic(ilist list) {
 
 	list_test_basic_operation(list);
 
 	list_test_basic_itr_operation(list);
 }
 
-void list_test_memory(_interface list) {
+void list_test_memory(ilist list) {
 }
 
-void list_test_bench(_interface list) {
-	/* should this exist, or it just compares with the raw list_link to show the overhead of 'virtual' funtions */
+void list_test_bench(ilist list) {
+	/* should this exist, or it just compares with the raw list_link to show the overhead of 'virtual' functions */
 }
 

@@ -1,128 +1,128 @@
 #include <ilist.h>
 
-inline void ilist_destroy(_interface ilist) {
-	object o = __object_from_interface(ilist);
-	dbg_assert(__cast(o, ILIST_ID) == ilist);
+inline void ilist_destroy(object obj) {
+	_interface _inf = __cast(obj, ILIST_ID);
+	dbg_assert(_inf != NULL);
 
-	((struct ilist_vtable*)ilist->__vtable)->__destroy(o);
+	((struct ilist_vtable*)_inf->__vtable)->__destroy(obj);
 }
-inline void ilist_clear(_interface ilist) {
-	object o = __object_from_interface(ilist);
-	dbg_assert(__cast(o, ILIST_ID) == ilist);
+inline void ilist_clear(object obj) {
+	_interface _inf = __cast(obj, ILIST_ID);
+	dbg_assert(_inf != NULL);
 
-	((struct ilist_vtable*)ilist->__vtable)->__clear(o);
+	((struct ilist_vtable*)_inf->__vtable)->__clear(obj);
 }
-inline void ilist_foreach(_interface ilist, pf_ref_process_v process, void* context) {
-	object o = __object_from_interface(ilist);
-	dbg_assert(__cast(o, ILIST_ID) == ilist);
+inline void ilist_foreach(object obj, pf_ref_process_v process, void* context) {
+	_interface _inf = __cast(obj, ILIST_ID);
+	dbg_assert(_inf != NULL);
 
-	((struct ilist_vtable*)ilist->__vtable)->__foreach(o, process, context);
+	((struct ilist_vtable*)_inf->__vtable)->__foreach(obj, process, context);
 }
-inline int  ilist_size(const_interface ilist) {
-	object o = __object_from_interface(ilist);
-	dbg_assert(__cast(o, ILIST_ID) == ilist);
+inline int  ilist_size(const_object obj) {
+	_interface _inf = __cast(obj, ILIST_ID);
+	dbg_assert(_inf != NULL);
 
-	return ((struct ilist_vtable*)ilist->__vtable)->__size(o);
+	return ((struct ilist_vtable*)_inf->__vtable)->__size(obj);
 }
-inline bool ilist_empty(const_interface ilist) {
-	object o = __object_from_interface(ilist);
-	dbg_assert(__cast(o, ILIST_ID) == ilist);
+inline bool ilist_empty(const_object obj) {
+	_interface _inf = __cast(obj, ILIST_ID);
+	dbg_assert(_inf != NULL);
 
-	return ((struct ilist_vtable*)(ilist->__vtable))->__empty(o);
+	return ((struct ilist_vtable*)_inf->__vtable)->__empty(obj);
 }
-inline const_unknown ilist_front(const_interface ilist) {
-	object o = __object_from_interface(ilist);
-	dbg_assert(__cast(o, ILIST_ID) == ilist);
+inline const_unknown ilist_front(const_object obj) {
+	_interface _inf = __cast(obj, ILIST_ID);
+	dbg_assert(_inf != NULL);
 
-	return ((struct ilist_vtable*)(ilist->__vtable))->__front(o);
+	return ((struct ilist_vtable*)_inf->__vtable)->__front(obj);
 }
-inline const_unknown ilist_back(const_interface ilist) {
-	object o = __object_from_interface(ilist);
-	dbg_assert(__cast(o, ILIST_ID) == ilist);
+inline const_unknown ilist_back(const_object obj) {
+	_interface _inf = __cast(obj, ILIST_ID);
+	dbg_assert(_inf != NULL);
 
-	return ((struct ilist_vtable*)(ilist->__vtable))->__back(o);
+	return ((struct ilist_vtable*)_inf->__vtable)->__back(obj);
 }
-inline void ilist_add_front(_interface ilist, const_unknown __ref) {
-	object o = __object_from_interface(ilist);
-	dbg_assert(__cast(o, ILIST_ID) == ilist);
+inline void ilist_add_front(object obj, const_unknown __ref) {
+	_interface _inf = __cast(obj, ILIST_ID);
+	dbg_assert(_inf != NULL);
 
-	((struct ilist_vtable*)ilist->__vtable)->__add_front(o, __ref);
+	((struct ilist_vtable*)_inf->__vtable)->__add_front(obj, __ref);
 }
-inline void ilist_add_back(_interface ilist, const_unknown __ref) {
-	object o = __object_from_interface(ilist);
-	dbg_assert(__cast(o, ILIST_ID) == ilist);
+inline void ilist_add_back(object obj, const_unknown __ref) {
+	_interface _inf = __cast(obj, ILIST_ID);
+	dbg_assert(_inf != NULL);
 
-	((struct ilist_vtable*)ilist->__vtable)->__add_back(o, __ref);
+	((struct ilist_vtable*)_inf->__vtable)->__add_back(obj, __ref);
 }
-inline void ilist_remove_front(_interface ilist) {
-	object o = __object_from_interface(ilist);
-	dbg_assert(__cast(o, ILIST_ID) == ilist);
+inline void ilist_remove_front(object obj) {
+	_interface _inf = __cast(obj, ILIST_ID);
+	dbg_assert(_inf != NULL);
 
-	((struct ilist_vtable*)ilist->__vtable)->__remove_front(o);
+	((struct ilist_vtable*)_inf->__vtable)->__remove_front(obj);
 }
-inline void ilist_remove_back(_interface ilist) {
-	object o = __object_from_interface(ilist);
-	dbg_assert(__cast(o, ILIST_ID) == ilist);
+inline void ilist_remove_back(object obj) {
+	_interface _inf = __cast(obj, ILIST_ID);
+	dbg_assert(_inf != NULL);
 
-	((struct ilist_vtable*)ilist->__vtable)->__remove_back(o);
+	((struct ilist_vtable*)_inf->__vtable)->__remove_back(obj);
 }
-inline bool ilist_contains(const_interface ilist, const_unknown __ref) {
-	object o = __object_from_interface(ilist);
-	dbg_assert(__cast(o, ILIST_ID) == ilist);
+inline bool ilist_contains(const_object obj, const_unknown __ref) {
+	_interface _inf = __cast(obj, ILIST_ID);
+	dbg_assert(_inf != NULL);
 
-	return ((struct ilist_vtable*)ilist->__vtable)->__contains(o, __ref);
+	return ((struct ilist_vtable*)_inf->__vtable)->__contains(obj, __ref);
 }
-inline bool ilist_remove(_interface ilist, const_unknown __ref) {
-	object o = __object_from_interface(ilist);
-	dbg_assert(__cast(o, ILIST_ID) == ilist);
+inline bool ilist_remove(object obj, const_unknown __ref) {
+	_interface _inf = __cast(obj, ILIST_ID);
+	dbg_assert(_inf != NULL);
 
-	return ((struct ilist_vtable*)ilist->__vtable)->__remove(o, __ref);
+	return ((struct ilist_vtable*)_inf->__vtable)->__remove(obj, __ref);
 }
-inline iterator ilist_itr_create(const_interface ilist, itr_pos pos) {
-	object o = __object_from_interface(ilist);
-	dbg_assert(__cast(o, ILIST_ID) == ilist);
+inline iterator ilist_itr_create(const_object obj, itr_pos pos) {
+	_interface _inf = __cast(obj, ILIST_ID);
+	dbg_assert(_inf != NULL);
 
-	return ((struct ilist_vtable*)ilist->__vtable)->__itr_create(o, pos);
+	return ((struct ilist_vtable*)_inf->__vtable)->__itr_create(obj, pos);
 }
-inline void ilist_itr_assign(const_interface ilist, iterator itr, itr_pos pos) {
-	object o = __object_from_interface(ilist);
-	dbg_assert(__cast(o, ILIST_ID) == ilist);
+inline void ilist_itr_assign(const_object obj, iterator itr, itr_pos pos) {
+	_interface _inf = __cast(obj, ILIST_ID);
+	dbg_assert(_inf != NULL);
 
-	((struct ilist_vtable*)ilist->__vtable)->__itr_assign(o, itr, pos);
+	((struct ilist_vtable*)_inf->__vtable)->__itr_assign(obj, itr, pos);
 }
-inline void ilist_itr_find(const_interface ilist, iterator itr, const_unknown __ref) {
-	object o = __object_from_interface(ilist);
-	dbg_assert(__cast(o, ILIST_ID) == ilist);
+inline void ilist_itr_find(const_object obj, iterator itr, const_unknown __ref) {
+	_interface _inf = __cast(obj, ILIST_ID);
+	dbg_assert(_inf != NULL);
 
-	((struct ilist_vtable*)ilist->__vtable)->__itr_find(o, itr, __ref);
+	((struct ilist_vtable*)_inf->__vtable)->__itr_find(obj, itr, __ref);
 }
-inline void ilist_itr_remove(_interface ilist, iterator itr) {
-	object o = __object_from_interface(ilist);
-	dbg_assert(__cast(o, ILIST_ID) == ilist);
+inline void ilist_itr_remove(object obj, iterator itr) {
+	_interface _inf = __cast(obj, ILIST_ID);
+	dbg_assert(_inf != NULL);
 
-	((struct ilist_vtable*)ilist->__vtable)->__itr_remove(o, itr);
+	((struct ilist_vtable*)_inf->__vtable)->__itr_remove(obj, itr);
 }
-inline void ilist_itr_insert_before(_interface ilist, iterator itr, const_unknown n_ref) {
-	object o = __object_from_interface(ilist);
-	dbg_assert(__cast(o, ILIST_ID) == ilist);
+inline void ilist_itr_insert_before(object obj, iterator itr, const_unknown n_ref) {
+	_interface _inf = __cast(obj, ILIST_ID);
+	dbg_assert(_inf != NULL);
 
-	((struct ilist_vtable*)ilist->__vtable)->__itr_insert_before(o, itr, n_ref);
+	((struct ilist_vtable*)_inf->__vtable)->__itr_insert_before(obj, itr, n_ref);
 }
-inline void ilist_itr_insert_after(_interface ilist, iterator itr, const_unknown n_ref) {
-	object o = __object_from_interface(ilist);
-	dbg_assert(__cast(o, ILIST_ID) == ilist);
+inline void ilist_itr_insert_after(object obj, iterator itr, const_unknown n_ref) {
+	_interface _inf = __cast(obj, ILIST_ID);
+	dbg_assert(_inf != NULL);
 
-	((struct ilist_vtable*)ilist->__vtable)->__itr_insert_after(o, itr, n_ref);
+	((struct ilist_vtable*)_inf->__vtable)->__itr_insert_after(obj, itr, n_ref);
 }
-inline const_iterator ilist_itr_begin(const_interface ilist) {
-	object o = __object_from_interface(ilist);
-	dbg_assert(__cast(o, ILIST_ID) == ilist);
+inline const_iterator ilist_itr_begin(const_object obj) {
+	_interface _inf = __cast(obj, ILIST_ID);
+	dbg_assert(_inf != NULL);
 
-	return ((struct ilist_vtable*)ilist->__vtable)->__itr_begin(o);
+	return ((struct ilist_vtable*)_inf->__vtable)->__itr_begin(obj);
 }
-inline const_iterator ilist_itr_end(const_interface ilist) {
-	object o = __object_from_interface(ilist);
-	dbg_assert(__cast(o, ILIST_ID) == ilist);
+inline const_iterator ilist_itr_end(const_object obj) {
+	_interface _inf = __cast(obj, ILIST_ID);
+	dbg_assert(_inf != NULL);
 
-	return ((struct ilist_vtable*)ilist->__vtable)->__itr_end(o);
+	return ((struct ilist_vtable*)_inf->__vtable)->__itr_end(obj);
 }
