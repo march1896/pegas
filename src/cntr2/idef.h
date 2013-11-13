@@ -26,7 +26,7 @@
 
 #include <oo_model.h>
 
-typedef _interface iqueue;
+typedef object iqueue;
 typedef object istack;
 typedef object ilist;
 typedef _interface iset;

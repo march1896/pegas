@@ -19,7 +19,7 @@ static void __correctness_test() {
 	}
 	
 	{
-		iqueue queue = as_queue(cntr_create_olist());
+		iqueue queue = cntr_create_olist();
 		queue_test_basic(queue);
 		iqueue_destroy(queue);
 	}	

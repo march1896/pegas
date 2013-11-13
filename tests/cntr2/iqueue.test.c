@@ -4,7 +4,7 @@
 #include "iqueue.test.h"
 #include "test_util.h"
 
-static void queue_test_basic_itr_operation(_interface queue) {
+static void queue_test_basic_itr_operation(iqueue queue) {
 	iqueue_clear(queue);
 	dbg_assert(iqueue_size(queue) == 0);
 
@@ -66,7 +66,7 @@ static void queue_test_basic_itr_operation(_interface queue) {
 	return;
 }
 
-static void queue_test_basic_operation(_interface queue) {
+static void queue_test_basic_operation(iqueue queue) {
 	iqueue_clear(queue);
 	dbg_assert(iqueue_size(queue) == 0);
 	dbg_assert(iqueue_empty(queue));
@@ -192,17 +192,17 @@ static void queue_test_basic_operation(_interface queue) {
 	}
 }
 
-void queue_test_basic(_interface queue) {
+void queue_test_basic(iqueue queue) {
 
 	queue_test_basic_operation(queue);
 
 	queue_test_basic_itr_operation(queue);
 }
 
-void queue_test_memory(_interface queue) {
+void queue_test_memory(iqueue queue) {
 }
 
-void queue_test_bench(_interface queue) {
+void queue_test_bench(iqueue queue) {
 	/* should this exist, or it just compares with the raw queue_link to show the overhead of 'virtual' funtions */
 }
 
