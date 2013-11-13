@@ -3,6 +3,30 @@
 
 #include <cominc.h>
 
+// In an oo(object-oriented) perspective of view, we could describe behaviors of an object(typically via instance viables and methods), 
+// and the object is defined by the description. [after define all objects, where does the program begins? this is the same
+// problem is functional oriented language, after definition of all the relationships, the programs will never run].
+//
+// If we have engough time to define objects one by one, 
+// i.e. we defines a dog object and defines the eat behavior of it, then we define a cat object and also its own eat behavior. In C,
+// void dog_eat() { do something ... } ;
+// void cat_eat() { do something ... } ;
+// then we comes to another problem, what if two object's behavior seems exactly same to you, for example, if you have two dog, they both
+// can eat. Of cource, we could define them one by one, like this.
+// void dog1_eat() { do something .. };
+// void dog2_eat() { do the same thing as above };
+// So we have to reuse the common part. But how?
+// A straight forward idea is to make an other common_dog object, and the two dogs are just instance of a common_dog and 
+//
+
+
+
+// static binding && imperative language.
+
+struct {
+	
+} dog;
+
 typedef struct __class_t* __class;
 
 typedef __protocols (*pf_get_protocol)(const_unknown obj, unique_id protocol_id);
@@ -27,17 +51,13 @@ struct msg_entry {
 	unknown    function;
 };
 
-struct __protocol_sample {
-	// a protocol is an object, so it has a pointer to its class
+struct __protocol_t {
+	/* a protocol is an object, so it has a pointer to its class */
 	__class             is_a;
 
 	struct __type_info  info;
-
-	struct msg_table {
-		struct msg_entry method_0;
-		struct msg_entry method_1;
-	};
 };
+typedef struct __protocol_t *protocol;
 
 
 /* in order to dispatch a message at runtime, we should have a table which contains <msg_name, msg_function_entry, param_number> */

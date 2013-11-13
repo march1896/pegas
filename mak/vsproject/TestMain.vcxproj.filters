@@ -4,29 +4,14 @@
     <ClCompile Include="..\..\tests\memheap\heap_util.test.c">
       <Filter>Source Files\memheap</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\tests\cntr\cntr_algorithm.test.c">
-      <Filter>Source Files\cntr</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\tests\cntr\cntr_base.test.c">
-      <Filter>Source Files\cntr</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\tests\cntr\cntr_sort.test.c">
-      <Filter>Source Files\cntr</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\tests\util\llrb_link.test.c">
       <Filter>Source Files\util</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\tests\cntr\cntr_test_util.c">
-      <Filter>Source Files\cntr</Filter>
     </ClCompile>
     <ClCompile Include="..\..\tests\test_util.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\tests\memheap\heap.all.test.c">
       <Filter>Source Files\memheap</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\tests\cntr\cntr_all.test.c">
-      <Filter>Source Files\cntr</Filter>
     </ClCompile>
     <ClCompile Include="..\..\tests\util\util.all.test.c">
       <Filter>Source Files\util</Filter>
@@ -96,9 +81,6 @@
     <Filter Include="Source Files\memheap">
       <UniqueIdentifier>{4996b439-aed9-4287-8d6b-39c97349fd23}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\cntr">
-      <UniqueIdentifier>{ebfed2a7-e973-4a11-9b26-2c51182a74c4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\util">
       <UniqueIdentifier>{f4952aa1-f354-413f-b064-b69b2251a659}</UniqueIdentifier>
     </Filter>
@@ -106,9 +88,6 @@
   <ItemGroup>
     <ClInclude Include="..\..\tests\memheap\heap_util.test.h">
       <Filter>Source Files\memheap</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\tests\cntr\cntr_test_util.h">
-      <Filter>Source Files\cntr</Filter>
     </ClInclude>
     <ClInclude Include="..\..\tests\test_util.h">
       <Filter>Source Files</Filter>

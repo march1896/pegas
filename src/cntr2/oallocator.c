@@ -15,47 +15,47 @@
  *****************************************************************************************/
 
 inline void  allocator_join     (allocator o) {
-	iobject* intf = __fast_cast(o, 0);
+	_interface intf = __fast_cast(o, 0);
 	dbg_assert(intf == __cast(o, IALLOCATOR_ID));
 
 	((struct iallocator_vtable*)intf->__vtable)->__join(o);
 }
 #ifdef _VERBOSE_ALLOC_DEALLOC_
 inline void* allocator_acquire_v(allocator o, int size, const char* file, int line) {
-	iobject* intf = __fast_cast(o, 0);
+	_interface intf = __fast_cast(o, 0);
 	dbg_assert(intf == __cast(o, IALLOCATOR_ID));
 
 	return ((struct iallocator_vtable*)intf->__vtable)->__acquire(o, size, file, line);
 }
 inline bool  allocator_release_v(allocator o, void* buff, const char* file, int line) {
-	iobject* intf = __fast_cast(o, 0);
+	_interface intf = __fast_cast(o, 0);
 	dbg_assert(intf == __cast(o, IALLOCATOR_ID));
 
 	return ((struct iallocator_vtable*)intf->__vtable)->__release(o, buff, file, line);
 }
 #else 
 inline void* allocator_acquire_c(allocator o, int size) {
-	iobject* intf = __fast_cast(o, 0);
+	_interface intf = __fast_cast(o, 0);
 	dbg_assert(intf == __cast(o, IALLOCATOR_ID));
 
 	return ((struct iallocator_vtable*)intf->__vtable)->__acquire(o, size);
 }
 inline bool  allocator_release_c(allocator o, void* buff) {
-	iobject* intf = __fast_cast(o, 0);
+	_interface intf = __fast_cast(o, 0);
 	dbg_assert(intf == __cast(o, IALLOCATOR_ID));
 
 	return ((struct iallocator_vtable*)intf->__vtable)->__release(o, buff);
 }
 #endif
 inline allocator allocator_get_parent(allocator o) {
-	iobject* intf = __fast_cast(o, 0);
+	_interface intf = __fast_cast(o, 0);
 	dbg_assert(intf == __cast(o, IALLOCATOR_ID));
 
 	return ((struct iallocator_vtable*)intf->__vtable)->__get_parent(o);
 }
 
 inline void allocator_walk(allocator o, pf_process_block per_block_cb, void* param) {
-	iobject* intf = __fast_cast(o, 0);
+	_interface intf = __fast_cast(o, 0);
 	dbg_assert(intf == __cast(o, IALLOCATOR_ID));
 
 	((struct iallocator_vtable*)intf->__vtable)->__heap_walk(o, per_block_cb, param);
@@ -79,7 +79,7 @@ struct allocator_sysd {
 	address                       __offset;
 	pf_cast                       __cast;
 	
-	iobject                       __iftable[e_heap_count];
+	struct base_interface         __iftable[e_heap_count];
 
 	allocator                     __parent;
 	void*                         __driver;
@@ -172,7 +172,7 @@ struct allocator_llrb {
 	address                       __offset;
 	pf_cast                       __cast;
 	
-	iobject                       __iftable[e_heap_count];
+	struct base_interface         __iftable[e_heap_count];
 
 	allocator                     __parent;
 	struct heap_llrb*             __driver;
@@ -300,7 +300,7 @@ struct allocator_buddy {
 	address                       __offset;
 	pf_cast                       __cast;
 	
-	iobject         __iftable[e_heap_count];
+	struct base_interface         __iftable[e_heap_count];
 
 	allocator                     __parent;
 	struct heap_buddy*            __driver;
@@ -429,7 +429,7 @@ struct allocator_spool {
 	address                       __offset;
 	pf_cast                       __cast;
 	
-	iobject                       __iftable[e_heap_count];
+	struct base_interface         __iftable[e_heap_count];
 
 	allocator                     __parent;
 	struct heap_spool*            __driver;
@@ -542,7 +542,7 @@ struct allocator_mpool {
 	address                       __offset;
 	pf_cast                       __cast;
 	
-	iobject                       __iftable[e_heap_count];
+	struct base_interface         __iftable[e_heap_count];
 
 	allocator                     __parent;
 	struct heap_mpool*            __driver;

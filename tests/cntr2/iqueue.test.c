@@ -4,7 +4,7 @@
 #include "iqueue.test.h"
 #include "test_util.h"
 
-static void queue_test_basic_itr_operation(iobject* queue) {
+static void queue_test_basic_itr_operation(iqueue queue) {
 	iqueue_clear(queue);
 	dbg_assert(iqueue_size(queue) == 0);
 
@@ -66,7 +66,7 @@ static void queue_test_basic_itr_operation(iobject* queue) {
 	return;
 }
 
-static void queue_test_basic_operation(iobject* queue) {
+static void queue_test_basic_operation(iqueue queue) {
 	iqueue_clear(queue);
 	dbg_assert(iqueue_size(queue) == 0);
 	dbg_assert(iqueue_empty(queue));
@@ -86,14 +86,12 @@ static void queue_test_basic_operation(iobject* queue) {
 	{
 		/* now the queue contains { 1, 2, 3, 4, 5, 6, 7, 8 } */
 		intptr_t counter = 1;
-		intptr_t element;
 
 		dbg_assert(iqueue_front(queue) == (void*)(intptr_t)1);
 		dbg_assert(iqueue_back (queue) == (void*)(intptr_t)8);
 
 		for (counter = 1; counter <= 8; counter ++) {
-			element = (intptr_t)iqueue_pop(queue);
-			dbg_assert(element == counter);
+			iqueue_pop(queue);
 		}
 	}
 
@@ -110,9 +108,8 @@ static void queue_test_basic_operation(iobject* queue) {
 		dbg_assert(iqueue_front(queue) == (void*)(intptr_t)1);
 		dbg_assert(iqueue_back (queue) == (void*)(intptr_t)2);
 
-		element = (intptr_t)iqueue_pop(queue);
+		iqueue_pop(queue);
 		/* remove the front one, now is { 2 } */
-		dbg_assert(element == 1);
 		dbg_assert(iqueue_empty(queue) == false);
 		dbg_assert(iqueue_size (queue) == 1);
 		dbg_assert(iqueue_front(queue) == (void*)(intptr_t)2);
@@ -126,34 +123,30 @@ static void queue_test_basic_operation(iobject* queue) {
 		dbg_assert(iqueue_front(queue) == (void*)(intptr_t)2);
 		dbg_assert(iqueue_back (queue) == (void*)(intptr_t)4);
 
-		/* continous pop all of them */
-		element = (intptr_t)iqueue_pop(queue);
+		/* continuous pop all of them */
+		iqueue_pop(queue);
 		/* remove the front one, now is { 3, 4 } */
-		dbg_assert(element == 2);
 		dbg_assert(iqueue_empty(queue) == false);
 		dbg_assert(iqueue_size (queue) == 2);
 		dbg_assert(iqueue_front(queue) == (void*)(intptr_t)3);
 		dbg_assert(iqueue_back (queue) == (void*)(intptr_t)4);
 
-		element = (intptr_t)iqueue_pop(queue);
+		iqueue_pop(queue);
 		/* remove the front one, now is { 4 } */
-		dbg_assert(element == 3);
 		dbg_assert(iqueue_empty(queue) == false);
 		dbg_assert(iqueue_size (queue) == 1);
 		dbg_assert(iqueue_front(queue) == (void*)(intptr_t)4);
 		dbg_assert(iqueue_back (queue) == (void*)(intptr_t)4);
 
-		element = (intptr_t)iqueue_pop(queue);
+		iqueue_pop(queue);
 		/* remove the front one, now is {} */
-		dbg_assert(element == 4);
 		dbg_assert(iqueue_empty(queue) == true);
 		dbg_assert(iqueue_size (queue) == 0);
 		dbg_assert(iqueue_front(queue) == (void*)(intptr_t)NULL);
 		dbg_assert(iqueue_back (queue) == (void*)(intptr_t)NULL);
 
 		/* trying to pop empty queue */
-		element = (intptr_t)iqueue_pop(queue);
-		dbg_assert(element == (intptr_t)NULL);
+		iqueue_pop(queue);
 		dbg_assert(iqueue_empty(queue) == true);
 		dbg_assert(iqueue_size (queue) == 0);
 		dbg_assert(iqueue_front(queue) == (void*)(intptr_t)NULL);
@@ -181,9 +174,8 @@ static void queue_test_basic_operation(iobject* queue) {
 		dbg_assert(iqueue_front(queue) == (void*)(intptr_t)1);
 		dbg_assert(iqueue_back (queue) == (void*)(intptr_t)1);
 
-		element = (intptr_t)iqueue_pop(queue);
+		iqueue_pop(queue);
 		/* remove the front one, now is { 1, 1 } */
-		dbg_assert(element == 1);
 		dbg_assert(iqueue_empty(queue) == false);
 		dbg_assert(iqueue_size (queue) == 2);
 		dbg_assert(iqueue_front(queue) == (void*)(intptr_t)1);
@@ -200,17 +192,17 @@ static void queue_test_basic_operation(iobject* queue) {
 	}
 }
 
-void queue_test_basic(iobject* queue) {
+void queue_test_basic(iqueue queue) {
 
 	queue_test_basic_operation(queue);
 
 	queue_test_basic_itr_operation(queue);
 }
 
-void queue_test_memory(iobject* queue) {
+void queue_test_memory(iqueue queue) {
 }
 
-void queue_test_bench(iobject* queue) {
+void queue_test_bench(iqueue queue) {
 	/* should this exist, or it just compares with the raw queue_link to show the overhead of 'virtual' funtions */
 }
 

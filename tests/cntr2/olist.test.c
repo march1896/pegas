@@ -13,19 +13,19 @@
 
 static void __correctness_test() {
 	{
-		ilist list = as_list(cntr_create_olist());
+		ilist list = cntr_create_olist();
 		list_test_basic(list);
 		ilist_destroy(list);
 	}
 	
 	{
-		iqueue queue = as_queue(cntr_create_olist());
+		iqueue queue = cntr_create_olist();
 		queue_test_basic(queue);
 		iqueue_destroy(queue);
 	}	
 
 	{
-		istack stack = as_stack(cntr_create_olist());
+		istack stack = cntr_create_olist();
 		stack_test_basic(stack);
 		istack_destroy(stack);
 	}	

@@ -21,7 +21,7 @@ struct oskiplist_itr {
 	pf_cast                       __cast;
 
 	/* there is always one interface to implement, since the interface is inherited */
-	iobject                       __iftable[1];
+	struct base_interface          __iftable[1];
 
 	/* the iterator will never alloc memory, when acquire an iterator, the container will 
 	 * alloc the memory, but we should know how to delete this memory */
@@ -35,7 +35,7 @@ struct oskiplist {
 	address                       __offset;
 	pf_cast                       __cast;
 	
-	iobject                       __iftable[e_l_count];
+	struct base_interface         __iftable[e_l_count];
 
 	struct skiplist*              driver_skiplist;
 
@@ -113,7 +113,7 @@ static struct itr_bidirectional_vtable __itr_vtable = {
 };
 
 
-static void oskiplist_itr_destroy(object* citr) {
+static void oskiplist_itr_destroy(object citr) {
 	struct oskiplist_itr* itr = (struct oskiplist_itr*)citr;
 
 	dbg_assert(__is_object(citr));
@@ -172,7 +172,7 @@ static void oskiplist_itr_set_ref(iterator citr, const void* n_ref) {
 	return;
 }
 
-static void oskiplist_itr_to_next(object* citr) {
+static void oskiplist_itr_to_next(object citr) {
 	struct oskiplist_itr* itr    = (struct oskiplist_itr*)citr;
 
 	dbg_assert(itr->__cast == oskiplist_itr_cast);
@@ -181,7 +181,7 @@ static void oskiplist_itr_to_next(object* citr) {
 	itr->current = skip_link_next(itr->current);
 }
 
-static void oskiplist_itr_to_prev(object* citr) {
+static void oskiplist_itr_to_prev(object citr) {
 	struct oskiplist_itr* itr = (struct oskiplist_itr*)citr;
 
 	dbg_assert(itr->__cast == oskiplist_itr_cast);
@@ -231,7 +231,7 @@ static unknown oskiplist_itr_cast(unknown x, unique_id inf_id) {
 }
 
 static void oskiplist_itr_com_init(struct oskiplist_itr* itr, struct oskiplist* list);
-object* oskiplist_create_internal(pf_ref_compare comp, pf_ref_compare_v compv, void* cp_context, allocator alc) {
+object oskiplist_create_internal(pf_ref_compare comp, pf_ref_compare_v compv, void* cp_context, allocator alc) {
 	struct oskiplist* oskiplist = NULL;
 	bool managed_allocator = false;
 
@@ -270,31 +270,31 @@ object* oskiplist_create_internal(pf_ref_compare comp, pf_ref_compare_v compv, v
 	oskiplist_itr_com_init(&oskiplist->itr_begin, oskiplist);
 	oskiplist_itr_com_init(&oskiplist->itr_end, oskiplist);
 
-	return (object*)oskiplist;
+	return (object)oskiplist;
 }
 
-object* oskiplist_create(pf_ref_compare ref_comp, allocator alc) {
+object oskiplist_create(pf_ref_compare ref_comp, allocator alc) {
 	return oskiplist_create_internal(ref_comp, NULL, NULL, alc);
 }
-object* oskiplist_create_v(pf_ref_compare_v ref_comp_v, void* comp_context, allocator alc) {
+object oskiplist_create_v(pf_ref_compare_v ref_comp_v, void* comp_context, allocator alc) {
 	return oskiplist_create_internal(NULL, ref_comp_v, comp_context, alc);
 }
 
 /* from ifactory.h  */
-object* cntr_create_oskiplist(pf_ref_compare comp) {
+object cntr_create_oskiplist(pf_ref_compare comp) {
 	return oskiplist_create(comp, __global_default_allocator);
 }
-object* cntr_create_oskiplist_a(pf_ref_compare comp, allocator alc) {
+object cntr_create_oskiplist_a(pf_ref_compare comp, allocator alc) {
 	return oskiplist_create(comp, alc);
 }
-object* cntr_create_oskiplist_v(pf_ref_compare_v comp_v, void* comp_context) {
+object cntr_create_oskiplist_v(pf_ref_compare_v comp_v, void* comp_context) {
 	return oskiplist_create_v(comp_v, comp_context, __global_default_allocator);
 }
-object* cntr_create_oskiplist_va(pf_ref_compare_v comp_v, void* comp_context, allocator alc) {
+object cntr_create_oskiplist_va(pf_ref_compare_v comp_v, void* comp_context, allocator alc) {
 	return oskiplist_create_v(comp_v, comp_context, alc);
 }
 
-void oskiplist_destroy(object* o) {
+void oskiplist_destroy(object o) {
 	struct oskiplist* oskiplist = (struct oskiplist*)o;
 	allocator alc = oskiplist->allocator;
 	bool join_alc = oskiplist->allocator_join_ondispose;
@@ -313,7 +313,7 @@ struct skiplist_clear_v {
 	void*            context;
 };
 
-void oskiplist_clear(object* o) {
+void oskiplist_clear(object o) {
 	struct oskiplist* oskiplist = (struct oskiplist*)o;
 
 	skiplist_clear(oskiplist->driver_skiplist);
@@ -329,7 +329,7 @@ static void skiplist_perlink_dispose(const void* __ref, void* context) {
 	}
 }
 
-void oskiplist_clear_v(object* o, pf_ref_dispose_v dispose, void* context) {
+void oskiplist_clear_v(object o, pf_ref_dispose_v dispose, void* context) {
 	struct oskiplist* oskiplist = (struct oskiplist*)o;
 	struct skiplist_clear_v rd = { dispose, context };
 
@@ -342,13 +342,13 @@ void oskiplist_clear_v(object* o, pf_ref_dispose_v dispose, void* context) {
 	oskiplist->size = 0;
 }
 
-int oskiplist_size(const object* o) {
+int oskiplist_size(const_object o) {
 	struct oskiplist* oskiplist = (struct oskiplist*)o;
 
 	return oskiplist->size;
 }
 
-bool oskiplist_empty(const object* o) {
+bool oskiplist_empty(const_object o) {
 	struct oskiplist* oskiplist = (struct oskiplist*)o;
 	return oskiplist->size == 0;
 }
@@ -365,7 +365,7 @@ static void oskiplist_itr_com_init(struct oskiplist_itr* itr, struct oskiplist* 
 	/* itr->__current = NULL; */
 }
 
-const_iterator oskiplist_itr_begin(const object* o) {
+const_iterator oskiplist_itr_begin(const_object o) {
 	struct oskiplist* olist = (struct oskiplist*)o;
 
 	olist->itr_begin.current = skiplist_first(olist->driver_skiplist);
@@ -373,7 +373,7 @@ const_iterator oskiplist_itr_begin(const object* o) {
 	return (iterator)&olist->itr_begin;
 }
 
-const_iterator oskiplist_itr_end(const object* o) {
+const_iterator oskiplist_itr_end(const_object o) {
 	struct oskiplist* olist = (struct oskiplist*)o;
 
 	olist->itr_end.current = skiplist_sent(olist->driver_skiplist);
@@ -381,7 +381,7 @@ const_iterator oskiplist_itr_end(const object* o) {
 	return (iterator)&olist->itr_end;
 }
 
-iterator oskiplist_itr_create(const object* o, itr_pos pos) {
+iterator oskiplist_itr_create(const_object o, itr_pos pos) {
 	struct oskiplist* olist = (struct oskiplist*)o;
 	struct oskiplist_itr* n_itr = (struct oskiplist_itr*)
 		allocator_alloc(olist->allocator, sizeof(struct oskiplist_itr));
@@ -396,10 +396,10 @@ iterator oskiplist_itr_create(const object* o, itr_pos pos) {
 		n_itr->current = skiplist_sent(olist->driver_skiplist);
 	}
 	
-	return (object*)n_itr;
+	return (object)n_itr;
 }
 
-void oskiplist_itr_assign(const object* o, iterator itr, itr_pos pos) {
+void oskiplist_itr_assign(const_object o, iterator itr, itr_pos pos) {
 	struct oskiplist* olist = (struct oskiplist*)o;
 	struct oskiplist_itr* n_itr = (struct oskiplist_itr*)itr;
 
@@ -413,7 +413,7 @@ void oskiplist_itr_assign(const object* o, iterator itr, itr_pos pos) {
 		n_itr->current = skiplist_sent(olist->driver_skiplist);
 	}
 }
-void oskiplist_itr_find(const object* o, iterator itr, const void* __ref) {
+void oskiplist_itr_find(const_object o, iterator itr, const void* __ref) {
 	struct oskiplist* olist      = (struct oskiplist*)o;
 	struct oskiplist_itr* oitr   = (struct oskiplist_itr*)itr;
 	const struct skip_link* link = NULL;
@@ -427,7 +427,7 @@ void oskiplist_itr_find(const object* o, iterator itr, const void* __ref) {
 	oitr->current = link;
 }
 
-void oskiplist_itr_find_lower(const object* o, iterator itr, const void* __ref) {
+void oskiplist_itr_find_lower(const_object o, iterator itr, const void* __ref) {
 	struct oskiplist* oskiplist = (struct oskiplist*)o;
 	struct oskiplist_itr* oitr  = (struct oskiplist_itr*)itr;
 	const struct skip_link* link = NULL;
@@ -441,7 +441,7 @@ void oskiplist_itr_find_lower(const object* o, iterator itr, const void* __ref) 
 	oitr->current = link;
 }
 
-void oskiplist_itr_find_upper(const object* o, iterator itr, const void* __ref) {
+void oskiplist_itr_find_upper(const_object o, iterator itr, const void* __ref) {
 	struct oskiplist* oskiplist = (struct oskiplist*)o;
 	struct oskiplist_itr* oitr  = (struct oskiplist_itr*)itr;
 	const struct skip_link* link = NULL;
@@ -455,7 +455,7 @@ void oskiplist_itr_find_upper(const object* o, iterator itr, const void* __ref) 
 	oitr->current = link;
 }
 
-void* oskiplist_insert_s(object* o, const void* __ref) {
+void* oskiplist_insert_s(object o, const void* __ref) {
 	struct oskiplist* oskiplist     = (struct oskiplist*)o;
 	void* old_ref = skiplist_insert_s(oskiplist->driver_skiplist, __ref);
 
@@ -465,7 +465,7 @@ void* oskiplist_insert_s(object* o, const void* __ref) {
 	return old_ref;
 }
 
-void oskiplist_insert_m(object* o, const void* __ref) {
+void oskiplist_insert_m(object o, const void* __ref) {
 	struct oskiplist* oskiplist     = (struct oskiplist*)o;
 
 	skiplist_insert(oskiplist->driver_skiplist, __ref);
@@ -474,13 +474,13 @@ void oskiplist_insert_m(object* o, const void* __ref) {
 	return;
 }
 
-bool oskiplist_contains(const object* o, const void* __ref) {
+bool oskiplist_contains(const_object o, const void* __ref) {
 	struct oskiplist* oskiplist   = (struct oskiplist*)o;
 
 	return skiplist_contains(oskiplist->driver_skiplist, __ref);
 }
 
-int oskiplist_count(const object* o, const void* __ref) {
+int oskiplist_count(const_object o, const void* __ref) {
 	struct oskiplist* oskiplist = (struct oskiplist*)o;
 	const struct skip_link* lb = skiplist_search_v(oskiplist->driver_skiplist, __ref, skiplist_min_greaterorequal);
 	const struct skip_link* ub = skiplist_search_v(oskiplist->driver_skiplist, __ref, skiplist_min_greater);
@@ -494,7 +494,7 @@ int oskiplist_count(const object* o, const void* __ref) {
 	return count;
 }
 
-bool oskiplist_remove(object* o, void* __ref) {
+bool oskiplist_remove(object o, void* __ref) {
 	struct oskiplist* oskiplist   = (struct oskiplist*)o;
 
 	bool res = skiplist_remove(oskiplist->driver_skiplist, __ref);
@@ -505,7 +505,7 @@ bool oskiplist_remove(object* o, void* __ref) {
 	return res;
 }
 
-void* oskiplist_itr_remove(object* o, iterator itr) {
+void* oskiplist_itr_remove(object o, iterator itr) {
 	struct oskiplist* oskiplist = (struct oskiplist*)o;
 	struct oskiplist_itr* oitr  = (struct oskiplist_itr*)itr;
 	struct skip_link* link      = (struct skip_link*)oitr->current;

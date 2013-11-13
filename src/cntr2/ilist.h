@@ -5,36 +5,36 @@
 #include <oo_model.h>
 #include <idef.h>
 
-extern inline       void     ilist_destroy         (iobject* ilist);
-extern inline       void     ilist_clear           (iobject* ilist);
-extern inline       void     ilist_foreach         (iobject* ilist, pf_ref_process_v process, void* context);
-extern inline       int      ilist_size            (const iobject* ilist);
-extern inline       void     ilist_add_front       (iobject* ilist, const_unknown __ref);
-extern inline       bool     ilist_empty           (const iobject* ilist);
-extern inline const_unknown  ilist_front           (const iobject* ilist);
-extern inline const_unknown  ilist_back            (const iobject* ilist);
-extern inline       void     ilist_add_back        (iobject* ilist, const_unknown __ref);
-extern inline       void     ilist_remove_front    (iobject* ilist);
-extern inline       void     ilist_remove_back     (iobject* ilist);
-extern inline       bool     ilist_contains        (const iobject* ilist, const_unknown __ref);
-extern inline       bool     ilist_remove          (iobject* ilist, const_unknown __ref);
+extern inline       void     ilist_destroy         (object obj);
+extern inline       void     ilist_clear           (object obj);
+extern inline       void     ilist_foreach         (object obj, pf_ref_process_v process, void* context);
+extern inline       int      ilist_size            (const_object obj);
+extern inline       void     ilist_add_front       (object obj, const_unknown __ref);
+extern inline       bool     ilist_empty           (const_object obj);
+extern inline const_unknown  ilist_front           (const_object obj);
+extern inline const_unknown  ilist_back            (const_object obj);
+extern inline       void     ilist_add_back        (object obj, const_unknown __ref);
+extern inline       void     ilist_remove_front    (object obj);
+extern inline       void     ilist_remove_back     (object obj);
+extern inline       bool     ilist_contains        (const_object obj, const_unknown __ref);
+extern inline       bool     ilist_remove          (object obj, const_unknown __ref);
 
 /* return the begin iterator of the container, this iterator is constant, 
  * you could only use it for comparison, dereferencing.
  * you can not move it or set reference on it. */
-extern inline const_iterator ilist_itr_begin       (const iobject* ilist);
-extern inline const_iterator ilist_itr_end         (const iobject* ilist);
-extern inline       iterator ilist_itr_create      (const iobject* ilist, itr_pos pos);
-extern inline       void     ilist_itr_assign      (const iobject* ilist, iterator itr, itr_pos pos);
-extern inline       void     ilist_itr_find        (const iobject* ilist, iterator itr, const_unknown __ref);
-extern inline       void     ilist_itr_remove      (iobject* ilist, iterator itr);
-extern inline       void     ilist_itr_insert_before (iobject* ilist, iterator itr, const_unknown __ref);
-extern inline       void     ilist_itr_insert_after  (iobject* ilist, iterator itr, const_unknown __ref);
+extern inline const_iterator ilist_itr_begin       (const_object obj);
+extern inline const_iterator ilist_itr_end         (const_object obj);
+extern inline       iterator ilist_itr_create      (const_object obj, itr_pos pos);
+extern inline       void     ilist_itr_assign      (const_object obj, iterator itr, itr_pos pos);
+extern inline       void     ilist_itr_find        (const_object obj, iterator itr, const_unknown __ref);
+extern inline       void     ilist_itr_remove      (object obj, iterator itr);
+extern inline       void     ilist_itr_insert_before (object obj, iterator itr, const_unknown __ref);
+extern inline       void     ilist_itr_insert_after  (object obj, iterator itr, const_unknown __ref);
 
 /*
 {
 	iterator itr = ilist_itr_create(list, itr_begin);
-	const_iterator end = ilist_itr_end(ilist);
+	const_iterator end = ilist_itr_end(obj);
 	for (; !itr_equals(itr, end); itr_to_next(itr)) {
 		// do something on itr
 	}
@@ -44,28 +44,28 @@ extern inline       void     ilist_itr_insert_after  (iobject* ilist, iterator i
 
 /* below is only useful for the container implementer */
 /* the virtual functions that each container should implement */
-typedef       void     (*pf_ilist_destroy)      (object* olist);
-typedef       void     (*pf_ilist_clear)        (object* olist);
-typedef       void     (*pf_ilist_foreach)      (object* olist, pf_ref_process_v process, void* context);
-typedef       int      (*pf_ilist_size)         (const object* olist);
-typedef       bool     (*pf_ilist_empty)        (const object* olist);
-typedef const_unknown  (*pf_ilist_front)        (const object* olist);
-typedef const_unknown  (*pf_ilist_back)         (const object* olist);
-typedef       void     (*pf_ilist_add_front)    (object* olist, const_unknown n_ref);
-typedef       void     (*pf_ilist_add_back)     (object* olist, const_unknown n_ref);
-typedef       void     (*pf_ilist_remove_front) (object* olist);
-typedef       void     (*pf_ilist_remove_back)  (object* olist);
-typedef       bool     (*pf_ilist_contains)     (const object* olist, const_unknown __ref);
-typedef       bool     (*pf_ilist_remove)       (object* olist, const_unknown __ref);
+typedef       void     (*pf_ilist_destroy)      (object obj);
+typedef       void     (*pf_ilist_clear)        (object obj);
+typedef       void     (*pf_ilist_foreach)      (object obj, pf_ref_process_v process, void* context);
+typedef       int      (*pf_ilist_size)         (const_object obj);
+typedef       bool     (*pf_ilist_empty)        (const_object obj);
+typedef const_unknown  (*pf_ilist_front)        (const_object obj);
+typedef const_unknown  (*pf_ilist_back)         (const_object obj);
+typedef       void     (*pf_ilist_add_front)    (object obj, const_unknown n_ref);
+typedef       void     (*pf_ilist_add_back)     (object obj, const_unknown n_ref);
+typedef       void     (*pf_ilist_remove_front) (object obj);
+typedef       void     (*pf_ilist_remove_back)  (object obj);
+typedef       bool     (*pf_ilist_contains)     (const_object obj, const_unknown __ref);
+typedef       bool     (*pf_ilist_remove)       (object obj, const_unknown __ref);
 
-typedef const_iterator (*pf_ilist_itr_begin)    (const object* olist);
-typedef const_iterator (*pf_ilist_itr_end)      (const object* olist);
-typedef       iterator (*pf_ilist_itr_create)   (const object* ilist, itr_pos pos);
-typedef       void     (*pf_ilist_itr_assign)   (const object* ilist, /*out*/iterator itr, itr_pos pos);
-typedef       void     (*pf_ilist_itr_find)     (const object* olist, /*out*/iterator itr, const_unknown __ref);
-typedef       void     (*pf_ilist_itr_remove)   (object* olist, iterator itr);
-typedef       void     (*pf_ilist_itr_insert_before)(object* olist, iterator itr, const_unknown n_ref);
-typedef       void     (*pf_ilist_itr_insert_after) (object* olist, iterator itr, const_unknown n_ref);
+typedef const_iterator (*pf_ilist_itr_begin)    (const_object obj);
+typedef const_iterator (*pf_ilist_itr_end)      (const_object obj);
+typedef       iterator (*pf_ilist_itr_create)   (const_object obj, itr_pos pos);
+typedef       void     (*pf_ilist_itr_assign)   (const_object obj, /*out*/iterator itr, itr_pos pos);
+typedef       void     (*pf_ilist_itr_find)     (const_object obj, /*out*/iterator itr, const_unknown __ref);
+typedef       void     (*pf_ilist_itr_remove)   (object obj, iterator itr);
+typedef       void     (*pf_ilist_itr_insert_before)(object obj, iterator itr, const_unknown n_ref);
+typedef       void     (*pf_ilist_itr_insert_after) (object obj, iterator itr, const_unknown n_ref);
 
 
 struct ilist_vtable {

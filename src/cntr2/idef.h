@@ -26,17 +26,16 @@
 
 #include <oo_model.h>
 
-typedef iobject* iqueue;
-typedef iobject* istack;
-typedef iobject* ilist;
-typedef iobject* iset;
-typedef iobject* imset;
+typedef object iqueue;
+typedef object istack;
+typedef object ilist;
+typedef _interface iset;
+typedef _interface imset;
 
-typedef object* allocator;
+typedef object allocator;
 
-typedef object* iterator;
-/* 'const iterator' equals 'object* const', so we should have a new type */
-typedef const object* const_iterator;
+typedef object iterator;
+typedef const_object const_iterator;
 
 typedef enum {
 	itr_begin,

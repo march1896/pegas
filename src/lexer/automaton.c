@@ -32,7 +32,7 @@ atm_context* atm_context_create_v(pf_alloc alc, pf_dealloc dlc, void* heap, bool
 		context->join_cntr_alc = false;
 	}
 
-	context->automatons = as_list(cntr_create_olist_a(context->cntr_alc));
+	context->automatons = cntr_create_olist_a(context->cntr_alc);
 
 	return context;
 }
@@ -50,8 +50,8 @@ atm* atm_create(atm_context* context) {
 	atm* ret = (atm*)alloc(context->__alloc, context->__heap, sizeof(atm));
 
 	ret->start_state   = NULL;
-	ret->accept_states = as_list(cntr_create_olist_a(context->cntr_alc));
-	ret->states        = as_list(cntr_create_olist_a(context->cntr_alc));
+	ret->accept_states = cntr_create_olist_a(context->cntr_alc);
+	ret->states        = cntr_create_olist_a(context->cntr_alc);
 
 	ret->context       = context;
 	ret->lifestate     = atm_active; 
@@ -125,7 +125,7 @@ atm_state* atm_state_create(atm* a) {
 	nstate->container = a;
 	nstate->id        = atm_context_newid(context);
 	nstate->priority  = 0;
-	nstate->transforms = as_list(cntr_create_olist_a(context->cntr_alc));
+	nstate->transforms = cntr_create_olist_a(context->cntr_alc);
 
 	ilist_add_back(a->states, nstate);
 

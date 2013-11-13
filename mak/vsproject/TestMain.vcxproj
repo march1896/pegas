@@ -284,11 +284,6 @@
     <ClCompile Include="..\..\tests\cntr2\ollrb.test.c" />
     <ClCompile Include="..\..\tests\cntr2\oskiplist.test.c" />
     <ClCompile Include="..\..\tests\cntr2\osplay.test.c" />
-    <ClCompile Include="..\..\tests\cntr\cntr_algorithm.test.c" />
-    <ClCompile Include="..\..\tests\cntr\cntr_all.test.c" />
-    <ClCompile Include="..\..\tests\cntr\cntr_base.test.c" />
-    <ClCompile Include="..\..\tests\cntr\cntr_sort.test.c" />
-    <ClCompile Include="..\..\tests\cntr\cntr_test_util.c" />
     <ClCompile Include="..\..\tests\memheap\heap.all.test.c" />
     <ClCompile Include="..\..\tests\memheap\heap.buddy.test.c" />
     <ClCompile Include="..\..\tests\memheap\heap.llrb.test.c" />
@@ -313,7 +308,6 @@
     <ClInclude Include="..\..\tests\cntr2\iqueue.test.h" />
     <ClInclude Include="..\..\tests\cntr2\iset.test.h" />
     <ClInclude Include="..\..\tests\cntr2\istack.test.h" />
-    <ClInclude Include="..\..\tests\cntr\cntr_test_util.h" />
     <ClInclude Include="..\..\tests\memheap\heap_util.test.h" />
     <ClInclude Include="..\..\tests\test_util.h" />
     <ClInclude Include="..\..\tests\util\tree_link.util.h" />
