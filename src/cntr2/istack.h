@@ -5,19 +5,19 @@
 #include <oo_model.h>
 #include <idef.h>
 
-extern inline       void     istack_destroy     (_interface iq);
-extern inline       void     istack_clear       (_interface iq);
-extern inline       void     istack_foreach     (_interface iq, pf_ref_process_v process, void* context);
-extern inline       int      istack_size        (const_interface iq);
-extern inline       bool     istack_empty       (const_interface iq);
-extern inline const_unknown  istack_top         (const_interface iq);
-extern inline       void     istack_push        (_interface iq, const_unknown __ref);
-extern inline       void     istack_pop         (_interface iq);
+extern inline       void     istack_destroy     (object obj);
+extern inline       void     istack_clear       (object obj);
+extern inline       void     istack_foreach     (object obj, pf_ref_process_v process, void* context);
+extern inline       int      istack_size        (const_object obj);
+extern inline       bool     istack_empty       (const_object obj);
+extern inline const_unknown  istack_top         (const_object obj);
+extern inline       void     istack_push        (object obj, const_unknown __ref);
+extern inline       void     istack_pop         (object obj);
 
-extern inline       iterator istack_itr_create  (const_interface iq, itr_pos pos);
-extern inline       void     istack_itr_assign  (const_interface iq, iterator itr, itr_pos pos);
-extern inline const_iterator istack_itr_begin   (const_interface iq);
-extern inline const_iterator istack_itr_end     (const_interface iq);
+extern inline       iterator istack_itr_create  (const_object obj, itr_pos pos);
+extern inline       void     istack_itr_assign  (const_object obj, iterator itr, itr_pos pos);
+extern inline const_iterator istack_itr_begin   (const_object obj);
+extern inline const_iterator istack_itr_end     (const_object obj);
 
 /* below is only useful for the container implementer */
 /* the virtual functions that each container should implement */

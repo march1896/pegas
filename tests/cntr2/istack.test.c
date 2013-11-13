@@ -4,7 +4,7 @@
 #include "istack.test.h"
 #include "test_util.h"
 
-static void stack_test_basic_itr_operation(_interface stack) {
+static void stack_test_basic_itr_operation(istack stack) {
 	istack_clear(stack);
 	dbg_assert(istack_size(stack) == 0);
 
@@ -66,7 +66,7 @@ static void stack_test_basic_itr_operation(_interface stack) {
 	return;
 }
 
-static void stack_test_basic_operation(_interface stack) {
+static void stack_test_basic_operation(istack stack) {
 	istack_clear(stack);
 	dbg_assert(istack_size(stack) == 0);
 	dbg_assert(istack_empty(stack));
@@ -179,17 +179,17 @@ static void stack_test_basic_operation(_interface stack) {
 	}
 }
 
-void stack_test_basic(_interface stack) {
+void stack_test_basic(istack stack) {
 
 	stack_test_basic_operation(stack);
 
 	stack_test_basic_itr_operation(stack);
 }
 
-void stack_test_memory(_interface stack) {
+void stack_test_memory(istack stack) {
 }
 
-void stack_test_bench(_interface stack) {
+void stack_test_bench(istack stack) {
 	/* should this exist, or it just compares with the raw stack_link to show the overhead of 'virtual' funtions */
 }
 

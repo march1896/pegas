@@ -1,82 +1,82 @@
 #include <istack.h>
 
-inline void istack_destroy(_interface iq) {
-	object o = __object_from_interface(iq);
-	dbg_assert(__cast(o, ISTACK_ID) == iq);
+inline void istack_destroy(object obj) {
+	_interface _inf = __cast(obj, ISTACK_ID);
+	dbg_assert(_inf != NULL);
 
-	((struct istack_vtable*)(iq->__vtable))->__destroy(o);
+	((struct istack_vtable*)(_inf->__vtable))->__destroy(obj);
 }
 
-inline void istack_clear(_interface iq) {
-	object o = __object_from_interface(iq);
-	dbg_assert(__cast(o, ISTACK_ID) == iq);
+inline void istack_clear(object obj) {
+	_interface _inf = __cast(obj, ISTACK_ID);
+	dbg_assert(_inf != NULL);
 
-	((struct istack_vtable*)(iq->__vtable))->__clear(o);
+	((struct istack_vtable*)(_inf->__vtable))->__clear(obj);
 }
 
-inline void istack_foreach(_interface iq, pf_ref_process_v process, void* context) {
-	object o = __object_from_interface(iq);
-	dbg_assert(__cast(o, ISTACK_ID) == iq);
+inline void istack_foreach(object obj, pf_ref_process_v process, void* context) {
+	_interface _inf = __cast(obj, ISTACK_ID);
+	dbg_assert(_inf != NULL);
 
-	((struct istack_vtable*)(iq->__vtable))->__foreach(o, process, context);
+	((struct istack_vtable*)(_inf->__vtable))->__foreach(obj, process, context);
 }
 
-inline int istack_size(const_interface iq) {
-	object o = __object_from_interface(iq);
-	dbg_assert(__cast(o, ISTACK_ID) == iq);
+inline int istack_size(const_object obj) {
+	_interface _inf = __cast(obj, ISTACK_ID);
+	dbg_assert(_inf != NULL);
 
-	return ((struct istack_vtable*)(iq->__vtable))->__size(o);
+	return ((struct istack_vtable*)(_inf->__vtable))->__size(obj);
 }
 
-inline bool istack_empty(const_interface iq) {
-	object o = __object_from_interface(iq);
-	dbg_assert(__cast(o, ISTACK_ID) == iq);
+inline bool istack_empty(const_object obj) {
+	_interface _inf = __cast(obj, ISTACK_ID);
+	dbg_assert(_inf != NULL);
 
-	return ((struct istack_vtable*)(iq->__vtable))->__empty(o);
+	return ((struct istack_vtable*)(_inf->__vtable))->__empty(obj);
 }
 
-inline const_unknown istack_top(const_interface iq) {
-	object o = __object_from_interface(iq);
-	dbg_assert(__cast(o, ISTACK_ID) == iq);
+inline const_unknown istack_top(const_object obj) {
+	_interface _inf = __cast(obj, ISTACK_ID);
+	dbg_assert(_inf != NULL);
 
-	return ((struct istack_vtable*)(iq->__vtable))->__top(o);
+	return ((struct istack_vtable*)(_inf->__vtable))->__top(obj);
 }
 
-inline void istack_push(_interface iq, const_unknown __ref) {
-	object o = __object_from_interface(iq);
-	dbg_assert(__cast(o, ISTACK_ID) == iq);
+inline void istack_push(object obj, const_unknown __ref) {
+	_interface _inf = __cast(obj, ISTACK_ID);
+	dbg_assert(_inf != NULL);
 
-	((struct istack_vtable*)(iq->__vtable))->__push(o, __ref);
+	((struct istack_vtable*)(_inf->__vtable))->__push(obj, __ref);
 }
 
-inline void istack_pop(_interface iq) {
-	object o = __object_from_interface(iq);
-	dbg_assert(__cast(o, ISTACK_ID) == iq);
+inline void istack_pop(object obj) {
+	_interface _inf = __cast(obj, ISTACK_ID);
+	dbg_assert(_inf != NULL);
 
-	((struct istack_vtable*)(iq->__vtable))->__pop(o);
+	((struct istack_vtable*)(_inf->__vtable))->__pop(obj);
 }
-inline iterator istack_itr_create(const_interface iq, itr_pos pos) {
-	object o = __object_from_interface(iq);
-	dbg_assert(__cast(o, ISTACK_ID) == iq);
+inline iterator istack_itr_create(const_object obj, itr_pos pos) {
+	_interface _inf = __cast(obj, ISTACK_ID);
+	dbg_assert(_inf != NULL);
 
-	return ((struct istack_vtable*)iq->__vtable)->__itr_create(o, pos);
+	return ((struct istack_vtable*)_inf->__vtable)->__itr_create(obj, pos);
 }
-inline void istack_itr_assign(const_interface iq, iterator itr, itr_pos pos) {
-	object o = __object_from_interface(iq);
-	dbg_assert(__cast(o, ISTACK_ID) == iq);
+inline void istack_itr_assign(const_object obj, iterator itr, itr_pos pos) {
+	_interface _inf = __cast(obj, ISTACK_ID);
+	dbg_assert(_inf != NULL);
 
-	((struct istack_vtable*)iq->__vtable)->__itr_assign(o, itr, pos);
+	((struct istack_vtable*)_inf->__vtable)->__itr_assign(obj, itr, pos);
 }
-inline const_iterator istack_itr_begin(const_interface iq) {
-	object o = __object_from_interface(iq);
-	dbg_assert(__cast(o, ISTACK_ID) == iq);
+inline const_iterator istack_itr_begin(const_object obj) {
+	_interface _inf = __cast(obj, ISTACK_ID);
+	dbg_assert(_inf != NULL);
 
-	return ((struct istack_vtable*)(iq->__vtable))->__itr_begin(o);
+	return ((struct istack_vtable*)(_inf->__vtable))->__itr_begin(obj);
 }
 
-inline const_iterator istack_itr_end(const_interface iq) {
-	object o = __object_from_interface(iq);
-	dbg_assert(__cast(o, ISTACK_ID) == iq);
+inline const_iterator istack_itr_end(const_object obj) {
+	_interface _inf = __cast(obj, ISTACK_ID);
+	dbg_assert(_inf != NULL);
 
-	return ((struct istack_vtable*)(iq->__vtable))->__itr_end(o);
+	return ((struct istack_vtable*)(_inf->__vtable))->__itr_end(obj);
 }

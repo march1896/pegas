@@ -25,7 +25,7 @@ static void __correctness_test() {
 	}	
 
 	{
-		istack stack = as_stack(cntr_create_olist());
+		istack stack = cntr_create_olist();
 		stack_test_basic(stack);
 		istack_destroy(stack);
 	}	
