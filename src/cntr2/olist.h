@@ -8,6 +8,10 @@
 object        o_dlist_create          (pf_ref_clone_v clone, pf_ref_destroy_v destroy, pf_ref_equals_v equals, allocator alc);
 
 void           o_dlist_destroy         (      object o);
+object         o_dlist_clone           (const_object o);
+bool           o_dlist_equals          (const_object o, const_object other);
+int            o_dlist_compare_to      (const_object o, const_object other);
+hashcode       o_dlist_hashcode        (const_object o);
 void           o_dlist_clear           (      object o);
 void           o_dlist_foreach         (      object o, pf_ref_process_v process, void* context);
 int            o_dlist_size            (const_object o);

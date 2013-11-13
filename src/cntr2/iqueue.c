@@ -1,12 +1,5 @@
 #include <iqueue.h>
 
-inline void iqueue_destroy(object obj) {
-	_interface _inf = (_interface)__cast((unknown)obj, IQUEUE_ID);
-	dbg_assert(_inf != NULL);
-
-	((struct iqueue_vtable*)(_inf->__vtable))->__destroy(obj);
-}
-
 inline void iqueue_clear(object obj) {
 	_interface _inf = (_interface)__cast((unknown)obj, IQUEUE_ID);
 	dbg_assert(_inf != NULL);

@@ -5,7 +5,6 @@
 #include <oo_model.h>
 #include <idef.h>
 
-extern inline       void     istack_destroy     (object obj);
 extern inline       void     istack_clear       (object obj);
 extern inline       void     istack_foreach     (object obj, pf_ref_process_v process, void* context);
 extern inline       int      istack_size        (const_object obj);
@@ -21,7 +20,6 @@ extern inline const_iterator istack_itr_end     (const_object obj);
 
 /* below is only useful for the container implementer */
 /* the virtual functions that each container should implement */
-typedef       void     (*pf_istack_destroy)     (object c);
 typedef       void     (*pf_istack_clear)       (object c);
 typedef       void     (*pf_istack_foreach)     (object c, pf_ref_process_v process, void* context);
 typedef       int      (*pf_istack_size)        (const_object c);
@@ -37,7 +35,6 @@ typedef const_iterator (*pf_istack_itr_end)     (const_object c);
 
 struct istack_vtable {
 	/* public */
-	pf_istack_destroy     __destroy;
 	pf_istack_clear       __clear;
 	pf_istack_foreach     __foreach;
 	pf_istack_size        __size;

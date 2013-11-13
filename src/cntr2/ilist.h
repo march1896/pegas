@@ -5,7 +5,6 @@
 #include <oo_model.h>
 #include <idef.h>
 
-extern inline       void     ilist_destroy         (object obj);
 extern inline       void     ilist_clear           (object obj);
 extern inline       void     ilist_foreach         (object obj, pf_ref_process_v process, void* context);
 extern inline       int      ilist_size            (const_object obj);
@@ -44,7 +43,6 @@ extern inline       void     ilist_itr_insert_after  (object obj, iterator itr, 
 
 /* below is only useful for the container implementer */
 /* the virtual functions that each container should implement */
-typedef       void     (*pf_ilist_destroy)      (object obj);
 typedef       void     (*pf_ilist_clear)        (object obj);
 typedef       void     (*pf_ilist_foreach)      (object obj, pf_ref_process_v process, void* context);
 typedef       int      (*pf_ilist_size)         (const_object obj);
@@ -70,7 +68,6 @@ typedef       void     (*pf_ilist_itr_insert_after) (object obj, iterator itr, c
 
 struct ilist_vtable {
 	/* public */
-	pf_ilist_destroy        __destroy;
 	pf_ilist_clear          __clear;
 	pf_ilist_foreach        __foreach;
 	pf_ilist_size           __size;

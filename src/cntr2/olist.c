@@ -1,6 +1,7 @@
 #include <string.h>
 
 #include "olist.h"
+#include "iobject.h"
 #include "ilist.h"
 #include "iqueue.h"
 #include "istack.h"
@@ -15,6 +16,7 @@
  * above, but not the list directly. */
 
 enum list_interfaces {
+	e_object,
 	e_list,
 	e_queue,
 	e_stack,
@@ -64,8 +66,15 @@ struct o_dlist {
 	struct o_dlist_itr            itr_end;
 };
 
-static struct ilist_vtable __ilist_vtable = {
+static struct iobject_vtable __iobject_vtable = {
 	o_dlist_destroy,          /* __destroy */
+	o_dlist_clone,            /* __clone */
+	o_dlist_equals,           /* __equals */
+	o_dlist_compare_to,       /* __compare_to */
+	o_dlist_hashcode,         /* __hashcode */
+};
+
+static struct ilist_vtable __ilist_vtable = {
 	o_dlist_clear,            /* __clear */
 	o_dlist_foreach,          /* __foreach */
 	o_dlist_size,             /* __size */
@@ -90,7 +99,6 @@ static struct ilist_vtable __ilist_vtable = {
 };
 
 static struct iqueue_vtable __iqueue_vtable = {
-	o_dlist_destroy,          /* __destroy */
 	o_dlist_clear,            /* __clear */
 	o_dlist_foreach,          /* __foreach */
 	o_dlist_size,             /* __size */
@@ -106,7 +114,6 @@ static struct iqueue_vtable __iqueue_vtable = {
 };
 
 static struct istack_vtable __istack_vtable = {
-	o_dlist_destroy,          /* __destroy */
 	o_dlist_clear,            /* __clear */
 	o_dlist_foreach,          /* __foreach */
 	o_dlist_size,             /* __size */
@@ -232,6 +239,8 @@ static unknown o_dlist_cast(unknown x, unique_id intf_id) {
 	dbg_assert(__is_object(x));
 
 	switch (intf_id) {
+	case IOBJECT_ID:
+		return (unknown)&o->__iftable[e_object];
 	case ILIST_ID:
 		return (unknown)&o->__iftable[e_list];
 	case IQUEUE_ID:
@@ -295,12 +304,14 @@ object o_dlist_create(pf_ref_clone_v clone, pf_ref_destroy_v destroy, pf_ref_equ
 	olist->__offset = olist;
 	olist->__cast   = o_dlist_cast;
 	
-	olist->__iftable[e_list].__offset = (address)e_list;
-	olist->__iftable[e_list].__vtable = &__ilist_vtable;
-	olist->__iftable[e_queue].__offset = (address)e_queue;
-	olist->__iftable[e_queue].__vtable = &__iqueue_vtable;
-	olist->__iftable[e_stack].__offset = (address)e_stack;
-	olist->__iftable[e_stack].__vtable = &__istack_vtable;
+	olist->__iftable[e_object].__offset = (address)e_object;
+	olist->__iftable[e_object].__vtable = &__iobject_vtable;
+	olist->__iftable[e_list].__offset   = (address)e_list;
+	olist->__iftable[e_list].__vtable   = &__ilist_vtable;
+	olist->__iftable[e_queue].__offset  = (address)e_queue;
+	olist->__iftable[e_queue].__vtable  = &__iqueue_vtable;
+	olist->__iftable[e_stack].__offset  = (address)e_stack;
+	olist->__iftable[e_stack].__vtable  = &__istack_vtable;
 
 	list_init(&olist->sentinel);
 	olist->size    = 0;
@@ -330,6 +341,18 @@ void o_dlist_destroy(object o) {
 	if (join_alc) {
 		allocator_join(alc);
 	}
+}
+object o_dlist_clone(const_object o) {
+	return NULL;
+}
+bool o_dlist_equals(const_object o, const_object other) {
+	return false;
+}
+int o_dlist_compare_to(const_object o, const_object other) {
+	return 0;
+}
+hashcode o_dlist_hashcode(const_object o) {
+	return 0;
 }
 
 static void olistlink_dispose(struct list_link* link, void* context) {
