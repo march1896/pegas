@@ -27,13 +27,17 @@ struct msg_entry {
 	unknown    function;
 };
 
-struct __protocol_t {
-	/* a protocol is an object, so it has a pointer to its class */
+struct __protocol_sample {
+	// a protocol is an object, so it has a pointer to its class
 	__class             is_a;
 
 	struct __type_info  info;
+
+	struct msg_table {
+		struct msg_entry method_0;
+		struct msg_entry method_1;
+	};
 };
-typedef struct __protocol_t *protocol;
 
 
 /* in order to dispatch a message at runtime, we should have a table which contains <msg_name, msg_function_entry, param_number> */
