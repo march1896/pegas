@@ -668,7 +668,7 @@ void o_dlist_insert_before(object o, iterator itr, const_unknown __ref) {
 	olist->size ++;
 }
 
-void o_dlist_insert_after(object o, iterator itr, void* __ref) {
+void o_dlist_insert_after(object o, iterator itr, const_unknown __ref) {
 	struct o_dlist* olist       = (struct o_dlist*)o;
 	struct o_dlist_itr* oitr    = (struct o_dlist_itr*)itr;
 	struct o_dlist_node* node   = container_of(oitr->current, struct o_dlist_node, link);

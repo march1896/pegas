@@ -315,6 +315,7 @@ bool heap_mpool_dealloc_c(struct heap_mpool* h, void* buff) {
 
 #else 
 
+#include <stdio.h>
 void* heap_mpool_alloc_v(struct heap_mpool* h, int __size, const char* file, int line) {
 	void* mem;
 	int i = 0;
@@ -330,6 +331,7 @@ void* heap_mpool_alloc_v(struct heap_mpool* h, int __size, const char* file, int
 	if (i == h->used_pools) {
 		if (h->used_pools == h->num_pools) {
 			/* we should never be here */
+			printf("%d %d\n", h->used_pools, h->num_pools);
 			dbg_assert(false);
 			return NULL;
 		}
