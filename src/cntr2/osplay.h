@@ -8,6 +8,10 @@
 object         splayset_create          (pf_ref_compare ref_comp, allocator alc);
 object         splayset_create_v        (pf_ref_compare_v compv, void* cp_context, allocator alc);
 void            splayset_destroy         (object o);
+object          splayset_clone           (const_object o);
+bool            splayset_equals          (const_object o, const_object other);
+int             splayset_compare_to      (const_object o, const_object other);
+hashcode        splayset_hashcode        (const_object o);
 void            splayset_clear           (object o);
 void            splayset_clear_v         (object o, pf_ref_dispose_v dispose, void* context);
 int             splayset_size            (const_object o);

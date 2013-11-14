@@ -233,6 +233,7 @@
     <ClCompile Include="..\..\src\memheap\heap_wrap.c" />
     <ClCompile Include="..\..\src\util\bit_math.c" />
     <ClCompile Include="..\..\src\util\bst_link.c" />
+    <ClCompile Include="..\..\src\util\cominc.c" />
     <ClCompile Include="..\..\src\util\list_link.c" />
     <ClCompile Include="..\..\src\util\llrb_link.c" />
     <ClCompile Include="..\..\src\util\skiplist.c" />

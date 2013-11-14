@@ -30,8 +30,8 @@
 typedef object iqueue;
 typedef object istack;
 typedef object ilist;
-typedef _interface iset;
-typedef _interface imset;
+typedef object iset;
+typedef object imset;
 
 typedef object allocator;
 

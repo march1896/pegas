@@ -1,5 +1,6 @@
 #include <string.h>
 
+#include <cntr2/iobject.h>
 #include <cntr2/iset.h>
 #include <cntr2/iitr.h>
 #include <cntr2/ifactory.h>
@@ -11,6 +12,7 @@
 /* this module defines a left-lean red black tree container, which implements iset interface. */
 
 enum llrb_interfaces {
+	e_object,
 	e_set,
 	e_mset,
 	e_l_count
@@ -63,8 +65,15 @@ struct ollrb {
 	struct ollrb_itr              itr_end;
 };
 
-static struct iset_vtable __iset_vtable = {
+static struct iobject_vtable __iobject_vtable = {
 	ollrb_destroy,          /* __destroy */
+	ollrb_clone,            /* __clone */
+	ollrb_equals,           /* __equals */
+	ollrb_compare_to,       /* __compare_to */
+	ollrb_hashcode,         /* __hashcode */
+};
+
+static struct iset_vtable __iset_vtable = {
 	ollrb_clear,            /* __clear */
 	ollrb_clear_v,          /* __clear */
 	ollrb_size,             /* __size */
@@ -82,7 +91,6 @@ static struct iset_vtable __iset_vtable = {
 };
 
 static struct imset_vtable __imset_vtable = {
-	ollrb_destroy,          /* __destroy */
 	ollrb_clear,            /* __clear */
 	ollrb_clear_v,          /* __clear_v */
 	ollrb_size,             /* __size */
@@ -218,6 +226,9 @@ static unknown ollrb_cast(unknown x, unique_id intf_id) {
 	dbg_assert(__is_object(x));
 
 	switch (intf_id) {
+	case IOBJECT_ID:
+		return (unknown)&o->__iftable[e_object];
+		break;
 	case ISET_ID:
 		return (unknown)&o->__iftable[e_set];
 		break;
@@ -294,6 +305,8 @@ static object ollrb_create_internal(pf_ref_compare comp, pf_ref_compare_v compv,
 	ollrb->__offset = ollrb;
 	ollrb->__cast   = ollrb_cast;
 	
+	ollrb->__iftable[e_object].__offset = (address)e_object;
+	ollrb->__iftable[e_object].__vtable = &__iobject_vtable;
 	ollrb->__iftable[e_set].__offset = (address)e_set;
 	ollrb->__iftable[e_set].__vtable = &__iset_vtable;
 	ollrb->__iftable[e_mset].__offset = (address)e_mset;
@@ -364,6 +377,19 @@ void ollrb_destroy(object o) {
 	if (join_alc) {
 		allocator_join(alc);
 	}
+}
+
+object ollrb_clone(const_object o) {
+	return NULL;
+}
+bool ollrb_equals(const_object o, const_object other) {
+	return false;
+}
+int ollrb_compare_to(const_object o, const_object other) {
+	return 1;
+}
+hashcode ollrb_hashcode(const_object o) {
+	return (hashcode)NULL;
 }
 
 typedef void (*pf_per_link_operation)(struct llrb_link* link, void* param);

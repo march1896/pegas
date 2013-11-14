@@ -1,7 +1,7 @@
 #include <iitr.h>
 
 inline void itr_destroy(iterator itr) {
-	/* iterator object always inherit iiterator as the first interface */
+	/* iterator object always inherit iterator as the first interface */
 	_interface intf = __fast_cast(itr, 0);
 	dbg_assert(intf == __cast(itr, ITR_BAS_ID));
 
@@ -23,14 +23,14 @@ inline bool itr_equals(const_iterator ia, const_iterator ib) {
 	return ((struct itr_base_vtable*)(intf->__vtable))->__equals(ia, ib);
 }
 
-inline const void* itr_get_ref(const_iterator itr) {
-	_interface intf = __fast_cast((unknown)itr, 0);
+inline const_unknown itr_get_ref(const_iterator itr) {
+	_interface intf = __fast_cast(itr, 0);
 	dbg_assert(intf == __cast((unknown)itr, ITR_REF_ID));
 
 	return ((struct itr_readable_vtable*)(intf->__vtable))->__get_ref(itr);
 }
 
-inline void itr_set_ref(iterator itr, const void* __ref) {
+inline void itr_set_ref(iterator itr, const_unknown __ref) {
 	_interface intf = __fast_cast(itr, 0);
 	dbg_assert(intf == __cast(itr, ITR_ACC_ID));
 
@@ -59,7 +59,7 @@ inline void itr_advance(iterator itr, int length) {
 }
 
 inline int  itr_distance(const_iterator from, const_iterator to) {
-	_interface intf = __fast_cast((unknown)from, 0);
+	_interface intf = __fast_cast(from, 0);
 	dbg_assert(intf == __cast((unknown)from, ITR_RAC_ID));
 
 	return ((struct itr_randomaccessible_vtable*)(intf->__vtable))->__distance(from, to);

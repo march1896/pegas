@@ -8,6 +8,10 @@
 object  oskiplist_create          (pf_ref_compare ref_comp, allocator alc);
 object  oskiplist_create_v        (pf_ref_compare_v ref_comp_v, void* comp_context, allocator alc);
 void     oskiplist_destroy         (object o);
+object   oskiplist_clone           (const_object o);
+bool     oskiplist_equals          (const_object o, const_object other);
+int      oskiplist_compare_to      (const_object o, const_object other);
+hashcode oskiplist_hashcode        (const_object o);
 void     oskiplist_clear           (object o);
 void     oskiplist_clear_v         (object o, pf_ref_dispose_v dispose, void* context);
 int      oskiplist_size            (const_object o);

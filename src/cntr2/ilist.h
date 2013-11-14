@@ -65,7 +65,6 @@ typedef       void     (*pf_ilist_itr_remove)   (object obj, iterator itr);
 typedef       void     (*pf_ilist_itr_insert_before)(object obj, iterator itr, const_unknown n_ref);
 typedef       void     (*pf_ilist_itr_insert_after) (object obj, iterator itr, const_unknown n_ref);
 
-
 struct ilist_vtable {
 	/* public */
 	pf_ilist_clear          __clear;

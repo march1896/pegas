@@ -107,7 +107,7 @@ void pair_release(struct pair* p, void* context) {
 
 atm* atm_clone(atm* old_atm) {
 	atm* new_atm = atm_create(old_atm->context);
-	iset states_map = as_set(cntr_create_ollrb_a(pair_pointer_compare, old_atm->context->cntr_alc));
+	iset states_map = cntr_create_ollrb_a(pair_pointer_compare, old_atm->context->cntr_alc);
 
 	iterator itr = ilist_itr_create(old_atm->states, itr_begin);
 	for (; itr != ilist_itr_end(old_atm->states); itr_to_next(itr)) {

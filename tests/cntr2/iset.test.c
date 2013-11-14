@@ -4,7 +4,7 @@
 #include "iset.test.h"
 #include "test_util.h"
 
-static void set_test_basic_itr_operation(_interface set) {
+static void set_test_basic_itr_operation(object set) {
 	iset_clear_v(set, NULL, NULL);
 	dbg_assert(iset_empty(set));
 
@@ -90,7 +90,7 @@ static void set_test_basic_itr_operation(_interface set) {
 	return;
 }
 
-static void set_test_basic_operation(_interface set) {
+static void set_test_basic_operation(object set) {
 	iset_clear_v(set, NULL, NULL);
 	dbg_assert(iset_empty(set));
 
@@ -274,7 +274,7 @@ static int __num_search;
 static int __data_diff_type; /* number of different values to store in the set */
 static int __data_max_count; /* max count of a single value */
 
-static _interface __set = NULL; /* to be tested */
+static object __set = NULL; /* to be tested */
 static intptr_t* data_count = NULL;
 
 static void __reset_data() {
@@ -345,15 +345,15 @@ static void set_bench_search_randomly() {
 }
 
 
-void set_test_basic(_interface set) {
+void set_test_basic(object set) {
 	set_test_basic_operation(set);
 	set_test_basic_itr_operation(set);
 }
 
-void set_test_memory(_interface set) {
+void set_test_memory(object set) {
 }
 
-void set_test_bench(_interface set) {
+void set_test_bench(object set) {
 	__set = set;
 	__data_diff_type = 100;
 	__data_max_count = 1;

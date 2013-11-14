@@ -12,8 +12,8 @@ extern inline iterator itr_clone       (const_iterator itr);
 extern inline bool itr_assign          (const_iterator itr, iterator dest);
 
 extern inline bool itr_equals          (const_iterator ia, const_iterator ib);
-extern inline const void* itr_get_ref  (const_iterator itr);
-extern inline void itr_set_ref         (iterator itr, const void* __ref);
+extern inline const_unknown itr_get_ref(const_iterator itr);
+extern inline void itr_set_ref         (iterator itr, const_unknown __ref);
 extern inline void itr_to_prev         (iterator itr);
 extern inline void itr_to_next         (iterator itr);
 extern inline void itr_advance         (iterator itr, int length);
@@ -37,8 +37,8 @@ extern inline int  iitr_distance       (const_interface ifrom, const_interface i
 /* below is only useful for the container implementer */
 /* the virtual functions that each container should implement */
 typedef bool     (*pf_itr_equals)      (const_iterator itr_a, const_iterator itr_b);
-typedef const void* (*pf_itr_get_ref)  (const_iterator citr);
-typedef void     (*pf_itr_set_ref)     (iterator citr, const void* object);
+typedef const_unknown (*pf_itr_get_ref)(const_iterator citr);
+typedef void     (*pf_itr_set_ref)     (iterator citr, const_unknown object);
 typedef void     (*pf_itr_to_prev)     (iterator citr);
 typedef void     (*pf_itr_to_next)     (iterator citr);
 typedef void*    (*pf_itr_advance)     (iterator citr, int length);
