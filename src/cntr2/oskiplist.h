@@ -5,8 +5,8 @@
 #include <cntr2/oallocator.h>
 
 /* if alc is NULL, create_v will create an osplay with multi-pool allocator to gain best efficiency */
-object  oskiplist_create          (pf_ref_compare ref_comp, allocator alc);
-object  oskiplist_create_v        (pf_ref_compare_v ref_comp_v, void* comp_context, allocator alc);
+object   oskiplist_create          (pf_ref_compare ref_comp, allocator alc);
+object   oskiplist_create_v        (pf_ref_compare_v ref_comp_v, void* comp_context, allocator alc);
 void     oskiplist_destroy         (object o);
 object   oskiplist_clone           (const_object o);
 bool     oskiplist_equals          (const_object o, const_object other);

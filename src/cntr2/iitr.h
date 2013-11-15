@@ -4,6 +4,7 @@
 /* the interface functions which support, used by clients */
 #include <oo_model.h>
 #include <idef.h>
+#include <iobject.h>
 
 extern inline void itr_destroy         (iterator itr);
 extern inline iterator itr_clone       (const_iterator itr);
@@ -53,101 +54,101 @@ typedef int      (*pf_itr_distance)    (const_iterator citr_from, const_iterator
 
 struct itr_base_vtable {
 	/* from common object */
-	pf_oo_destroy      __destroy;
-	pf_oo_clone        __clone;
+	pf_iobject_destroy      __destroy;
+	pf_iobject_clone        __clone;
 
-	pf_itr_equals      __equals;
+	pf_itr_equals           __equals;
 };
 
 /* extends itr_base_vtable */
 struct itr_readable_vtable { 
 	/* base interface */
-	pf_oo_destroy      __destroy;
-	pf_oo_clone        __clone;
+	pf_iobject_destroy      __destroy;
+	pf_iobject_clone        __clone;
 
-	pf_itr_equals      __equals;
+	pf_itr_equals           __equals;
 
 	/* readable interface */
-	pf_itr_get_ref     __get_ref;
+	pf_itr_get_ref          __get_ref;
 };
 
 /* extends itr_readable_vtable */
 struct itr_accessible_vtable {
 	/* base interface */
-	pf_oo_destroy      __destroy;
-	pf_oo_clone        __clone;
+	pf_iobject_destroy      __destroy;
+	pf_iobject_clone        __clone;
 
-	pf_itr_equals      __equals;
+	pf_itr_equals           __equals;
 
 	/* readable interface */
-	pf_itr_get_ref     __get_ref;
+	pf_itr_get_ref          __get_ref;
 
 	/* accessible interface */
-	pf_itr_set_ref     __set_ref;
+	pf_itr_set_ref          __set_ref;
 };
 
 /* extends itr_accessible_vtable */
 struct itr_forward_vtable {
 	/* base interface */
-	pf_oo_destroy      __destroy;
-	pf_oo_clone        __clone;
+	pf_iobject_destroy      __destroy;
+	pf_iobject_clone        __clone;
 
-	pf_itr_equals      __equals;
+	pf_itr_equals           __equals;
 
 	/* readable interface */
-	pf_itr_get_ref     __get_ref;
+	pf_itr_get_ref          __get_ref;
 
 	/* accessible interface */
-	pf_itr_set_ref     __set_ref;
+	pf_itr_set_ref          __set_ref;
 
 	/* forward interface */
-	pf_itr_to_next     __to_next;
+	pf_itr_to_next          __to_next;
 };
 
 /* extends itr_forward_vtable */
 struct itr_bidirectional_vtable {
 	/* base interface */
-	pf_oo_destroy      __destroy;
-	pf_oo_clone        __clone;
+	pf_iobject_destroy      __destroy;
+	pf_iobject_clone        __clone;
 
-	pf_itr_equals      __equals;
-
+	pf_itr_equals           __equals;
+	 
 	/* readable interface */
-	pf_itr_get_ref     __get_ref;
+	pf_itr_get_ref          __get_ref;
 
 	/* accessible interface */
-	pf_itr_set_ref     __set_ref;
+	pf_itr_set_ref          __set_ref;
 
 	/* forward interface */
-	pf_itr_to_next     __to_next;
+	pf_itr_to_next          __to_next;
 
 	/* bidirectional interface */
-	pf_itr_to_prev     __to_prev;
+	pf_itr_to_prev          __to_prev;
 };
 
 /* extends itr_bidirectional_vtable */
 struct itr_randomaccessible_vtable {
 	/* base interface */
-	pf_oo_destroy      __destroy;
-	pf_oo_clone        __clone;
+	pf_iobject_destroy      __destroy;
+	pf_iobject_clone        __clone;
 
-	pf_itr_equals      __equals;
+	pf_itr_equals           __equals;
 
 	/* readable interface */
-	pf_itr_get_ref     __get_ref;
+	pf_itr_get_ref          __get_ref;
 
 	/* accessible interface */
-	pf_itr_set_ref     __set_ref;
+	pf_itr_set_ref          __set_ref;
 
 	/* forward interface */
-	pf_itr_to_next     __to_next;
+	pf_itr_to_next          __to_next;
 
 	/* bidirectional interface */
-	pf_itr_to_prev     __to_prev;
+	pf_itr_to_prev          __to_prev;
 
 	/* random accessible interface */
-	pf_itr_advance     __advance;
-	pf_itr_distance    __distance;
+	pf_itr_advance          __advance;
+	pf_itr_distance         __distance;
 };
 
 #endif /* _INTERFACE_ITR_H_ */

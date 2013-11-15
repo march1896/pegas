@@ -64,7 +64,7 @@ struct osplay {
 	struct osplay_itr             itr_end;
 };
 
-static struct iobject_vtable __iobject_vtable = {
+static struct iobject_vtable __osplay_iobject_vtable = {
 	splayset_destroy,          /* __destroy */
 	splayset_clone,            /* __clone */
 	splayset_equals,           /* __equals */
@@ -72,7 +72,7 @@ static struct iobject_vtable __iobject_vtable = {
 	splayset_hashcode,         /* __hashcode */
 };
 
-static struct iset_vtable __iset_vtable = {
+static struct iset_vtable __osplay_iset_vtable = {
 	splayset_clear,            /* __clear */
 	splayset_clear_v,          /* __clear_v */
 	splayset_size,             /* __size */
@@ -89,7 +89,7 @@ static struct iset_vtable __iset_vtable = {
 	splayset_itr_end           /* __itr_end */
 };
 
-static struct imset_vtable __imset_vtable = {
+static struct imset_vtable __osplay_imset_vtable = {
 	splayset_clear,            /* __clear */
 	splayset_clear_v,          /* __clear_v */
 	splayset_size,             /* __size */
@@ -119,7 +119,7 @@ static void osplay_itr_set_ref(iterator citr, const void* n_ref);
 static void osplay_itr_to_next(iterator citr);
 static void osplay_itr_to_prev(iterator citr);
 
-static struct itr_bidirectional_vtable __itr_vtable = {
+static struct itr_bidirectional_vtable __osplay_itr_vtable = {
 	osplay_itr_destroy,      /* __destroy */
 	osplay_itr_clone,        /* __clone   */
 	osplay_itr_equals,       /* __equals  */
@@ -303,11 +303,11 @@ static object splayset_create_internal(pf_ref_compare comp, pf_ref_compare_v com
 	osplay->__cast   = osplay_cast;
 	
 	osplay->__iftable[e_object].__offset = (address)e_object;
-	osplay->__iftable[e_object].__vtable = &__iobject_vtable;
+	osplay->__iftable[e_object].__vtable = &__osplay_iobject_vtable;
 	osplay->__iftable[e_set].__offset = (address)e_set;
-	osplay->__iftable[e_set].__vtable = &__iset_vtable;
+	osplay->__iftable[e_set].__vtable = &__osplay_iset_vtable;
 	osplay->__iftable[e_mset].__offset = (address)e_mset;
-	osplay->__iftable[e_mset].__vtable = &__imset_vtable;
+	osplay->__iftable[e_mset].__vtable = &__osplay_imset_vtable;
 
 	osplay->size      = 0;
 
@@ -478,7 +478,7 @@ static void osplay_itr_com_init(struct osplay_itr* itr, struct osplay* list) {
 	itr->__cast   = osplay_itr_cast;
 
 	itr->__iftable[0].__offset = (address)0;
-	itr->__iftable[0].__vtable = (unknown)&__itr_vtable;
+	itr->__iftable[0].__vtable = (unknown)&__osplay_itr_vtable;
 
 	itr->allocator = list->allocator;
 	/* itr->__current = NULL; */
@@ -632,7 +632,7 @@ void splayset_itr_find_s(const_object o, iterator itr, const void* __ref) {
 
 	/* make sure the iterator type is right */
 	dbg_assert(itr->__iftable[0].__offset == (address)0);
-	dbg_assert(itr->__iftable[0].__vtable == (unknown)&__itr_vtable);
+	dbg_assert(itr->__iftable[0].__vtable == (unknown)&__osplay_itr_vtable);
 
 	if (find_res != NULL) {
 		oitr->current = find_res;
@@ -658,7 +658,7 @@ void splayset_itr_find_lower_m(const_object o, iterator itr, const void* __ref) 
 
 	/* make sure the iterator type is right */
 	dbg_assert(itr->__iftable[0].__offset == (address)0);
-	dbg_assert(itr->__iftable[0].__vtable == (unknown)&__itr_vtable);
+	dbg_assert(itr->__iftable[0].__vtable == (unknown)&__osplay_itr_vtable);
 
 	if (link != NULL) {
 		oitr->current = link;
@@ -683,7 +683,7 @@ void splayset_itr_find_upper_m(const_object o, iterator itr, const void* __ref) 
 
 	/* make sure the iterator type is right */
 	dbg_assert(itr->__iftable[0].__offset == (address)0);
-	dbg_assert(itr->__iftable[0].__vtable == (unknown)&__itr_vtable);
+	dbg_assert(itr->__iftable[0].__vtable == (unknown)&__osplay_itr_vtable);
 
 	if (link != NULL) { 
 		oitr->current = link;

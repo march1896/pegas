@@ -12,6 +12,7 @@ object         olist_clone           (const_object o);
 bool           olist_equals          (const_object o, const_object other);
 int            olist_compare_to      (const_object o, const_object other);
 hashcode       olist_hashcode        (const_object o);
+
 void           olist_clear           (      object o);
 void           olist_foreach         (      object o, pf_ref_process_v process, void* context);
 int            olist_size            (const_object o);

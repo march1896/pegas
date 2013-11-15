@@ -25,8 +25,7 @@
  */
 
 /* 
- * oallocator implements iallocator interface, in fact it implements the 'heap interface'
- * implicitly. recall the heap definition in heap_def.h
+ * allocator implements the 'heap interface' implicitly. recall the heap definition in heap_def.h
  * it has two method pf_alloc, pf_dealloc and a heap_handle.
  * allocator has allocator_acquire, allocator_release and allocator, we could pass the above 
  * three functions to any where that needs a pf_alloc, pf_dealloc and a heap handler.
@@ -47,6 +46,34 @@ extern inline bool  allocator_release_c(allocator o, void* buff);
 #endif
 extern inline allocator allocator_get_parent(allocator o);
 extern inline void      allocator_walk      (allocator o, pf_process_block per_block_cb, void* param);
+
+/* codes below is only useful for allocator implementors */
+typedef void   (*pf_allocator_join)       (object o);
+typedef void*  (*pf_allocator_acquire_v)  (object o, int size, const char* file, int line);
+typedef bool   (*pf_allocator_release_v)  (object o, void* buff, const char* file, int line);
+typedef void*  (*pf_allocator_acquire_c)  (object o, int size);
+typedef bool   (*pf_allocator_release_c)  (object o, void* buff);
+typedef object (*pf_allocator_get_parent) (object o);
+typedef void   (*pf_allocator_walk)       (object o, pf_process_block per_block_cb, void* param);
+
+#ifdef _VERBOSE_ALLOC_DEALLOC_
+#define pf_allocator_acquire pf_allocator_acquire_v
+#define pf_allocator_release pf_allocator_release_v
+#else 
+#define pf_allocator_acquire pf_allocator_acquire_c
+#define pf_allocator_release pf_allocator_release_c
+#endif
+
+struct allocator_vtable {
+	/* heap doest not contains destroy method */
+	pf_allocator_join           __join;
+
+	pf_allocator_acquire        __acquire;
+	pf_allocator_release        __release;
+
+	pf_allocator_get_parent     __get_parent;
+	pf_allocator_walk           __heap_walk;
+};
 
 #define allocator_alloc(o, size)   alloc(allocator_acquire, o, size)
 #define allocator_dealloc(o, buff) dealloc(allocator_release, o, buff)

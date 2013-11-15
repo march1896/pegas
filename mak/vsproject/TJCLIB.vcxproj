@@ -204,7 +204,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\cntr2\ialgo.c" />
-    <ClCompile Include="..\..\src\cntr2\iallocator.c" />
     <ClCompile Include="..\..\src\cntr2\iitr.c" />
     <ClCompile Include="..\..\src\cntr2\ilist.c" />
     <ClCompile Include="..\..\src\cntr2\imap.c" />
@@ -241,7 +240,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\cntr2\ialgo.h" />
-    <ClInclude Include="..\..\src\cntr2\iallocator.h" />
     <ClInclude Include="..\..\src\cntr2\idef.h" />
     <ClInclude Include="..\..\src\cntr2\ifactory.h" />
     <ClInclude Include="..\..\src\cntr2\iitr.h" />

@@ -65,7 +65,7 @@ struct ollrb {
 	struct ollrb_itr              itr_end;
 };
 
-static struct iobject_vtable __iobject_vtable = {
+static struct iobject_vtable __ollrb_iobject_vtable = {
 	ollrb_destroy,          /* __destroy */
 	ollrb_clone,            /* __clone */
 	ollrb_equals,           /* __equals */
@@ -73,7 +73,7 @@ static struct iobject_vtable __iobject_vtable = {
 	ollrb_hashcode,         /* __hashcode */
 };
 
-static struct iset_vtable __iset_vtable = {
+static struct iset_vtable __ollrb_iset_vtable = {
 	ollrb_clear,            /* __clear */
 	ollrb_clear_v,          /* __clear */
 	ollrb_size,             /* __size */
@@ -90,7 +90,7 @@ static struct iset_vtable __iset_vtable = {
 	ollrb_itr_end           /* __itr_end */
 };
 
-static struct imset_vtable __imset_vtable = {
+static struct imset_vtable __ollrb_imset_vtable = {
 	ollrb_clear,            /* __clear */
 	ollrb_clear_v,          /* __clear_v */
 	ollrb_size,             /* __size */
@@ -120,7 +120,7 @@ static void ollrb_itr_set_ref(iterator citr, const void* n_ref);
 static void ollrb_itr_to_next(iterator citr);
 static void ollrb_itr_to_prev(iterator citr);
 
-static struct itr_bidirectional_vtable __itr_vtable = {
+static struct itr_bidirectional_vtable __ollrb_itr_vtable = {
 	ollrb_itr_destroy,      /* __destroy */
 	ollrb_itr_clone,        /* __clone   */
 	ollrb_itr_equals,       /* __equals  */
@@ -306,11 +306,11 @@ static object ollrb_create_internal(pf_ref_compare comp, pf_ref_compare_v compv,
 	ollrb->__cast   = ollrb_cast;
 	
 	ollrb->__iftable[e_object].__offset = (address)e_object;
-	ollrb->__iftable[e_object].__vtable = &__iobject_vtable;
+	ollrb->__iftable[e_object].__vtable = &__ollrb_iobject_vtable;
 	ollrb->__iftable[e_set].__offset = (address)e_set;
-	ollrb->__iftable[e_set].__vtable = &__iset_vtable;
+	ollrb->__iftable[e_set].__vtable = &__ollrb_iset_vtable;
 	ollrb->__iftable[e_mset].__offset = (address)e_mset;
-	ollrb->__iftable[e_mset].__vtable = &__imset_vtable;
+	ollrb->__iftable[e_mset].__vtable = &__ollrb_imset_vtable;
 
 	ollrb->size      = 0;
 	if (comp != NULL) {
@@ -476,7 +476,7 @@ static void ollrb_itr_com_init(struct ollrb_itr* itr, struct ollrb* list) {
 	itr->__cast   = ollrb_itr_cast;
 
 	itr->__iftable[0].__offset = (address)0;
-	itr->__iftable[0].__vtable = (unknown)&__itr_vtable;
+	itr->__iftable[0].__vtable = (unknown)&__ollrb_itr_vtable;
 
 	itr->allocator = list->allocator;
 	/* itr->__current = NULL; */
@@ -630,7 +630,7 @@ void ollrb_itr_find(const_object o, iterator itr, const void* __ref) {
 
 	/* make sure the iterator type is right */
 	dbg_assert(itr->__iftable[0].__offset == (address)0);
-	dbg_assert(itr->__iftable[0].__vtable == (unknown)&__itr_vtable);
+	dbg_assert(itr->__iftable[0].__vtable == (unknown)&__ollrb_itr_vtable);
 
 	if (link != NULL) {
 		oitr->current = link;
@@ -652,7 +652,7 @@ void ollrb_itr_find_lower(const_object o, iterator itr, const void* __ref) {
 
 	/* make sure the iterator type is right */
 	dbg_assert(itr->__iftable[0].__offset == (address)0);
-	dbg_assert(itr->__iftable[0].__vtable == (unknown)&__itr_vtable);
+	dbg_assert(itr->__iftable[0].__vtable == (unknown)&__ollrb_itr_vtable);
 
 	if (link != NULL) {
 		oitr->current = link;
@@ -673,7 +673,7 @@ void ollrb_itr_find_upper(const_object o, iterator itr, const void* __ref) {
 
 	/* make sure the iterator type is right */
 	dbg_assert(itr->__iftable[0].__offset == (address)0);
-	dbg_assert(itr->__iftable[0].__vtable == (unknown)&__itr_vtable);
+	dbg_assert(itr->__iftable[0].__vtable == (unknown)&__ollrb_itr_vtable);
 
 	if (link != NULL) { 
 		oitr->current = link;

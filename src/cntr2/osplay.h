@@ -5,8 +5,8 @@
 #include <cntr2/oallocator.h>
 
 /* if alc is NULL, create_v will create an osplay with multi-pool allocator to gain best efficiency */
-object         splayset_create          (pf_ref_compare ref_comp, allocator alc);
-object         splayset_create_v        (pf_ref_compare_v compv, void* cp_context, allocator alc);
+object          splayset_create          (pf_ref_compare ref_comp, allocator alc);
+object          splayset_create_v        (pf_ref_compare_v compv, void* cp_context, allocator alc);
 void            splayset_destroy         (object o);
 object          splayset_clone           (const_object o);
 bool            splayset_equals          (const_object o, const_object other);

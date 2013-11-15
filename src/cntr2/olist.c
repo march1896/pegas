@@ -66,7 +66,7 @@ struct o_dlist {
 	struct o_dlist_itr            itr_end;
 };
 
-static struct iobject_vtable __iobject_vtable = {
+static struct iobject_vtable __olist_iobject_vtable = {
 	olist_destroy,          /* __destroy */
 	olist_clone,            /* __clone */
 	olist_equals,           /* __equals */
@@ -74,7 +74,7 @@ static struct iobject_vtable __iobject_vtable = {
 	olist_hashcode,         /* __hashcode */
 };
 
-static struct ilist_vtable __ilist_vtable = {
+static struct ilist_vtable __olist_ilist_vtable = {
 	olist_clear,            /* __clear */
 	olist_foreach,          /* __foreach */
 	olist_size,             /* __size */
@@ -98,7 +98,7 @@ static struct ilist_vtable __ilist_vtable = {
 	olist_insert_after      /* __insert_after */
 };
 
-static struct iqueue_vtable __iqueue_vtable = {
+static struct iqueue_vtable __olist_iqueue_vtable = {
 	olist_clear,            /* __clear */
 	olist_foreach,          /* __foreach */
 	olist_size,             /* __size */
@@ -113,7 +113,7 @@ static struct iqueue_vtable __iqueue_vtable = {
 	olist_itr_end           /* __itr_end */
 };
 
-static struct istack_vtable __istack_vtable = {
+static struct istack_vtable __olist_istack_vtable = {
 	olist_clear,            /* __clear */
 	olist_foreach,          /* __foreach */
 	olist_size,             /* __size */
@@ -223,7 +223,7 @@ static void o_dlist_itr_to_prev(iterator citr) {
 	itr->current = itr->current->prev;
 }
 
-static struct itr_bidirectional_vtable __itr_vtable = {
+static struct itr_bidirectional_vtable __olist_itr_vtable = {
 	o_dlist_itr_destroy,      /* __destroy */
 	o_dlist_itr_clone,        /* __clone   */
 	o_dlist_itr_equals,       /* __equals  */
@@ -305,13 +305,13 @@ object olist_create(pf_ref_clone_v clone, pf_ref_destroy_v destroy, pf_ref_equal
 	olist->__cast   = o_dlist_cast;
 	
 	olist->__iftable[e_object].__offset = (address)e_object;
-	olist->__iftable[e_object].__vtable = &__iobject_vtable;
+	olist->__iftable[e_object].__vtable = &__olist_iobject_vtable;
 	olist->__iftable[e_list].__offset   = (address)e_list;
-	olist->__iftable[e_list].__vtable   = &__ilist_vtable;
+	olist->__iftable[e_list].__vtable   = &__olist_ilist_vtable;
 	olist->__iftable[e_queue].__offset  = (address)e_queue;
-	olist->__iftable[e_queue].__vtable  = &__iqueue_vtable;
+	olist->__iftable[e_queue].__vtable  = &__olist_iqueue_vtable;
 	olist->__iftable[e_stack].__offset  = (address)e_stack;
-	olist->__iftable[e_stack].__vtable  = &__istack_vtable;
+	olist->__iftable[e_stack].__vtable  = &__olist_istack_vtable;
 
 	list_init(&olist->sentinel);
 	olist->size    = 0;
@@ -557,7 +557,7 @@ static void o_dlist_itr_com_init(struct o_dlist_itr* itr, struct o_dlist* list) 
 	itr->__cast   = o_dlist_itr_cast;
 
 	itr->__iftable[0].__offset = (address)0;
-	itr->__iftable[0].__vtable = (unknown)&__itr_vtable;
+	itr->__iftable[0].__vtable = (unknown)&__olist_itr_vtable;
 
 	itr->container = list;
 	itr->allocator = list->allocator;
@@ -637,7 +637,7 @@ void olist_itr_find(const_object o, iterator itr, const_unknown __ref) {
 
 	/* make sure the type information is right */
 	dbg_assert(itr->__iftable[0].__offset == (address)0);
-	dbg_assert(itr->__iftable[0].__vtable == (unknown)&__itr_vtable);
+	dbg_assert(itr->__iftable[0].__vtable == (unknown)&__olist_itr_vtable);
 
 	dbg_assert(oitr->container == olist);
 

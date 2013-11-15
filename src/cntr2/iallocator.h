@@ -39,7 +39,7 @@ typedef void*  (*pf_iallocator_acquire_v)  (object o, int size, const char* file
 typedef bool   (*pf_iallocator_release_v)  (object o, void* buff, const char* file, int line);
 typedef void*  (*pf_iallocator_acquire_c)  (object o, int size);
 typedef bool   (*pf_iallocator_release_c)  (object o, void* buff);
-typedef object(*pf_iallocator_get_parent) (object o);
+typedef object (*pf_iallocator_get_parent) (object o);
 typedef void   (*pf_iallocator_walk)       (object o, pf_process_block per_block_cb, void* param);
 
 struct iallocator_vtable {

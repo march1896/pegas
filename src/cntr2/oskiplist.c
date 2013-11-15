@@ -55,7 +55,7 @@ struct oskiplist {
 	struct oskiplist_itr          itr_end;
 };
 
-static struct iobject_vtable __iobject_vtable = {
+static struct iobject_vtable __oskiplist_iobject_vtable = {
 	oskiplist_destroy,          /* __destroy */
 	oskiplist_clone,            /* __clone */
 	oskiplist_equals,           /* __equals */
@@ -63,7 +63,7 @@ static struct iobject_vtable __iobject_vtable = {
 	oskiplist_hashcode,         /* __hashcode */
 };
 
-static struct iset_vtable __iset_vtable = {
+static struct iset_vtable __oskiplist_iset_vtable = {
 	oskiplist_clear,            /* __clear */
 	oskiplist_clear_v,          /* __clear_v */
 	oskiplist_size,             /* __size */
@@ -80,7 +80,7 @@ static struct iset_vtable __iset_vtable = {
 	oskiplist_itr_end           /* __itr_end */
 };
 
-static struct imset_vtable __imset_vtable = {
+static struct imset_vtable __oskiplist_imset_vtable = {
 	oskiplist_clear,            /* __clear */
 	oskiplist_clear_v,          /* __clear_v */
 	oskiplist_size,             /* __size */
@@ -110,7 +110,7 @@ static void oskiplist_itr_set_ref(iterator citr, const void* n_ref);
 static void oskiplist_itr_to_next(iterator citr);
 static void oskiplist_itr_to_prev(iterator citr);
 
-static struct itr_bidirectional_vtable __itr_vtable = {
+static struct itr_bidirectional_vtable __oskiplist_itr_vtable = {
 	oskiplist_itr_destroy,      /* __destroy */
 	oskiplist_itr_clone,        /* __clone   */
 	oskiplist_itr_equals,       /* __equals  */
@@ -257,11 +257,11 @@ object oskiplist_create_internal(pf_ref_compare comp, pf_ref_compare_v compv, vo
 	oskiplist->__cast   = oskiplist_cast;
 	
 	oskiplist->__iftable[e_object].__offset = (address)e_object;
-	oskiplist->__iftable[e_object].__vtable = &__iobject_vtable;
+	oskiplist->__iftable[e_object].__vtable = &__oskiplist_iobject_vtable;
 	oskiplist->__iftable[e_set].__offset = (address)e_set;
-	oskiplist->__iftable[e_set].__vtable = &__iset_vtable;
+	oskiplist->__iftable[e_set].__vtable = &__oskiplist_iset_vtable;
 	oskiplist->__iftable[e_mset].__offset = (address)e_mset;
-	oskiplist->__iftable[e_mset].__vtable = &__imset_vtable;
+	oskiplist->__iftable[e_mset].__vtable = &__oskiplist_imset_vtable;
 
 	oskiplist->size      = 0;
 
@@ -386,7 +386,7 @@ static void oskiplist_itr_com_init(struct oskiplist_itr* itr, struct oskiplist* 
 	itr->__cast   = oskiplist_itr_cast;
 
 	itr->__iftable[0].__offset = (address)0;
-	itr->__iftable[0].__vtable = (unknown)&__itr_vtable;
+	itr->__iftable[0].__vtable = (unknown)&__oskiplist_itr_vtable;
 
 	itr->allocator = list->allocator;
 	/* itr->__current = NULL; */
@@ -449,7 +449,7 @@ void oskiplist_itr_find(const_object o, iterator itr, const void* __ref) {
 
 	/* make sure the iterator type is right */
 	dbg_assert(itr->__iftable[0].__offset == (address)0);
-	dbg_assert(itr->__iftable[0].__vtable == (unknown)&__itr_vtable);
+	dbg_assert(itr->__iftable[0].__vtable == (unknown)&__oskiplist_itr_vtable);
 
 	oitr->current = link;
 }
@@ -463,7 +463,7 @@ void oskiplist_itr_find_lower(const_object o, iterator itr, const void* __ref) {
 
 	/* make sure the iterator type is right */
 	dbg_assert(itr->__iftable[0].__offset == (address)0);
-	dbg_assert(itr->__iftable[0].__vtable == (unknown)&__itr_vtable);
+	dbg_assert(itr->__iftable[0].__vtable == (unknown)&__oskiplist_itr_vtable);
 
 	oitr->current = link;
 }
@@ -477,7 +477,7 @@ void oskiplist_itr_find_upper(const_object o, iterator itr, const void* __ref) {
 
 	/* make sure the iterator type is right */
 	dbg_assert(itr->__iftable[0].__offset == (address)0);
-	dbg_assert(itr->__iftable[0].__vtable == (unknown)&__itr_vtable);
+	dbg_assert(itr->__iftable[0].__vtable == (unknown)&__oskiplist_itr_vtable);
 
 	oitr->current = link;
 }
