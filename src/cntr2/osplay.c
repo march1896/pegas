@@ -29,7 +29,7 @@ struct osplay_itr {
 	pf_cast                       __cast;
 
 	/* there is always one interface to implement, since the interface is inherited */
-	struct base_interface         __iftable[1];
+	struct base_interface         __iftable[itr_interface_count];
 
 	/* the iterator will never alloc memory, when acquire an iterator, the container will 
 	 * alloc the memory, but we should know how to delete this memory */
@@ -114,15 +114,23 @@ static unknown osplay_cast(unknown x, unique_id intf_id);
 static void osplay_itr_destroy(iterator citr);
 static iterator osplay_itr_clone(const_iterator citr);
 static bool osplay_itr_equals(const_iterator a, const_iterator b);
+static int osplay_itr_compare_to(const_iterator itr, const_iterator other);
+static hashcode osplay_itr_hashcode(const_iterator itr);
 static const void* osplay_itr_get_ref(const_iterator citr);
 static void osplay_itr_set_ref(iterator citr, const void* n_ref);
 static void osplay_itr_to_next(iterator citr);
 static void osplay_itr_to_prev(iterator citr);
 
-static struct itr_bidirectional_vtable __osplay_itr_vtable = {
+static struct iobject_vtable __osplay_itr_iobject_vtable = {
 	osplay_itr_destroy,      /* __destroy */
 	osplay_itr_clone,        /* __clone   */
 	osplay_itr_equals,       /* __equals  */
+	osplay_itr_compare_to,   /* __compare_to */
+	osplay_itr_hashcode
+};
+
+
+static struct itr_bidirectional_vtable __osplay_itr_vtable = {
 	osplay_itr_get_ref,      /* __get_ref */
 	osplay_itr_set_ref,      /* __set_ref */
 	osplay_itr_to_next,      /* __to_next */
@@ -167,6 +175,15 @@ static bool osplay_itr_equals(const_iterator a, const_iterator b) {
 	dbg_assert(itr_b->__cast == osplay_itr_cast);
 
 	return itr_a->current == itr_b->current;
+}
+
+static int osplay_itr_compare_to(const_iterator itr, const_iterator other) {
+	// TODO
+	return 0;
+}
+static hashcode osplay_itr_hashcode(const_iterator itr) {
+	// TODO
+	return 0;
 }
 
 static const void* osplay_itr_get_ref(const_iterator citr) {
@@ -247,12 +264,13 @@ static unknown osplay_itr_cast(unknown x, unique_id inf_id) {
 	dbg_assert(__is_object(itr));
 
 	switch (inf_id) {
-	case ITR_BAS_ID:
+	case IOBJECT_ID:
+		return (unknown)&itr->__iftable[itr_interface_iobject];
 	case ITR_REF_ID:
 	case ITR_ACC_ID:
 	case ITR_FWD_ID:
 	case ITR_BID_ID:
-		return (unknown)&itr->__iftable[0];
+		return (unknown)&itr->__iftable[itr_interface_iterator];
 	case ITR_RAC_ID:
 		return NULL;
 	default:
@@ -477,8 +495,10 @@ static void osplay_itr_com_init(struct osplay_itr* itr, struct osplay* list) {
 	itr->__offset = itr;
 	itr->__cast   = osplay_itr_cast;
 
-	itr->__iftable[0].__offset = (address)0;
-	itr->__iftable[0].__vtable = (unknown)&__osplay_itr_vtable;
+	itr->__iftable[itr_interface_iobject].__offset = (address)itr_interface_iobject;
+	itr->__iftable[itr_interface_iobject].__vtable = (unknown)&__osplay_itr_iobject_vtable;
+	itr->__iftable[itr_interface_iterator].__offset = (address)itr_interface_iterator;
+	itr->__iftable[itr_interface_iterator].__vtable = (unknown)&__osplay_itr_vtable;
 
 	itr->allocator = list->allocator;
 	/* itr->__current = NULL; */
@@ -631,8 +651,8 @@ void splayset_itr_find_s(const_object o, iterator itr, const void* __ref) {
 	dbg_assert(dir.candidate == NULL);
 
 	/* make sure the iterator type is right */
-	dbg_assert(itr->__iftable[0].__offset == (address)0);
-	dbg_assert(itr->__iftable[0].__vtable == (unknown)&__osplay_itr_vtable);
+	dbg_assert(itr->__iftable[itr_interface_iterator].__offset == (address)itr_interface_iterator);
+	dbg_assert(itr->__iftable[itr_interface_iterator].__vtable == (unknown)&__osplay_itr_vtable);
 
 	if (find_res != NULL) {
 		oitr->current = find_res;
@@ -657,8 +677,8 @@ void splayset_itr_find_lower_m(const_object o, iterator itr, const void* __ref) 
 	link = (struct splay_link*)dir.candidate;    /* the last candidate, the most closed to leaf one, is what we want */
 
 	/* make sure the iterator type is right */
-	dbg_assert(itr->__iftable[0].__offset == (address)0);
-	dbg_assert(itr->__iftable[0].__vtable == (unknown)&__osplay_itr_vtable);
+	dbg_assert(itr->__iftable[itr_interface_iterator].__offset == (address)itr_interface_iterator);
+	dbg_assert(itr->__iftable[itr_interface_iterator].__vtable == (unknown)&__osplay_itr_vtable);
 
 	if (link != NULL) {
 		oitr->current = link;
@@ -682,8 +702,8 @@ void splayset_itr_find_upper_m(const_object o, iterator itr, const void* __ref) 
 	link = (struct splay_link*)dir.candidate;
 
 	/* make sure the iterator type is right */
-	dbg_assert(itr->__iftable[0].__offset == (address)0);
-	dbg_assert(itr->__iftable[0].__vtable == (unknown)&__osplay_itr_vtable);
+	dbg_assert(itr->__iftable[itr_interface_iterator].__offset == (address)itr_interface_iterator);
+	dbg_assert(itr->__iftable[itr_interface_iterator].__vtable == (unknown)&__osplay_itr_vtable);
 
 	if (link != NULL) { 
 		oitr->current = link;

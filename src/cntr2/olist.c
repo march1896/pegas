@@ -35,7 +35,7 @@ struct o_dlist_itr {
 	pf_cast                       __cast;
 
 	/* there is always one interface to implement, since the interface is inherited */
-	struct base_interface         __iftable[1];
+	struct base_interface         __iftable[itr_interface_count];
 
 	struct o_dlist*               container;
 	/* the iterator will never alloc memory, when acquire an iterator, the container will 
@@ -133,6 +133,8 @@ static unknown o_dlist_cast(unknown x, unique_id intf_id);
 static void o_dlist_itr_destroy(iterator citr);
 static iterator o_dlist_itr_clone(const_iterator citr);
 static bool o_dlist_itr_equals(const_iterator a, const_iterator b);
+static int o_dlist_itr_compare_to(const_iterator itr, const_iterator other);
+static hashcode o_dlist_itr_hashcode(const_iterator itr);
 static const void* o_dlist_itr_get_ref(const_iterator citr);
 static void o_dlist_itr_set_ref(iterator citr, const void* n_ref);
 static void o_dlist_itr_to_next(iterator citr);
@@ -175,6 +177,17 @@ static bool o_dlist_itr_equals(const_iterator a, const_iterator b) {
 	dbg_assert(itr_b->__cast == o_dlist_itr_cast);
 
 	return itr_a->current == itr_b->current;
+}
+
+static int o_dlist_itr_compare_to(const_iterator itr, const_iterator other) {
+	// TODO
+	dbg_assert(false);
+	return 0;
+}
+static hashcode o_dlist_itr_hashcode(const_iterator itr) {
+	// TODO
+	dbg_assert(false);
+	return 0;
 }
 
 static const_unknown o_dlist_itr_get_ref(const_iterator citr) {
@@ -223,10 +236,15 @@ static void o_dlist_itr_to_prev(iterator citr) {
 	itr->current = itr->current->prev;
 }
 
-static struct itr_bidirectional_vtable __olist_itr_vtable = {
+static struct iobject_vtable __olist_itr_iobject_vtable = {
 	o_dlist_itr_destroy,      /* __destroy */
 	o_dlist_itr_clone,        /* __clone   */
 	o_dlist_itr_equals,       /* __equals  */
+	o_dlist_itr_compare_to,   /* __compare_to */
+	o_dlist_itr_hashcode
+};
+
+static struct itr_bidirectional_vtable __olist_itr_vtable = {
 	o_dlist_itr_get_ref,      /* __get_ref */
 	o_dlist_itr_set_ref,      /* __set_ref */
 	o_dlist_itr_to_next,      /* __to_next */
@@ -260,12 +278,13 @@ static unknown o_dlist_itr_cast(unknown x, unique_id inf_id) {
 	dbg_assert(__is_object(itr));
 
 	switch (inf_id) {
-	case ITR_BAS_ID:
+	case IOBJECT_ID:
+		return (unknown)&itr->__iftable[itr_interface_iobject];
 	case ITR_REF_ID:
 	case ITR_ACC_ID:
 	case ITR_FWD_ID:
 	case ITR_BID_ID:
-		return (unknown)&itr->__iftable[0];
+		return (unknown)&itr->__iftable[itr_interface_iterator];
 	case ITR_RAC_ID:
 		return NULL;
 	default:
@@ -556,8 +575,10 @@ static void o_dlist_itr_com_init(struct o_dlist_itr* itr, struct o_dlist* list) 
 	itr->__offset = itr;
 	itr->__cast   = o_dlist_itr_cast;
 
-	itr->__iftable[0].__offset = (address)0;
-	itr->__iftable[0].__vtable = (unknown)&__olist_itr_vtable;
+	itr->__iftable[itr_interface_iobject].__offset = (address)itr_interface_iobject;
+	itr->__iftable[itr_interface_iobject].__vtable = (unknown)&__olist_itr_iobject_vtable;
+	itr->__iftable[itr_interface_iterator].__offset = (address)itr_interface_iterator;
+	itr->__iftable[itr_interface_iterator].__vtable = (unknown)&__olist_itr_vtable;
 
 	itr->container = list;
 	itr->allocator = list->allocator;
@@ -631,13 +652,13 @@ void olist_itr_assign(const_object o, iterator __itr, itr_pos pos) {
 }
 
 void olist_itr_find(const_object o, iterator itr, const_unknown __ref) {
-	struct o_dlist* olist     = (struct o_dlist*)o;
+	struct o_dlist* olist    = (struct o_dlist*)o;
 	struct o_dlist_itr* oitr = (struct o_dlist_itr*)itr;
-	struct list_link* link    = olist->sentinel.next;
+	struct list_link* link   = olist->sentinel.next;
 
 	/* make sure the type information is right */
-	dbg_assert(itr->__iftable[0].__offset == (address)0);
-	dbg_assert(itr->__iftable[0].__vtable == (unknown)&__olist_itr_vtable);
+	dbg_assert(itr->__iftable[itr_interface_iterator].__offset == (address)itr_interface_iterator);
+	dbg_assert(itr->__iftable[itr_interface_iterator].__vtable == (unknown)&__olist_itr_vtable);
 
 	dbg_assert(oitr->container == olist);
 

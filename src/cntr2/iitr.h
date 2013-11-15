@@ -6,34 +6,27 @@
 #include <idef.h>
 #include <iobject.h>
 
-extern inline void itr_destroy         (iterator itr);
-extern inline iterator itr_clone       (const_iterator itr);
+enum iterator_position {
+	itr_begin,
+	itr_end,
+	itr_pos_count
+};
+
+// extern inline void itr_destroy         (iterator itr);
+// extern inline iterator itr_clone       (const_iterator itr);
+// extern inline bool itr_equals          (const_iterator ia, const_iterator ib);
+#define itr_destroy iobject_destroy
+#define itr_clone   iobject_clone
+#define itr_equals  iobject_equals
 
 /* TODO: dest = itr if they are the same type */
 extern inline bool itr_assign          (const_iterator itr, iterator dest);
-
-extern inline bool itr_equals          (const_iterator ia, const_iterator ib);
 extern inline const_unknown itr_get_ref(const_iterator itr);
 extern inline void itr_set_ref         (iterator itr, const_unknown __ref);
 extern inline void itr_to_prev         (iterator itr);
 extern inline void itr_to_next         (iterator itr);
 extern inline void itr_advance         (iterator itr, int length);
 extern inline int  itr_distance        (const_iterator from, const_iterator to);
-
-/* TODO: should we implement the below functions 
- * these are the 'real' interface functions, the above is not 'interface method',
- * strictly specking, the above functions should not be in this 'interface' file.*/
-/*
-extern inline void iitr_destroy        (_interface iitr);
-extern inline void iitr_clone          (_interface iitr);
-extern inline bool iitr_equals         (const_interface ia, const_interface ib);
-extern inline const void* iitr_get_ref (const_interface iitr);
-extern inline void iitr_set_ref        (_interface iitr, const void* __ref);
-extern inline void iitr_to_prev        (_interface iitr);
-extern inline void iitr_to_next        (_interface iitr);
-extern inline void iitr_advance        (_interface iitr, int length);
-extern inline int  iitr_distance       (const_interface ifrom, const_interface ito);
-*/
 
 /* below is only useful for the container implementer */
 /* the virtual functions that each container should implement */
@@ -45,41 +38,26 @@ typedef void     (*pf_itr_to_next)     (iterator citr);
 typedef void*    (*pf_itr_advance)     (iterator citr, int length);
 typedef int      (*pf_itr_distance)    (const_iterator citr_from, const_iterator citr_to);
 
-#define is_itrbas(itr) (__cast(itr, ITR_BAS_ID) != NULL)
 #define is_itrref(itr) (__cast(itr, ITR_REF_ID) != NULL)
 #define is_itracc(itr) (__cast(itr, ITR_ACC_ID) != NULL)
 #define is_itrfwd(itr) (__cast(itr, ITR_FWD_ID) != NULL)
 #define is_itrbid(itr) (__cast(itr, ITR_BID_ID) != NULL)
 #define is_itrrac(itr) (__cast(itr, ITR_RAC_ID) != NULL)
 
-struct itr_base_vtable {
-	/* from common object */
-	pf_iobject_destroy      __destroy;
-	pf_iobject_clone        __clone;
-
-	pf_itr_equals           __equals;
+enum itr_implemetation_conversion {
+	itr_interface_iobject = 0,
+	itr_interface_iterator,
+	itr_interface_count
 };
 
 /* extends itr_base_vtable */
 struct itr_readable_vtable { 
-	/* base interface */
-	pf_iobject_destroy      __destroy;
-	pf_iobject_clone        __clone;
-
-	pf_itr_equals           __equals;
-
 	/* readable interface */
 	pf_itr_get_ref          __get_ref;
 };
 
 /* extends itr_readable_vtable */
 struct itr_accessible_vtable {
-	/* base interface */
-	pf_iobject_destroy      __destroy;
-	pf_iobject_clone        __clone;
-
-	pf_itr_equals           __equals;
-
 	/* readable interface */
 	pf_itr_get_ref          __get_ref;
 
@@ -89,12 +67,6 @@ struct itr_accessible_vtable {
 
 /* extends itr_accessible_vtable */
 struct itr_forward_vtable {
-	/* base interface */
-	pf_iobject_destroy      __destroy;
-	pf_iobject_clone        __clone;
-
-	pf_itr_equals           __equals;
-
 	/* readable interface */
 	pf_itr_get_ref          __get_ref;
 
@@ -107,12 +79,6 @@ struct itr_forward_vtable {
 
 /* extends itr_forward_vtable */
 struct itr_bidirectional_vtable {
-	/* base interface */
-	pf_iobject_destroy      __destroy;
-	pf_iobject_clone        __clone;
-
-	pf_itr_equals           __equals;
-	 
 	/* readable interface */
 	pf_itr_get_ref          __get_ref;
 
@@ -128,12 +94,6 @@ struct itr_bidirectional_vtable {
 
 /* extends itr_bidirectional_vtable */
 struct itr_randomaccessible_vtable {
-	/* base interface */
-	pf_iobject_destroy      __destroy;
-	pf_iobject_clone        __clone;
-
-	pf_itr_equals           __equals;
-
 	/* readable interface */
 	pf_itr_get_ref          __get_ref;
 

@@ -23,7 +23,7 @@ struct oskiplist_itr {
 	pf_cast                       __cast;
 
 	/* there is always one interface to implement, since the interface is inherited */
-	struct base_interface          __iftable[1];
+	struct base_interface          __iftable[itr_interface_count];
 
 	/* the iterator will never alloc memory, when acquire an iterator, the container will 
 	 * alloc the memory, but we should know how to delete this memory */
@@ -105,15 +105,22 @@ static unknown oskiplist_cast(unknown x, unique_id intf_id);
 static void oskiplist_itr_destroy(iterator citr);
 static iterator oskiplist_itr_clone(const_iterator citr);
 static bool oskiplist_itr_equals(const_iterator a, const_iterator b);
+static int oskiplist_itr_compare_to(const_iterator itr, const_iterator other);
+static hashcode oskiplist_itr_hashcode(const_iterator itr);
 static const void* oskiplist_itr_get_ref(const_iterator citr);
 static void oskiplist_itr_set_ref(iterator citr, const void* n_ref);
 static void oskiplist_itr_to_next(iterator citr);
 static void oskiplist_itr_to_prev(iterator citr);
 
-static struct itr_bidirectional_vtable __oskiplist_itr_vtable = {
+static struct iobject_vtable __oskiplist_itr_iobject_vtable = {
 	oskiplist_itr_destroy,      /* __destroy */
 	oskiplist_itr_clone,        /* __clone   */
 	oskiplist_itr_equals,       /* __equals  */
+	oskiplist_itr_compare_to,   /* __compare_to */
+	oskiplist_itr_hashcode
+};
+
+static struct itr_bidirectional_vtable __oskiplist_itr_vtable = {
 	oskiplist_itr_get_ref,      /* __get_ref */
 	oskiplist_itr_set_ref,      /* __set_ref */
 	oskiplist_itr_to_next,      /* __to_next */
@@ -158,6 +165,15 @@ static bool oskiplist_itr_equals(const_iterator a, const_iterator b) {
 	dbg_assert(itr_b->__cast == oskiplist_itr_cast);
 
 	return itr_a->current == itr_b->current;
+}
+
+static int oskiplist_itr_compare_to(const_iterator itr, const_iterator other) {
+	// TODO
+	return 0;
+}
+static hashcode oskiplist_itr_hashcode(const_iterator itr) {
+	// TODO
+	return 0;
 }
 
 static const void* oskiplist_itr_get_ref(const_iterator citr) {
@@ -226,12 +242,13 @@ static unknown oskiplist_itr_cast(unknown x, unique_id inf_id) {
 	dbg_assert(__is_object(itr));
 
 	switch (inf_id) {
-	case ITR_BAS_ID:
+	case IOBJECT_ID:
+		return (unknown)&itr->__iftable[itr_interface_iobject];
 	case ITR_REF_ID:
 	case ITR_ACC_ID:
 	case ITR_FWD_ID:
 	case ITR_BID_ID:
-		return (unknown)&itr->__iftable[0];
+		return (unknown)&itr->__iftable[itr_interface_iterator];
 	case ITR_RAC_ID:
 		return NULL;
 	default:
@@ -385,8 +402,10 @@ static void oskiplist_itr_com_init(struct oskiplist_itr* itr, struct oskiplist* 
 	itr->__offset = itr;
 	itr->__cast   = oskiplist_itr_cast;
 
-	itr->__iftable[0].__offset = (address)0;
-	itr->__iftable[0].__vtable = (unknown)&__oskiplist_itr_vtable;
+	itr->__iftable[itr_interface_iobject].__offset = (address)itr_interface_iobject;
+	itr->__iftable[itr_interface_iobject].__vtable = (unknown)&__oskiplist_itr_iobject_vtable;
+	itr->__iftable[itr_interface_iterator].__offset = (address)itr_interface_iterator;
+	itr->__iftable[itr_interface_iterator].__vtable = (unknown)&__oskiplist_itr_vtable;
 
 	itr->allocator = list->allocator;
 	/* itr->__current = NULL; */
@@ -448,8 +467,8 @@ void oskiplist_itr_find(const_object o, iterator itr, const void* __ref) {
 	link = skiplist_search(olist->driver_skiplist, __ref);
 
 	/* make sure the iterator type is right */
-	dbg_assert(itr->__iftable[0].__offset == (address)0);
-	dbg_assert(itr->__iftable[0].__vtable == (unknown)&__oskiplist_itr_vtable);
+	dbg_assert(itr->__iftable[itr_interface_iterator].__offset == (address)itr_interface_iterator);
+	dbg_assert(itr->__iftable[itr_interface_iterator].__vtable == (unknown)&__oskiplist_itr_vtable);
 
 	oitr->current = link;
 }
@@ -462,8 +481,8 @@ void oskiplist_itr_find_lower(const_object o, iterator itr, const void* __ref) {
 	link = skiplist_search_v(oskiplist->driver_skiplist, __ref, skiplist_min_greaterorequal);
 
 	/* make sure the iterator type is right */
-	dbg_assert(itr->__iftable[0].__offset == (address)0);
-	dbg_assert(itr->__iftable[0].__vtable == (unknown)&__oskiplist_itr_vtable);
+	dbg_assert(itr->__iftable[itr_interface_iterator].__offset == (address)itr_interface_iterator);
+	dbg_assert(itr->__iftable[itr_interface_iterator].__vtable == (unknown)&__oskiplist_itr_vtable);
 
 	oitr->current = link;
 }
@@ -476,8 +495,8 @@ void oskiplist_itr_find_upper(const_object o, iterator itr, const void* __ref) {
 	link = skiplist_search_v(oskiplist->driver_skiplist, __ref, skiplist_min_greater);
 
 	/* make sure the iterator type is right */
-	dbg_assert(itr->__iftable[0].__offset == (address)0);
-	dbg_assert(itr->__iftable[0].__vtable == (unknown)&__oskiplist_itr_vtable);
+	dbg_assert(itr->__iftable[itr_interface_iterator].__offset == (address)itr_interface_iterator);
+	dbg_assert(itr->__iftable[itr_interface_iterator].__vtable == (unknown)&__oskiplist_itr_vtable);
 
 	oitr->current = link;
 }
