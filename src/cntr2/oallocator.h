@@ -5,21 +5,12 @@
 #include <heap_def.h>
 
 /* 
- * by using the macros, it's not clear to view the methods supported by this object.
- * the methods are:
- * 1, allocator_join
- * 2, allocator_acquire_v/allocator_acquire_c
- * 3, allocator_release_v/allocator_release_c
- * 4, allocator_get_parent
- * 5, allocator_walk
+ * the allocator object, allocator is not typical object, it does not have most of the 
+ * method in iobject.h, it only responds to join method plus heap operation method.
  *
- * the 2 and 3 are methods name depends the compile macros, so macro
- * allocator_alloc   = allocator_acquire_v/allocator_acquire_c
- * allocator_dealloc = allocator_release_v/allocator_release_c
- * handles this situation, after this macro, the methods can be describes as:
  * 1, allocator_join
- * 2, allocator_alloc
- * 3, allocator_dealloc
+ * 2, allocator_acquire
+ * 3, allocator_release
  * 4, allocator_get_parent
  * 5, allocator_walk
  */
@@ -32,37 +23,29 @@
  */
 
 /* allocator methods */
-extern inline void  allocator_join     (allocator o); 
+extern inline void  allocator_join   (allocator o); 
 #ifdef _VERBOSE_ALLOC_DEALLOC_
-extern inline void* allocator_acquire_v(allocator o, int size, const char* file, int line);
-extern inline bool  allocator_release_v(allocator o, void* buff, const char* file, int line);
-#define allocator_acquire allocator_acquire_v
-#define allocator_release allocator_release_v
+extern inline void* allocator_acquire(allocator o, int size, const char* file, int line);
+extern inline bool  allocator_release(allocator o, void* buff, const char* file, int line);
 #else 
-extern inline void* allocator_acquire_c(allocator o, int size);
-extern inline bool  allocator_release_c(allocator o, void* buff);
-#define allocator_acquire allocator_acquire_c
-#define allocator_release allocator_release_c
+extern inline void* allocator_acquire(allocator o, int size);
+extern inline bool  allocator_release(allocator o, void* buff);
 #endif
 extern inline allocator allocator_get_parent(allocator o);
 extern inline void      allocator_walk      (allocator o, pf_process_block per_block_cb, void* param);
 
 /* codes below is only useful for allocator implementors */
 typedef void   (*pf_allocator_join)       (object o);
-typedef void*  (*pf_allocator_acquire_v)  (object o, int size, const char* file, int line);
-typedef bool   (*pf_allocator_release_v)  (object o, void* buff, const char* file, int line);
-typedef void*  (*pf_allocator_acquire_c)  (object o, int size);
-typedef bool   (*pf_allocator_release_c)  (object o, void* buff);
+#ifdef _VERBOSE_ALLOC_DEALLOC_
+typedef void*  (*pf_allocator_acquire)   (object o, int size, const char* file, int line);
+typedef bool   (*pf_allocator_release)   (object o, void* buff, const char* file, int line);
+#else 
+typedef void*  (*pf_allocator_acquire)  (object o, int size);
+typedef bool   (*pf_allocator_release)  (object o, void* buff);
+#endif
 typedef object (*pf_allocator_get_parent) (object o);
 typedef void   (*pf_allocator_walk)       (object o, pf_process_block per_block_cb, void* param);
 
-#ifdef _VERBOSE_ALLOC_DEALLOC_
-#define pf_allocator_acquire pf_allocator_acquire_v
-#define pf_allocator_release pf_allocator_release_v
-#else 
-#define pf_allocator_acquire pf_allocator_acquire_c
-#define pf_allocator_release pf_allocator_release_c
-#endif
 
 struct allocator_vtable {
 	/* heap doest not contains destroy method */

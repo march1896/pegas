@@ -20,26 +20,26 @@ inline void  allocator_join     (allocator o) {
 	((struct allocator_vtable*)intf->__vtable)->__join(o);
 }
 #ifdef _VERBOSE_ALLOC_DEALLOC_
-inline void* allocator_acquire_v(allocator o, int size, const char* file, int line) {
+inline void* allocator_acquire(allocator o, int size, const char* file, int line) {
 	_interface intf = __fast_cast(o, 0);
 	dbg_assert(intf == __cast(o, IALLOCATOR_ID));
 
 	return ((struct allocator_vtable*)intf->__vtable)->__acquire(o, size, file, line);
 }
-inline bool  allocator_release_v(allocator o, void* buff, const char* file, int line) {
+inline bool  allocator_release(allocator o, void* buff, const char* file, int line) {
 	_interface intf = __fast_cast(o, 0);
 	dbg_assert(intf == __cast(o, IALLOCATOR_ID));
 
 	return ((struct allocator_vtable*)intf->__vtable)->__release(o, buff, file, line);
 }
 #else 
-inline void* allocator_acquire_c(allocator o, int size) {
+inline void* allocator_acquire(allocator o, int size) {
 	_interface intf = __fast_cast(o, 0);
 	dbg_assert(intf == __cast(o, IALLOCATOR_ID));
 
 	return ((struct allocator_vtable*)intf->__vtable)->__acquire(o, size);
 }
-inline bool  allocator_release_c(allocator o, void* buff) {
+inline bool  allocator_release(allocator o, void* buff) {
 	_interface intf = __fast_cast(o, 0);
 	dbg_assert(intf == __cast(o, IALLOCATOR_ID));
 
