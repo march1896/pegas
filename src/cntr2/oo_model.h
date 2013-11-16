@@ -35,7 +35,7 @@ struct base_object {
 	struct base_interface     __iftable[1];
 
 	/* the object running context */
-	//allocator                 __allocator;
+	//allocator               __allocator;
 
 	/* object specific members, i.e. */
 	/*
@@ -45,25 +45,6 @@ struct base_object {
 };
 typedef struct base_object *object;
 typedef const struct base_object *const_object;
-
-/* The above definition only defines the memory layout of object and interface, 
- * but does not define some common property of all 'objects' like 
- * destroy and clone, the below function does these. So they should typically 
- * in a interfaces vtable struct, and then in the object's vtable, like below,
-	struct __base_vtable {
-		pf_oo_destroy              __destroy;
-		pf_oo_clone                __clone;
-	};
- */
-typedef void (*pf_oo_destroy)(object obj);
-
-/* An object should know how to clone itself, but the clone method has transitivity.
- * that is, if an object has a clone method, all objects that it inherits or contains should 
- * have clone too, but the oo_model is not completely. 
- * i.e. we can hold non-oo-object in the container, so the container does not 
- * how to clone element stored in the container. */
-typedef object (*pf_oo_clone)(const_object obj);
-
 
 #define __MAX_NUM_INTERFACE_PER_OBJECT 10
 /* 
@@ -101,6 +82,6 @@ extern inline _interface __fast_cast(const_object x, int ifoffset);
 /*
  * include the raw-pointer-object common processing functions.
  */
-#include <oo_ref.h>
+#include <oo_bridge.h>
 
 #endif /* _OO_MODEL_H_ */

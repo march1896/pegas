@@ -14,6 +14,8 @@ extern inline bool     iobject_distinguishable(const_object obj_a, const_object 
 extern inline bool     iobject_comparable     (const_object obj_a, const_object obj_b);
 extern inline bool     iobject_hashable       (const_object obj);
 
+extern unknown_traits object_traits;
+
 typedef void     (*pf_iobject_destroy)    (object obj);
 typedef object   (*pf_iobject_clone)      (const_object obj);
 typedef bool     (*pf_iobject_equals)     (const_object obj, const_object other);

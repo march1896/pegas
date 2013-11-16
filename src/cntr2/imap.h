@@ -12,7 +12,6 @@ typedef struct map_pair_t {
 
 extern inline void     imap_destroy          (_interface ic);
 extern inline void     imap_clear            (_interface ic);
-extern inline void     imap_clear_v          (_interface ic, pf_ref_dispose_v dispose, void* context);
 extern inline int      imap_size             (const_interface ic);
 extern inline bool     imap_empty            (const_interface ic);
 /* if <key, old_value> pair in the map, the old_value will be updated, and the old_value 
@@ -37,7 +36,6 @@ extern inline const_iterator imap_itr_end    (const_interface ic);
 /* the virtual functions that each container should implement */
 typedef       void     (*pf_imap_destroy)    (object c);
 typedef       void     (*pf_imap_clear)      (object c);
-typedef       void     (*pf_imap_clear_v)    (object c, pf_ref_dispose_v dispose, void* context);
 typedef       int      (*pf_imap_size)       (const_object c);
 typedef       bool     (*pf_imap_empty)      (const_object c);
 typedef       void*    (*pf_imap_insert)     (object c, const void* key, void* value);
@@ -75,7 +73,6 @@ struct imap_vtable {
  ******************************************************************************/
 extern inline void     immap_destroy    (_interface i);
 extern inline void     immap_clear      (_interface i);
-extern inline void     immap_clear_v    (_interface i, pf_ref_dispose_v dispose, void* context);
 extern inline int      immap_size       (const_interface i);
 extern inline bool     immap_empty      (const_interface i);
 extern inline void     immap_insert     (_interface i, const void* key, void* value);
@@ -99,7 +96,6 @@ extern inline const_iterator immap_itr_end    (const_interface i);
 /* the virtual functions that each container should implement */
 typedef       void     (*pf_immap_destroy)    (object o);
 typedef       void     (*pf_immap_clear)      (object o);
-typedef       void     (*pf_immap_clear_v)    (object o, pf_ref_dispose_v dispose, void* context);
 typedef       int      (*pf_immap_size)       (const_object o);
 typedef       bool     (*pf_immap_empty)      (const_object o);
 typedef       void     (*pf_immap_insert)     (object o, const void* key, void* value);
@@ -119,7 +115,6 @@ struct immap_vtable {
 	/* public */
 	pf_immap_destroy        __destroy;
 	pf_immap_clear          __clear;
-	pf_immap_clear_v        __clear_v;
 	pf_immap_size           __size;
 	pf_immap_empty          __empty;
 	pf_immap_insert         __insert;

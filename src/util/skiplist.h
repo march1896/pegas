@@ -18,7 +18,11 @@ struct skiplist* skiplist_create_va(pf_skiplist_compare_v compv, void* cp_contex
 void   skiplist_destroy            (struct skiplist* list);
 
 void skiplist_insert               (struct skiplist* list, const void* data);
-void* skiplist_insert_s            (struct skiplist* list, const void* data);
+/* if there is an element in the skiplist 'equals' data, insert_s will do nothing and return false, if not, insert the element */
+bool skiplist_insert_s             (struct skiplist* list, const void* data);
+/* if there is an element in the skiplist 'equals' data, update_s will update the reference to data and return the old reference.
+   if not, return NULL */
+void* skiplist_update_s            (struct skiplist* list, const void* data);
 bool skiplist_contains             (const struct skiplist* list, const void* data);
 bool skiplist_remove               (struct skiplist* list, const void* data);
 void skiplist_remove_link          (struct skiplist* list, struct skip_link* link);
@@ -40,9 +44,9 @@ enum skiplist_search_option {
 /* the result may contains sentinel link */
 const struct skip_link* skiplist_search_v(const struct skiplist* slist, const void* data, enum skiplist_search_option option);
 
-#include <oo_ref.h>
+typedef void (*pf_skiplist_ref_visit)(const void* __ref, void* context);
 /* note, if you change the inner value of ref, it may destroy the skiplist order */
-void skiplist_foreach(struct skiplist* list, pf_ref_visit_v process, void* context);
+void skiplist_foreach(struct skiplist* list, pf_skiplist_ref_visit process, void* context);
 
 #endif /* _SKIP_LINK_H_ */
 

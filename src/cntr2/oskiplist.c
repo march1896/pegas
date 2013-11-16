@@ -65,12 +65,11 @@ static struct iobject_vtable __oskiplist_iobject_vtable = {
 
 static struct iset_vtable __oskiplist_iset_vtable = {
 	oskiplist_clear,            /* __clear */
-	oskiplist_clear_v,          /* __clear_v */
 	oskiplist_size,             /* __size */
 	oskiplist_empty,            /* __empty */
 	oskiplist_insert_s,         /* __insert */
 	oskiplist_contains,         /* __contains */
-	oskiplist_remove,           /* __remove */
+	oskiplist_remove_s,           /* __remove */
 
 	oskiplist_itr_create,       /* __itr_create */
 	oskiplist_itr_assign,       /* __itr_assign */
@@ -82,7 +81,6 @@ static struct iset_vtable __oskiplist_iset_vtable = {
 
 static struct imset_vtable __oskiplist_imset_vtable = {
 	oskiplist_clear,            /* __clear */
-	oskiplist_clear_v,          /* __clear_v */
 	oskiplist_size,             /* __size */
 	oskiplist_empty,            /* __empty */
 	oskiplist_insert_m,         /* __insert */
@@ -351,36 +349,9 @@ hashcode oskiplist_hashcode(const_object o) {
 	return (hashcode)NULL;
 }
 
-
-struct skiplist_clear_v {
-	pf_ref_dispose_v function;
-	void*            context;
-};
-
 void oskiplist_clear(object o) {
 	struct oskiplist* oskiplist = (struct oskiplist*)o;
 
-	skiplist_clear(oskiplist->driver_skiplist);
-
-	oskiplist->size = 0;
-}
-
-static void skiplist_perlink_dispose(const void* __ref, void* context) {
-	struct skiplist_clear_v* rd = (struct skiplist_clear_v*)context;
-
-	if (rd->function != NULL) {
-		rd->function((void*)__ref, rd->context);
-	}
-}
-
-void oskiplist_clear_v(object o, pf_ref_dispose_v dispose, void* context) {
-	struct oskiplist* oskiplist = (struct oskiplist*)o;
-	struct skiplist_clear_v rd = { dispose, context };
-
-	if (dispose != NULL) {
-		skiplist_foreach(oskiplist->driver_skiplist, (pf_ref_visit_v)skiplist_perlink_dispose, (void*)&rd);
-	}
-	
 	skiplist_clear(oskiplist->driver_skiplist);
 
 	oskiplist->size = 0;
@@ -501,7 +472,7 @@ void oskiplist_itr_find_upper(const_object o, iterator itr, const void* __ref) {
 	oitr->current = link;
 }
 
-void* oskiplist_insert_s(object o, const void* __ref) {
+void oskiplist_insert_s(object o, const_unknown __ref) {
 	struct oskiplist* oskiplist     = (struct oskiplist*)o;
 	void* old_ref = skiplist_insert_s(oskiplist->driver_skiplist, __ref);
 
@@ -540,7 +511,7 @@ int oskiplist_count(const_object o, const void* __ref) {
 	return count;
 }
 
-bool oskiplist_remove(object o, void* __ref) {
+bool oskiplist_remove_s(object o, void* __ref) {
 	struct oskiplist* oskiplist   = (struct oskiplist*)o;
 
 	bool res = skiplist_remove(oskiplist->driver_skiplist, __ref);

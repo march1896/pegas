@@ -215,8 +215,7 @@
     <ClCompile Include="..\..\src\cntr2\olist.c" />
     <ClCompile Include="..\..\src\cntr2\ollrb.c" />
     <ClCompile Include="..\..\src\cntr2\oo_model.c" />
-    <ClCompile Include="..\..\src\cntr2\oo_ref.c" />
-    <ClCompile Include="..\..\src\cntr2\oskiplist.c" />
+    <ClCompile Include="..\..\src\cntr2\oo_bridge.c" />
     <ClCompile Include="..\..\src\cntr2\osplay.c" />
     <ClCompile Include="..\..\src\lexer\automaton.c" />
     <ClCompile Include="..\..\src\lexer\nfa.c" />
@@ -253,7 +252,7 @@
     <ClInclude Include="..\..\src\cntr2\olist.h" />
     <ClInclude Include="..\..\src\cntr2\ollrb.h" />
     <ClInclude Include="..\..\src\cntr2\oo_model.h" />
-    <ClInclude Include="..\..\src\cntr2\oo_ref.h" />
+    <ClInclude Include="..\..\src\cntr2\oo_bridge.h" />
     <ClInclude Include="..\..\src\cntr2\oskiplist.h" />
     <ClInclude Include="..\..\src\cntr2\osplay.h" />
     <ClInclude Include="..\..\src\lexer\automaton.h" />

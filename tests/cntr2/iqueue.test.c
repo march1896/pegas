@@ -5,13 +5,22 @@
 #include "test_util.h"
 
 static void queue_test_basic_itr_operation(iqueue queue) {
+	int temp_int = 0;
 	iqueue_clear(queue);
 	dbg_assert(iqueue_size(queue) == 0);
 
-	iqueue_push(queue, (void*)(intptr_t)1);
-	iqueue_push(queue, (void*)(intptr_t)2);
-	iqueue_push(queue, (void*)(intptr_t)3);
-	iqueue_push(queue, (void*)(intptr_t)4);
+	temp_int = 1;
+	iqueue_push(queue, &temp_int);
+	dbg_assert(temp_int == 1);
+	temp_int = 2;
+	iqueue_push(queue, &temp_int);
+	dbg_assert(temp_int == 2);
+	temp_int = 3;
+	iqueue_push(queue, &temp_int);
+	dbg_assert(temp_int == 3);
+	temp_int = 4;
+	iqueue_push(queue, &temp_int);
+	dbg_assert(temp_int == 4);
 
 	/* now the queue contains { 1, 2, 3, 4 } */
 	dbg_assert(iqueue_size(queue) == 4);
@@ -22,16 +31,16 @@ static void queue_test_basic_itr_operation(iqueue queue) {
 
 		/* traverse the queue */
 		for (; !itr_equals(itr, end); itr_to_next(itr)) {
-			dbg_assert(itr_get_ref(itr) == (void*)current);
+			dbg_assert(*(int*)itr_get_ref(itr) == current);
 			current ++;
 		}
 
 		/* test itr_assign */
 		iqueue_itr_assign(queue, itr, itr_begin);
-		dbg_assert(itr_get_ref(itr) == (void*)(intptr_t)1);
+		dbg_assert(*(int*)itr_get_ref(itr) == 1);
 		iqueue_itr_assign(queue, itr, itr_end);
 		itr_to_prev(itr);
-		dbg_assert(itr_get_ref(itr) == (void*)(intptr_t)4);
+		dbg_assert(*(int*)itr_get_ref(itr) == 4);
 
 		itr_destroy(itr);
 	}
@@ -40,14 +49,30 @@ static void queue_test_basic_itr_operation(iqueue queue) {
 	dbg_assert(iqueue_size(queue) == 0);
 
 	/* test unique data */
-	iqueue_push(queue, (void*)(intptr_t)1);
-	iqueue_push(queue, (void*)(intptr_t)1);
-	iqueue_push(queue, (void*)(intptr_t)1);
-	iqueue_push(queue, (void*)(intptr_t)1);
-	iqueue_push(queue, (void*)(intptr_t)1);
-	iqueue_push(queue, (void*)(intptr_t)1);
-	iqueue_push(queue, (void*)(intptr_t)1);
-	iqueue_push(queue, (void*)(intptr_t)1);
+	temp_int = 1;
+	iqueue_push(queue, &temp_int);
+	dbg_assert(temp_int == 1);
+	temp_int = 1;
+	iqueue_push(queue, &temp_int);
+	dbg_assert(temp_int == 1);
+	temp_int = 1;
+	iqueue_push(queue, &temp_int);
+	dbg_assert(temp_int == 1);
+	temp_int = 1;
+	iqueue_push(queue, &temp_int);
+	dbg_assert(temp_int == 1);
+	temp_int = 1;
+	iqueue_push(queue, &temp_int);
+	dbg_assert(temp_int == 1);
+	temp_int = 1;
+	iqueue_push(queue, &temp_int);
+	dbg_assert(temp_int == 1);
+	temp_int = 1;
+	iqueue_push(queue, &temp_int);
+	dbg_assert(temp_int == 1);
+	temp_int = 1;
+	iqueue_push(queue, &temp_int);
+	dbg_assert(temp_int == 1);
 
 	/* now the queue contains eight 1s, { 1, 1, 1, 1, 1, 1, 1, 1 } */
 	dbg_assert(iqueue_size(queue) == 8);
@@ -57,7 +82,7 @@ static void queue_test_basic_itr_operation(iqueue queue) {
 
 		/* traverse the queue */
 		for (; !itr_equals(itr, end); itr_to_next(itr)) {
-			dbg_assert(itr_get_ref(itr) == (void*)1);
+			dbg_assert(*(int*)itr_get_ref(itr) == 1);
 		}
 
 		itr_destroy(itr);
@@ -67,18 +92,35 @@ static void queue_test_basic_itr_operation(iqueue queue) {
 }
 
 static void queue_test_basic_operation(iqueue queue) {
+	int temp_int = 0;
 	iqueue_clear(queue);
 	dbg_assert(iqueue_size(queue) == 0);
 	dbg_assert(iqueue_empty(queue));
 
-	iqueue_push(queue, (void*)(intptr_t)1);
-	iqueue_push(queue, (void*)(intptr_t)2);
-	iqueue_push(queue, (void*)(intptr_t)3);
-	iqueue_push(queue, (void*)(intptr_t)4);
-	iqueue_push(queue, (void*)(intptr_t)5);
-	iqueue_push(queue, (void*)(intptr_t)6);
-	iqueue_push(queue, (void*)(intptr_t)7);
-	iqueue_push(queue, (void*)(intptr_t)8);
+	temp_int = 1;
+	iqueue_push(queue, &temp_int);
+	dbg_assert(temp_int == 1);
+	temp_int = 2;
+	iqueue_push(queue, &temp_int);
+	dbg_assert(temp_int == 2);
+	temp_int = 3;
+	iqueue_push(queue, &temp_int);
+	dbg_assert(temp_int == 3);
+	temp_int = 4;
+	iqueue_push(queue, &temp_int);
+	dbg_assert(temp_int == 4);
+	temp_int = 5;
+	iqueue_push(queue, &temp_int);
+	dbg_assert(temp_int == 5);
+	temp_int = 6;
+	iqueue_push(queue, &temp_int);
+	dbg_assert(temp_int == 6);
+	temp_int = 7;
+	iqueue_push(queue, &temp_int);
+	dbg_assert(temp_int == 7);
+	temp_int = 8;
+	iqueue_push(queue, &temp_int);
+	dbg_assert(temp_int == 8);
 	/* now the queue contains { 1, 2, 3, 4, 5, 6, 7, 8 } */
 
 	/* test pop */
@@ -87,8 +129,8 @@ static void queue_test_basic_operation(iqueue queue) {
 		/* now the queue contains { 1, 2, 3, 4, 5, 6, 7, 8 } */
 		intptr_t counter = 1;
 
-		dbg_assert(iqueue_front(queue) == (void*)(intptr_t)1);
-		dbg_assert(iqueue_back (queue) == (void*)(intptr_t)8);
+		dbg_assert(*(int*)iqueue_front(queue) == 1);
+		dbg_assert(*(int*)iqueue_back (queue) == 8);
 
 		for (counter = 1; counter <= 8; counter ++) {
 			iqueue_pop(queue);
@@ -100,64 +142,74 @@ static void queue_test_basic_operation(iqueue queue) {
 		intptr_t element = 0;
 
 		dbg_assert(iqueue_empty(queue));
-		iqueue_push(queue, (void*)(intptr_t)1);
-		iqueue_push(queue, (void*)(intptr_t)2);
+		temp_int = 1;
+		iqueue_push(queue, &temp_int);
+		dbg_assert(temp_int == 1);
+		temp_int = 2;
+		iqueue_push(queue, &temp_int);
+		dbg_assert(temp_int == 2);
 		/* push two element, now is { 1, 2 } */
 		dbg_assert(iqueue_empty(queue) == false);
 		dbg_assert(iqueue_size (queue) == 2);
-		dbg_assert(iqueue_front(queue) == (void*)(intptr_t)1);
-		dbg_assert(iqueue_back (queue) == (void*)(intptr_t)2);
+		dbg_assert(*(int*)iqueue_front(queue) == 1);
+		dbg_assert(*(int*)iqueue_back (queue) == 2);
 
 		iqueue_pop(queue);
 		/* remove the front one, now is { 2 } */
 		dbg_assert(iqueue_empty(queue) == false);
 		dbg_assert(iqueue_size (queue) == 1);
-		dbg_assert(iqueue_front(queue) == (void*)(intptr_t)2);
-		dbg_assert(iqueue_back (queue) == (void*)(intptr_t)2);
+		dbg_assert(*(int*)iqueue_front(queue) == 2);
+		dbg_assert(*(int*)iqueue_back (queue) == 2);
 
-		iqueue_push(queue, (void*)(intptr_t)3);
-		iqueue_push(queue, (void*)(intptr_t)4);
+		temp_int = 3;
+		iqueue_push(queue, &temp_int);
+		dbg_assert(temp_int == 3);
+		temp_int = 4;
+		iqueue_push(queue, &temp_int);
+		dbg_assert(temp_int == 4);
 		/* push another 2 element, now is { 2, 3, 4 } */
 		dbg_assert(iqueue_empty(queue) == false);
 		dbg_assert(iqueue_size (queue) == 3);
-		dbg_assert(iqueue_front(queue) == (void*)(intptr_t)2);
-		dbg_assert(iqueue_back (queue) == (void*)(intptr_t)4);
+		dbg_assert(*(int*)iqueue_front(queue) == 2);
+		dbg_assert(*(int*)iqueue_back (queue) == 4);
 
 		/* continuous pop all of them */
 		iqueue_pop(queue);
 		/* remove the front one, now is { 3, 4 } */
 		dbg_assert(iqueue_empty(queue) == false);
 		dbg_assert(iqueue_size (queue) == 2);
-		dbg_assert(iqueue_front(queue) == (void*)(intptr_t)3);
-		dbg_assert(iqueue_back (queue) == (void*)(intptr_t)4);
+		dbg_assert(*(int*)iqueue_front(queue) == 3);
+		dbg_assert(*(int*)iqueue_back (queue) == 4);
 
 		iqueue_pop(queue);
 		/* remove the front one, now is { 4 } */
 		dbg_assert(iqueue_empty(queue) == false);
 		dbg_assert(iqueue_size (queue) == 1);
-		dbg_assert(iqueue_front(queue) == (void*)(intptr_t)4);
-		dbg_assert(iqueue_back (queue) == (void*)(intptr_t)4);
+		dbg_assert(*(int*)iqueue_front(queue) == 4);
+		dbg_assert(*(int*)iqueue_back (queue) == 4);
 
 		iqueue_pop(queue);
 		/* remove the front one, now is {} */
 		dbg_assert(iqueue_empty(queue) == true);
 		dbg_assert(iqueue_size (queue) == 0);
-		dbg_assert(iqueue_front(queue) == (void*)(intptr_t)NULL);
-		dbg_assert(iqueue_back (queue) == (void*)(intptr_t)NULL);
+		dbg_assert(iqueue_front(queue) == NULL);
+		dbg_assert(iqueue_back (queue) == NULL);
 
 		/* trying to pop empty queue */
 		iqueue_pop(queue);
 		dbg_assert(iqueue_empty(queue) == true);
 		dbg_assert(iqueue_size (queue) == 0);
-		dbg_assert(iqueue_front(queue) == (void*)(intptr_t)NULL);
-		dbg_assert(iqueue_back (queue) == (void*)(intptr_t)NULL);
+		dbg_assert(iqueue_front(queue) == NULL);
+		dbg_assert(iqueue_back (queue) == NULL);
 
 		/* trying to push an element after pop empty queue */
-		iqueue_push(queue, (void*)(intptr_t)1);
+		temp_int = 1;
+		iqueue_push(queue, &temp_int);
+		dbg_assert(temp_int == 1);
 		dbg_assert(iqueue_empty(queue) == false);
 		dbg_assert(iqueue_size (queue) == 1);
-		dbg_assert(iqueue_front(queue) == (void*)(intptr_t)1);
-		dbg_assert(iqueue_back (queue) == (void*)(intptr_t)1);
+		dbg_assert(*(int*)iqueue_front(queue) == 1);
+		dbg_assert(*(int*)iqueue_back (queue) == 1);
 	}
 
 	/* test unique element */
@@ -165,28 +217,36 @@ static void queue_test_basic_operation(iqueue queue) {
 		intptr_t element = 0;
 		iqueue_clear(queue);
 
-		iqueue_push(queue, (void*)(intptr_t)1);
-		iqueue_push(queue, (void*)(intptr_t)1);
-		iqueue_push(queue, (void*)(intptr_t)1);
+		temp_int = 1;
+		iqueue_push(queue, &temp_int);
+		dbg_assert(temp_int == 1);
+		temp_int = 1;
+		iqueue_push(queue, &temp_int);
+		dbg_assert(temp_int == 1);
+		temp_int = 1;
+		iqueue_push(queue, &temp_int);
+		dbg_assert(temp_int == 1);
 		/* now the queue is { 1, 1, 1 } */
 		dbg_assert(iqueue_empty(queue) == false);
 		dbg_assert(iqueue_size (queue) == 3);
-		dbg_assert(iqueue_front(queue) == (void*)(intptr_t)1);
-		dbg_assert(iqueue_back (queue) == (void*)(intptr_t)1);
+		dbg_assert(*(int*)iqueue_front(queue) == 1);
+		dbg_assert(*(int*)iqueue_back (queue) == 1);
 
 		iqueue_pop(queue);
 		/* remove the front one, now is { 1, 1 } */
 		dbg_assert(iqueue_empty(queue) == false);
 		dbg_assert(iqueue_size (queue) == 2);
-		dbg_assert(iqueue_front(queue) == (void*)(intptr_t)1);
-		dbg_assert(iqueue_back (queue) == (void*)(intptr_t)1);
+		dbg_assert(*(int*)iqueue_front(queue) == 1);
+		dbg_assert(*(int*)iqueue_back (queue) == 1);
 
-		iqueue_push(queue, (void*)(intptr_t)1);
+		temp_int = 1;
+		iqueue_push(queue, &temp_int);
+		dbg_assert(temp_int == 1);
 		/* now the queue is { 1, 1, 1 } */
 		dbg_assert(iqueue_empty(queue) == false);
 		dbg_assert(iqueue_size (queue) == 3);
-		dbg_assert(iqueue_front(queue) == (void*)(intptr_t)1);
-		dbg_assert(iqueue_back (queue) == (void*)(intptr_t)1);
+		dbg_assert(*(int*)iqueue_front(queue) == 1);
+		dbg_assert(*(int*)iqueue_back (queue) == 1);
 
 		iqueue_clear(queue);
 	}

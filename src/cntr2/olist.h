@@ -5,7 +5,7 @@
 #include <cntr2/oallocator.h>
 
 /* create an object list which holds instance of objects, the container will manage the life time of the objects. */
-object         olist_create          (pf_ref_clone_v clone, pf_ref_destroy_v destroy, pf_ref_equals_v equals, allocator alc);
+object         olist_create          (unknown_traits content_traits, allocator alc);
 
 void           olist_destroy         (      object o);
 object         olist_clone           (const_object o);
@@ -17,6 +17,7 @@ void           olist_clear           (      object o);
 void           olist_foreach         (      object o, pf_ref_process_v process, void* context);
 int            olist_size            (const_object o);
 bool           olist_empty           (const_object o);
+/* the return value is a reference which is allocated on the __global_default_heap, you should clean it up yourself */
 const_unknown  olist_front           (const_object o);
 const_unknown  olist_back            (const_object o);
 void           olist_add_front       (      object o, const_unknown __ref);

@@ -13,40 +13,28 @@ struct skip_link {
 };
 
 struct skiplist {
-	struct skip_link* sentinel;
+	struct skip_link*     sentinel;
 
-	pf_alloc          __alloc;
-	pf_dealloc        __dealloc;
-	void*             __heap;
+	pf_alloc              __alloc;
+	pf_dealloc            __dealloc;
+	void*                 __heap;
 
 	pf_skiplist_compare   __comp;
 	pf_skiplist_compare_v __compv;
 	void*                 __comp_context;
 };
 
-
-static void* skiplink_default_alloc(int size, void* param) {
-	unused(param);
-	return malloc(size);
-}
-
-static bool skiplink_default_dealloc(void* buff, void* param) {
-	unused(param);
-	return free(buff);
-}
-
-static struct skip_link* skip_link_create(const void* owner, pf_alloc __alloc, void* __heap);
+static struct skip_link* skip_link_create      (const void* owner, pf_alloc __alloc, void* __heap);
 static struct skip_link* skip_link_create_fixed(const void* owner, int level, pf_alloc alc, void* alloc_param);
-static void   skip_link_destroy  (struct skip_link* link, pf_dealloc dlc, void* dealloc_param);
+static void              skip_link_destroy     (struct skip_link* link, pf_dealloc dlc, void* dealloc_param);
 
-static void   skip_link_insert   (struct skip_link* header, struct skip_link* target, pf_skiplist_compare comp);
-static struct skip_link* skip_link_insert_s(struct skip_link* header, struct skip_link* target, pf_skiplist_compare comp);
-static void   skip_link_insert_v (struct skip_link* header, struct skip_link* target, pf_skiplist_compare_v compv, void* cp_context);
-static struct skip_link* skip_link_insert_sv(struct skip_link* header, struct skip_link* target, pf_skiplist_compare_v compv, void* cp_context);
+static void              skip_link_insert      (struct skip_link* header, struct skip_link* target, pf_skiplist_compare comp);
+static struct skip_link* skip_link_insert_s    (struct skip_link* header, struct skip_link* target, pf_skiplist_compare comp);
+static void              skip_link_insert_v    (struct skip_link* header, struct skip_link* target, pf_skiplist_compare_v compv, void* cp_context);
+static struct skip_link* skip_link_insert_sv   (struct skip_link* header, struct skip_link* target, pf_skiplist_compare_v compv, void* cp_context);
 
-static void skip_link_remove     (struct skip_link* header, struct skip_link* target);
-
-static void skip_link_debug_check(struct skip_link* root, pf_skiplist_compare comp);
+static void              skip_link_remove      (struct skip_link* header, struct skip_link* target);
+static void              skip_link_debug_check (struct skip_link* root, pf_skiplist_compare comp);
 
 #define SKIP_LINK_MAX_LEVEL 32
 struct skip_link* skip_link_create(const void* owner, pf_alloc __alloc, void* __heap) {
@@ -112,6 +100,7 @@ inline const void* skip_link_getref(const struct skip_link* slink) {
 	return slink->reference;
 }
 
+/* insert the target no matter if there is an element in the list which 'equals' to it */
 void skip_link_insert(struct skip_link* header, struct skip_link* target, pf_skiplist_compare comp) {
 	int i;
 	struct list_link* list = header->levels[header->num_level-1].next;
@@ -301,7 +290,7 @@ bool skiplist_empty(const struct skiplist* slist) {
 	return slist->sentinel == skip_link_next(slist->sentinel);
 }
 
-void skiplist_foreach(struct skiplist* slist, pf_ref_visit_v process, void* context) {
+void skiplist_foreach(struct skiplist* slist, pf_skiplist_ref_visit process, void* context) {
 	/* traverse the first level */
 	struct list_link* listlink = NULL;
 	struct list_link* listsent = NULL;
@@ -338,7 +327,7 @@ void skiplist_insert(struct skiplist* slist, const void* data) {
 	}
 }
 
-void* skiplist_insert_s(struct skiplist* slist, const void* data) {
+void* skiplist_update_s(struct skiplist* slist, const void* data) {
 	struct skip_link* toinsert = skip_link_create(data, slist->__alloc, slist->__heap);
 	struct skip_link* inlist   = NULL;
 	
@@ -359,6 +348,23 @@ void* skiplist_insert_s(struct skiplist* slist, const void* data) {
 		return (void*)old_reference;
 	}
 	return NULL;
+}
+
+bool skiplist_insert_s(struct skiplist* slist, const void* data) {
+	struct skip_link* toinsert = skip_link_create(data, slist->__alloc, slist->__heap);
+	struct skip_link* inlist   = NULL;
+
+	if (slist->__comp != NULL) {
+		inlist = skip_link_insert_s(slist->sentinel, toinsert, slist->__comp);
+	} else {
+		dbg_assert(slist->__compv != NULL);
+		inlist = skip_link_insert_sv(slist->sentinel, toinsert, slist->__compv, slist->__comp_context);
+	}
+
+	if (inlist != toinsert) {
+		return false;
+	}
+	return true;
 }
 
 bool skiplist_contains(const struct skiplist* slist, const void* data) {

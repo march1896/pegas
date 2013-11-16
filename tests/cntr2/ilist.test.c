@@ -5,17 +5,34 @@
 #include "test_util.h"
 
 static void list_test_basic_itr_operation(ilist list) {
+	int temp_int = 0;
 	ilist_clear(list);
 	dbg_assert(ilist_empty(list));
 
-	ilist_add_front(list, (void*)(intptr_t)4);
-	ilist_add_back (list, (void*)(intptr_t)5);
-	ilist_add_front(list, (void*)(intptr_t)3);
-	ilist_add_back (list, (void*)(intptr_t)6);
-	ilist_add_front(list, (void*)(intptr_t)2);
-	ilist_add_back (list, (void*)(intptr_t)7);
-	ilist_add_front(list, (void*)(intptr_t)1);
-	ilist_add_back (list, (void*)(intptr_t)8);
+	temp_int = 4;
+	ilist_add_front(list, &temp_int);
+	dbg_assert(temp_int == 4);
+	temp_int = 5;
+	ilist_add_back (list, &temp_int);
+	dbg_assert(temp_int == 5);
+	temp_int = 3;
+	ilist_add_front(list, &temp_int);
+	dbg_assert(temp_int == 3);
+	temp_int = 6;
+	ilist_add_back (list, &temp_int);
+	dbg_assert(temp_int == 6);
+	temp_int = 2;
+	ilist_add_front(list, &temp_int);
+	dbg_assert(temp_int == 2);
+	temp_int = 7;
+	ilist_add_back (list, &temp_int);
+	dbg_assert(temp_int == 7);
+	temp_int = 1;
+	ilist_add_front(list, &temp_int);
+	dbg_assert(temp_int == 1);
+	temp_int = 8;
+	ilist_add_back (list, &temp_int);
+	dbg_assert(temp_int == 8);
 	/* now the list contains { 1, 2, 3, 4, 5, 6, 7, 8 } */
 
 	dbg_assert(ilist_size(list) == 8);
@@ -26,37 +43,40 @@ static void list_test_basic_itr_operation(ilist list) {
 
 		/* traverse the list */
 		for (; !itr_equals(itr, end); itr_to_next(itr)) {
-			dbg_assert(itr_get_ref(itr) == (void*)current);
+			dbg_assert(*(int*)itr_get_ref(itr) == current);
 			current ++;
 		}
 
 		/* test itr_assign */
 		ilist_itr_assign(list, itr, itr_begin);
-		dbg_assert(itr_get_ref(itr) == (void*)(intptr_t)1);
+		dbg_assert(*(int*)itr_get_ref(itr) == 1);
 		ilist_itr_assign(list, itr, itr_end);
 		itr_to_prev(itr);
-		dbg_assert(itr_get_ref(itr) == (void*)(intptr_t)8);
+		dbg_assert(*(int*)itr_get_ref(itr) == 8);
 
 		/* test itr_find */
-		ilist_itr_find(list, itr, (void*)(intptr_t)0);
+		temp_int = 0;
+		ilist_itr_find(list, itr, &temp_int);
 		dbg_assert(itr_equals(itr, ilist_itr_end(list)));
-		ilist_itr_find(list, itr, (void*)(intptr_t)9);
+		temp_int = 9;
+		ilist_itr_find(list, itr, &temp_int);
 		dbg_assert(itr_equals(itr, ilist_itr_end(list)));
 
 		for (current = 1; current <= 8; current ++) {
-			ilist_itr_find(list, itr, (void*)current);
+			ilist_itr_find(list, itr, &current);
 			dbg_assert(!itr_equals(itr, ilist_itr_end(list)));
 		}
 
 		/* test itr_remove */
-		ilist_itr_find(list, itr, (void*)(intptr_t)4);
+		temp_int = 4;
+		ilist_itr_find(list, itr, &temp_int);
 		dbg_assert(!itr_equals(itr, ilist_itr_end(list)));
 
 		ilist_itr_remove(list, itr);
 		/* now the list is { 1, 2, 3,  , 5, 6, 7, 8 } */
 		dbg_assert(ilist_size(list) == 7);
 		for (current = 0; current <= 9; current ++) {
-			ilist_itr_find(list, itr, (void*)current);
+			ilist_itr_find(list, itr, &current);
 			if (current == 0 || current == 9 || current == 4) {
 				dbg_assert(itr_equals(itr, ilist_itr_end(list)));
 			}
@@ -65,15 +85,16 @@ static void list_test_basic_itr_operation(ilist list) {
 			}
 		}
 
-		/* test continous itr_remove */
-		ilist_itr_find(list, itr, (void*)(intptr_t)5);
+		/* test continuous itr_remove */
+		temp_int = 5;
+		ilist_itr_find(list, itr, &temp_int);
 		dbg_assert(!itr_equals(itr, ilist_itr_end(list)));
 
 		ilist_itr_remove(list, itr);
 		/* now the list is { 1, 2, 3,  , 6, 7, 8 } */
 		dbg_assert(ilist_size(list) == 6);
 		for (current = 0; current <= 9; current ++) {
-			ilist_itr_find(list, itr, (void*)current);
+			ilist_itr_find(list, itr, &current);
 			if (current == 0 || current == 9 || current == 4 || current == 5) {
 				dbg_assert(itr_equals(itr, ilist_itr_end(list)));
 			}
@@ -83,30 +104,34 @@ static void list_test_basic_itr_operation(ilist list) {
 		}
 
 		/* test insert_before */
-		ilist_itr_find(list, itr, (void*)(intptr_t)6);
+		temp_int = 6;
+		ilist_itr_find(list, itr, &temp_int);
 		dbg_assert(!itr_equals(itr, ilist_itr_end(list)));
 
-		ilist_itr_insert_before(list, itr, (void*)(intptr_t)5);
+		temp_int = 5;
+		ilist_itr_insert_before(list, itr, &temp_int);
 		/* now the list is { 1, 2, 3,  5, 6, 7, 8 } */
 		for (current = 1, ilist_itr_assign(list, itr, itr_begin); 
 				!itr_equals(itr, end); 
 				current ++) {
 			if (current != 4) {
-				dbg_assert(itr_get_ref(itr) == (void*)current);
+				dbg_assert(*(int*)itr_get_ref(itr) == current);
 				itr_to_next(itr);
 			}
 		}
 
 		/* test insert_after */
-		ilist_itr_find(list, itr, (void*)(intptr_t)3);
+		temp_int = 3;
+		ilist_itr_find(list, itr, &temp_int);
 		dbg_assert(!itr_equals(itr, ilist_itr_end(list)));
 
-		ilist_itr_insert_after(list, itr, (void*)(intptr_t)4);
+		temp_int = 4;
+		ilist_itr_insert_after(list, itr, &temp_int);
 		/* now the list is { 1, 2, 3, 4, 5, 6, 7, 8 } */
 		for (current = 1, ilist_itr_assign(list, itr, itr_begin); 
 				!itr_equals(itr, end); 
 				itr_to_next(itr), current ++) {
-			dbg_assert(itr_get_ref(itr) == (void*)current);
+			dbg_assert(*(int*)itr_get_ref(itr) == current);
 		}
 
 		itr_destroy(itr);
@@ -116,30 +141,49 @@ static void list_test_basic_itr_operation(ilist list) {
 }
 
 static void list_test_basic_operation(ilist list) {
+	int temp_int = 0;
 	ilist_clear(list);
 	dbg_assert(ilist_empty(list));
 
-	ilist_add_front(list, (void*)(intptr_t)4);
-	ilist_add_back (list, (void*)(intptr_t)5);
-	ilist_add_front(list, (void*)(intptr_t)3);
-	ilist_add_back (list, (void*)(intptr_t)6);
-	ilist_add_front(list, (void*)(intptr_t)2);
-	ilist_add_back (list, (void*)(intptr_t)7);
-	ilist_add_front(list, (void*)(intptr_t)1);
-	ilist_add_back (list, (void*)(intptr_t)8);
+	temp_int = 4;
+	ilist_add_front(list, &temp_int);
+	dbg_assert(temp_int == 4);
+	temp_int = 5;
+	ilist_add_back (list, &temp_int);
+	dbg_assert(temp_int == 5);
+	temp_int = 3;
+	ilist_add_front(list, &temp_int);
+	dbg_assert(temp_int == 3);
+	temp_int = 6;
+	ilist_add_back (list, &temp_int);
+	dbg_assert(temp_int == 6);
+	temp_int = 2;
+	ilist_add_front(list, &temp_int);
+	dbg_assert(temp_int == 2);
+	temp_int = 7;
+	ilist_add_back (list, &temp_int);
+	dbg_assert(temp_int == 7);
+	temp_int = 1;
+	ilist_add_front(list, &temp_int);
+	dbg_assert(temp_int == 1);
+	temp_int = 8;
+	ilist_add_back (list, &temp_int);
+	dbg_assert(temp_int == 8);
 	/* now the list contains { 1, 2, 3, 4, 5, 6, 7, 8 } */
 	dbg_assert(ilist_size(list) == 8);
 	{
 		intptr_t current = 1;
 
-		dbg_assert(ilist_front(list) == (void*)(intptr_t)1);
-		dbg_assert(ilist_back (list) == (void*)(intptr_t)8);
+		dbg_assert(*(int*)ilist_front(list) == 1);
+		dbg_assert(*(int*)ilist_back (list) == 8);
 
 		for (; current <= 8; current ++) {
-			dbg_assert(ilist_contains(list, (void*)current));
+			dbg_assert(ilist_contains(list, &current));
 		}
-		dbg_assert(ilist_contains(list, (void*)(intptr_t)0) == false);
-		dbg_assert(ilist_contains(list, (void*)(intptr_t)9) == false);
+		temp_int = 0;
+		dbg_assert(ilist_contains(list, &temp_int) == false);
+		temp_int = 0;
+		dbg_assert(ilist_contains(list, &temp_int) == false);
 	}
 
 	/* test remove, delete the even ones */
@@ -150,18 +194,20 @@ static void list_test_basic_operation(ilist list) {
 		bool res;
 
 		for (x = 2; x <= 8; x +=2) {
-			res = ilist_remove(list, (void*)x);
+			res = ilist_remove(list, &x);
 			dbg_assert(res == 1);
 		}
 
 		dbg_assert(ilist_size(list) == 4);
 		for (x = 1; x <= 8; x ++) {
 			bool exist = x % 2 ? true : false;
-			dbg_assert(ilist_contains(list, (void*)x) == exist);
+			dbg_assert(ilist_contains(list, &x) == exist);
 		}
 
-		dbg_assert(ilist_contains(list, (void*)(intptr_t)0) == false);
-		dbg_assert(ilist_contains(list, (void*)(intptr_t)9) == false);
+		temp_int = 0;
+		dbg_assert(ilist_contains(list, &temp_int) == false);
+		temp_int = 9;
+		dbg_assert(ilist_contains(list, &temp_int) == false);
 	}
 
 	/* test remove_front and remove_back */
@@ -169,30 +215,30 @@ static void list_test_basic_operation(ilist list) {
 	{
 		/* now the list is {1, 3, 5, 7} */
 
-		dbg_assert(ilist_front(list) == (void*)(intptr_t)1);
-		dbg_assert(ilist_back (list) == (void*)(intptr_t)7);
+		dbg_assert(*(int*)ilist_front(list) == 1);
+		dbg_assert(*(int*)ilist_back (list) == 7);
 
 		ilist_remove_front(list);
-		dbg_assert(ilist_front(list) == (void*)(intptr_t)3);
-		dbg_assert(ilist_back (list) == (void*)(intptr_t)7);
+		dbg_assert(*(int*)ilist_front(list) == 3);
+		dbg_assert(*(int*)ilist_back (list) == 7);
 		dbg_assert(ilist_size(list) == 3);
 		dbg_assert(ilist_empty(list) == false);
 
 		ilist_remove_back(list);
-		dbg_assert(ilist_front(list) == (void*)(intptr_t)3);
-		dbg_assert(ilist_back (list) == (void*)(intptr_t)5);
+		dbg_assert(*(int*)ilist_front(list) == 3);
+		dbg_assert(*(int*)ilist_back (list) == 5);
 		dbg_assert(ilist_size(list) == 2);
 		dbg_assert(ilist_empty(list) == false);
 
 		ilist_remove_front(list);
-		dbg_assert(ilist_front(list) == (void*)(intptr_t)5);
-		dbg_assert(ilist_back (list) == (void*)(intptr_t)5);
+		dbg_assert(*(int*)ilist_front(list) == 5);
+		dbg_assert(*(int*)ilist_back (list) == 5);
 		dbg_assert(ilist_size(list) == 1);
 		dbg_assert(ilist_empty(list) == false);
 
 		ilist_remove_back(list);
-		dbg_assert(ilist_front(list) == (void*)(intptr_t)NULL);
-		dbg_assert(ilist_back (list) == (void*)(intptr_t)NULL);
+		dbg_assert(ilist_front(list) == NULL);
+		dbg_assert(ilist_back (list) == NULL);
 		dbg_assert(ilist_size(list) == 0);
 		dbg_assert(ilist_empty(list));
 
@@ -200,43 +246,51 @@ static void list_test_basic_operation(ilist list) {
 		ilist_remove_front(list);
 		dbg_assert(ilist_size(list) == 0);
 		dbg_assert(ilist_empty(list) == true);
-		dbg_assert(ilist_front(list) == (void*)(intptr_t)NULL);
-		dbg_assert(ilist_back (list) == (void*)(intptr_t)NULL);
+		dbg_assert(ilist_front(list) == NULL);
+		dbg_assert(ilist_back (list) == NULL);
 
 		ilist_remove_back(list);
 		dbg_assert(ilist_size(list) == 0);
 		dbg_assert(ilist_empty(list) == true);
-		dbg_assert(ilist_front(list) == (void*)(intptr_t)NULL);
-		dbg_assert(ilist_back (list) == (void*)(intptr_t)NULL);
+		dbg_assert(ilist_front(list) == NULL);
+		dbg_assert(ilist_back (list) == NULL);
 
 		/* trying to add element into the list after removing from empty list */
-		ilist_add_front(list, (void*)(intptr_t)2);
+		temp_int = 2;
+		ilist_add_front(list, &temp_int);
+		dbg_assert(temp_int == 2);
 		/* now the list is { 2 } */
 		dbg_assert(ilist_size(list) == 1);
 		dbg_assert(ilist_empty(list) == false);
-		dbg_assert(ilist_front(list) == (void*)(intptr_t)2);
-		dbg_assert(ilist_back (list) == (void*)(intptr_t)2);
+		dbg_assert(*(int*)ilist_front(list) == 2);
+		dbg_assert(*(int*)ilist_back (list) == 2);
 
-		ilist_add_back (list, (void*)(intptr_t)3);
+		temp_int = 3;
+		ilist_add_back (list, &temp_int);
+		dbg_assert(temp_int == 3);
 		/* now the list is { 2, 3 } */
 		dbg_assert(ilist_size(list) == 2);
 		dbg_assert(ilist_empty(list) == false);
-		dbg_assert(ilist_front(list) == (void*)(intptr_t)2);
-		dbg_assert(ilist_back (list) == (void*)(intptr_t)3);
+		dbg_assert(*(int*)ilist_front(list) == 2);
+		dbg_assert(*(int*)ilist_back (list) == 3);
 
-		ilist_add_front(list, (void*)(intptr_t)1);
+		temp_int = 1;
+		ilist_add_front(list, &temp_int);
+		dbg_assert(temp_int == 1);
 		/* now the list is { 1, 2, 3 } */
 		dbg_assert(ilist_size(list) == 3);
 		dbg_assert(ilist_empty(list) == false);
-		dbg_assert(ilist_front(list) == (void*)(intptr_t)1);
-		dbg_assert(ilist_back (list) == (void*)(intptr_t)3);
+		dbg_assert(*(int*)ilist_front(list) == 1);
+		dbg_assert(*(int*)ilist_back (list) == 3);
 
-		ilist_add_back (list, (void*)(intptr_t)4);
+		temp_int = 4;
+		ilist_add_back (list, &temp_int);
+		dbg_assert(temp_int == 4);
 		/* now the list is { 1, 2, 3, 4 } */
 		dbg_assert(ilist_size(list) == 4);
 		dbg_assert(ilist_empty(list) == false);
-		dbg_assert(ilist_front(list) == (void*)(intptr_t)1);
-		dbg_assert(ilist_back (list) == (void*)(intptr_t)4);
+		dbg_assert(*(int*)ilist_front(list) == 1);
+		dbg_assert(*(int*)ilist_back (list) == 4);
 
 		ilist_clear(list);
 	}
@@ -246,16 +300,20 @@ static void list_test_basic_operation(ilist list) {
 		/* now the list is empty */
 		dbg_assert(ilist_empty(list));
 
-		dbg_assert(ilist_front(list) == (void*)(intptr_t)NULL);
-		dbg_assert(ilist_back (list) == (void*)(intptr_t)NULL);
+		dbg_assert(ilist_front(list) == NULL);
+		dbg_assert(ilist_back (list) == NULL);
 		
 		/* clear an empty list */
 		ilist_clear(list);
 		dbg_assert(ilist_empty(list));
 
-		ilist_add_back(list, (void*)(intptr_t)1);
-		ilist_add_back(list, (void*)(intptr_t)1);
-		ilist_add_back(list, (void*)(intptr_t)1);
+		temp_int = 1;
+		ilist_add_back(list, &temp_int);
+		dbg_assert(temp_int == 1);
+		ilist_add_back(list, &temp_int);
+		dbg_assert(temp_int == 1);
+		ilist_add_back(list, &temp_int);
+		dbg_assert(temp_int == 1);
 
 		/* now the list is { 1, 1, 1 } */
 		ilist_clear(list);

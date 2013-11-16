@@ -86,10 +86,10 @@ static void skiplist_basic_test() {
 	/* test insert_s */
 	{
 		bool dup = false;
-		dbg_assert(skiplist_insert_s(list, (void*)(intptr_t)2) == NULL);
-		dbg_assert(skiplist_insert_s(list, (void*)(intptr_t)1) == NULL);
-		dbg_assert(skiplist_insert_s(list, (void*)(intptr_t)4) == NULL);
-		dbg_assert(skiplist_insert_s(list, (void*)(intptr_t)3) == NULL);
+		dbg_assert(skiplist_update_s(list, (void*)(intptr_t)2) == NULL);
+		dbg_assert(skiplist_update_s(list, (void*)(intptr_t)1) == NULL);
+		dbg_assert(skiplist_update_s(list, (void*)(intptr_t)4) == NULL);
+		dbg_assert(skiplist_update_s(list, (void*)(intptr_t)3) == NULL);
 		/* now is { 1, 2, 3, 4 } */
 
 		dbg_assert(skiplist_contains(list, (void*)(intptr_t)1) == true);
@@ -97,13 +97,13 @@ static void skiplist_basic_test() {
 		dbg_assert(skiplist_contains(list, (void*)(intptr_t)3) == true);
 		dbg_assert(skiplist_contains(list, (void*)(intptr_t)4) == true);
 
-		dbg_assert(skiplist_insert_s(list, (void*)(intptr_t)2) != NULL);
+		dbg_assert(skiplist_update_s(list, (void*)(intptr_t)2) != NULL);
 		/* still { 1, 2, 3, 4 } */
 		dbg_assert(skiplist_remove(list, (void*)(intptr_t)2) == true);
 		/* { 1, 3, 4 } */
 		dbg_assert(skiplist_contains(list, (void*)(intptr_t)2) == false);
 
-		dbg_assert(skiplist_insert_s(list, (void*)(intptr_t)2) == NULL);
+		dbg_assert(skiplist_update_s(list, (void*)(intptr_t)2) == NULL);
 		dbg_assert(skiplist_contains(list, (void*)(intptr_t)2) == true);
 
 		skiplist_clear(list);
@@ -181,13 +181,13 @@ static void skiplist_insert_remove_s() {
 
 		if (x_count[idx] == 0) {
 			dbg_assert(skiplist_contains(list, (void*)(intptr_t)idx) == false);
-			dbg_assert(skiplist_insert_s(list, (void*)(intptr_t)idx) == NULL);
+			dbg_assert(skiplist_update_s(list, (void*)(intptr_t)idx) == NULL);
 			x_count[idx] ++;
 		}
 		else {
 			int add = rand() % 2;
 			if (add == 1) {
-				void* res = skiplist_insert_s(list, (void*)(intptr_t)idx);
+				void* res = skiplist_update_s(list, (void*)(intptr_t)idx);
 				dbg_assert(res != NULL);
 			}
 			else {

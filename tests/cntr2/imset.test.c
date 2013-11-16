@@ -101,9 +101,8 @@ static void mset_test_basic_itr_operation(object mset) {
 		imset_itr_find_lower(mset, itr, (void*)(intptr_t)2);
 		dbg_assert(!itr_equals(itr, imset_itr_end(mset)));
 
-		current = (intptr_t)imset_itr_remove(mset, itr);
+		imset_itr_remove(mset, itr);
 		/* now the mset is { 1, 1, 2,  3, 3, 4, 4 } */
-		dbg_assert(current == 2);
 		dbg_assert(imset_size(mset) == 7);
 		imset_itr_find_lower(mset, lower, (void*)(intptr_t)2);
 		imset_itr_find_upper(mset, upper, (void*)(intptr_t)2);
@@ -127,9 +126,8 @@ static void mset_test_basic_itr_operation(object mset) {
 		imset_itr_find_lower(mset, itr, (void*)(intptr_t)2);
 		dbg_assert(!itr_equals(itr, imset_itr_end(mset)));
 
-		current = (intptr_t)imset_itr_remove(mset, itr);
+		imset_itr_remove(mset, itr);
 		/* now the mset is { 1, 1, 3, 3, 4, 4 } */
-		dbg_assert(current == 2);
 		dbg_assert(imset_size(mset) == 6);
 		imset_itr_find_lower(mset, lower, (void*)(intptr_t)2);
 		imset_itr_find_upper(mset, upper, (void*)(intptr_t)2);
@@ -192,26 +190,26 @@ static void mset_test_basic_operation(object mset) {
 	dbg_assert(imset_empty(mset) == false);
 	{
 		/* now the mset contains { 1, 1, 2, 2, 3, 3, 4, 4 } */
-		bool res;
+		int count;
 
-		res = imset_remove(mset, (void*)(intptr_t)2);
-		/* now the mset contains { 1, 1, 2,  3, 3, 4, 4 } */
-		dbg_assert(res == true);
-		dbg_assert(imset_size(mset) == 7);
-		dbg_assert(imset_contains(mset, (void*)(intptr_t)2) == true);
-		dbg_assert(imset_count(mset, (void*)(intptr_t)2) == 1);
+		count = imset_remove(mset, (void*)(intptr_t)2);
+		/* now the mset contains { 1, 1, 3, 3, 4, 4 } */
+		dbg_assert(count == 2);
+		dbg_assert(imset_size(mset) == 6);
+		dbg_assert(imset_contains(mset, (void*)(intptr_t)2) == false);
+		dbg_assert(imset_count(mset, (void*)(intptr_t)2) == 0);
 
-		res = imset_remove(mset, (void*)(intptr_t)2);
+		count = imset_remove(mset, (void*)(intptr_t)2);
 		/* now the mset contains { 1, 1,  3, 3, 4, 4 } */
-		dbg_assert(res == true);
+		dbg_assert(count == 0);
 		dbg_assert(imset_size(mset) == 6);
 		dbg_assert(imset_contains(mset, (void*)(intptr_t)2) == false);
 		dbg_assert(imset_count(mset, (void*)(intptr_t)2) == 0);
 
 		/* try to remove element not in mset */
-		res = imset_remove(mset, (void*)(intptr_t)2);
+		count = imset_remove(mset, (void*)(intptr_t)2);
 		/* now the mset contains { 1, 1,  3, 3, 4, 4 } */
-		dbg_assert(res == false);
+		dbg_assert(count == 0);
 		dbg_assert(imset_size(mset) == 6);
 		dbg_assert(imset_contains(mset, (void*)(intptr_t)2) == false);
 		dbg_assert(imset_count(mset, (void*)(intptr_t)2) == 0);
