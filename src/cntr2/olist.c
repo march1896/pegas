@@ -423,7 +423,8 @@ const_unknown olist_front(const_object o) {
 
 	n_node = container_of(olist->sentinel.next, struct o_dlist_node, link);
 
-	return olist->content_traits.__clone(n_node->reference, __global_default_alloc, __global_default_heap);
+	//return olist->content_traits.__clone(n_node->reference, __global_default_alloc, __global_default_heap);
+	return n_node->reference;
 }
 
 const_unknown olist_back(const_object o) {
@@ -436,7 +437,8 @@ const_unknown olist_back(const_object o) {
 
 	n_node = container_of(olist->sentinel.prev, struct o_dlist_node, link);
 
-	return olist->content_traits.__clone(n_node->reference, __global_default_alloc, __global_default_heap);
+	//return olist->content_traits.__clone(n_node->reference, __global_default_alloc, __global_default_heap);
+	return n_node->reference;
 }
 
 void olist_add_front(object o, const_unknown __ref) {
@@ -681,6 +683,9 @@ void olist_itr_remove(object o, iterator itr) {
 	olist->content_traits.__destroy(obj_ref, (pf_dealloc)allocator_release, olist->allocator);
 
 	olist->size --;
+
+	/* invalidate the iterator */
+	oitr->current = NULL;
 
 	return;
 }

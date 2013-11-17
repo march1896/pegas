@@ -213,3 +213,23 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+mak/vsproject/RelWithDebInfo/TestMain.exe
+mak/vsproject/RelWithDebInfo/TJCLIB.lib
+mak/vsproject/TestMain.dir/RelWithDebInfo/cl.command.1.tlog
+mak/vsproject/TestMain.dir/RelWithDebInfo/CL.read.1.tlog
+mak/vsproject/TestMain.dir/RelWithDebInfo/CL.write.1.tlog
+mak/vsproject/TestMain.dir/RelWithDebInfo/link.command.1.tlog
+mak/vsproject/TestMain.dir/RelWithDebInfo/link.read.1.tlog
+mak/vsproject/TestMain.dir/RelWithDebInfo/link.write.1.tlog
+mak/vsproject/TestMain.dir/RelWithDebInfo/link-cvtres.read.1.tlog
+mak/vsproject/TestMain.dir/RelWithDebInfo/link-cvtres.write.1.tlog
+mak/vsproject/TestMain.dir/RelWithDebInfo/link-rc.read.1.tlog
+mak/vsproject/TestMain.dir/RelWithDebInfo/link-rc.write.1.tlog
+mak/vsproject/TestMain.dir/RelWithDebInfo/TestMain.lastbuildstate
+mak/vsproject/TJCLIB.dir/RelWithDebInfo/cl.command.1.tlog
+mak/vsproject/TJCLIB.dir/RelWithDebInfo/CL.read.1.tlog
+mak/vsproject/TJCLIB.dir/RelWithDebInfo/CL.write.1.tlog
+mak/vsproject/TJCLIB.dir/RelWithDebInfo/lib.command.1.tlog
+mak/vsproject/TJCLIB.dir/RelWithDebInfo/Lib-link.read.1.tlog
+mak/vsproject/TJCLIB.dir/RelWithDebInfo/Lib-link.write.1.tlog
+mak/vsproject/TJCLIB.dir/RelWithDebInfo/TJCLIB.lastbuildstate

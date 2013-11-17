@@ -42,14 +42,15 @@ static unknown int_clone(const_unknown ref_x, pf_alloc alc, void* heap) {
 	return new_int;
 }
 static void int_destroy(const_unknown ref_x, pf_dealloc dlc, void* heap) {
- 	if (sizeof(int) <= sizeof(unknown))
- 		return; 
+//  	if (sizeof(int) <= sizeof(unknown))
+//  		return; 
 
 	dealloc(dlc, heap, (void*)ref_x);
 }
 static int int_compare_to(const_unknown ref_x, const_unknown ref_y) {
 	int x = *(int*)ref_x;
 	int y = *(int*)ref_y;
+
 	if (x < y) 
 		return -1;
 	else if (x > y) 

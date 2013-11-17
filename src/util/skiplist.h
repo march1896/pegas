@@ -22,7 +22,7 @@ void skiplist_insert               (struct skiplist* list, const void* data);
 bool skiplist_insert_s             (struct skiplist* list, const void* data);
 /* if there is an element in the skiplist 'equals' data, update_s will update the reference to data and return the old reference.
    if not, return NULL */
-void* skiplist_update_s            (struct skiplist* list, const void* data);
+void* skiplist_replace_s           (struct skiplist* list, const void* data);
 bool skiplist_contains             (const struct skiplist* list, const void* data);
 bool skiplist_remove               (struct skiplist* list, const void* data);
 void skiplist_remove_link          (struct skiplist* list, struct skip_link* link);

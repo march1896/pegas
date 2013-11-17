@@ -356,7 +356,7 @@ static void set_bench_modify_randomly() {
 
 	for (i = 0; i < __num_modify; i ++) {
 		intptr_t x = rand() % __data_diff_type;
-		bool found = iset_contains(__set, (void*)x);
+		bool found = iset_contains(__set, &x);
 		
 		if (found == false) {
 			iset_insert(__set, &x);
@@ -386,7 +386,7 @@ static void set_bench_search_randomly() {
 	for (i = 0; i < __num_search; i ++) {
 		intptr_t x = rand() % __data_diff_type;
 
-		bool res = iset_contains(__set, (void*)x);
+		bool res = iset_contains(__set, &x);
 		dbg_assert(res == true);
 	}
 

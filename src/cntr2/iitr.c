@@ -1,19 +1,5 @@
 #include <iitr.h>
 
-// just a wrapper.
-// #include <iobject.h>
-// inline void itr_destroy(iterator itr) {
-// 	iobject_destroy(itr);
-// }
-// 
-// inline iterator itr_clone(const_iterator itr) {
-// 	return iobject_clone(itr);
-// }
-// 
-// inline bool itr_equals(const_iterator ia, const_iterator ib) {
-// 	return iobject_equals(ia, ib);
-// }
-
 inline const_unknown itr_get_ref(const_iterator itr) {
 	_interface intf = __fast_cast(itr, itr_interface_iterator);
 	dbg_assert(intf == __cast((unknown)itr, ITR_REF_ID));

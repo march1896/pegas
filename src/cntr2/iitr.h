@@ -12,9 +12,6 @@ enum iterator_position {
 	itr_pos_count
 };
 
-// extern inline void itr_destroy         (iterator itr);
-// extern inline iterator itr_clone       (const_iterator itr);
-// extern inline bool itr_equals          (const_iterator ia, const_iterator ib);
 #define itr_destroy iobject_destroy
 #define itr_clone   iobject_clone
 #define itr_equals  iobject_equals

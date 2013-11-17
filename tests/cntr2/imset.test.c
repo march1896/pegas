@@ -139,7 +139,7 @@ static void mset_test_basic_itr_operation(object mset) {
 		imset_itr_remove(mset, itr);
 		/* now the mset is { 1, 1, 2,  3, 3, 4, 4 } */
 		dbg_assert(imset_size(mset) == 7);
-		temp_int == 2;
+		temp_int = 2;
 		imset_itr_find_lower(mset, lower, &temp_int);
 		imset_itr_find_upper(mset, upper, &temp_int);
 		dbg_assert(!itr_equals(lower, upper));

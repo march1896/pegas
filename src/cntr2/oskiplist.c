@@ -86,7 +86,7 @@ static struct imset_vtable __oskiplist_imset_vtable = {
 	oskiplist_insert_m,         /* __insert */
 	oskiplist_contains,         /* __contains */
 	oskiplist_count,            /* __count */
-	oskiplist_remove,           /* __remove */
+	oskiplist_remove_m,         /* __remove */
 
 	oskiplist_itr_create,       /* __itr_create */
 	oskiplist_itr_assign,       /* __itr_assign */

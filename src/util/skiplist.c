@@ -327,7 +327,7 @@ void skiplist_insert(struct skiplist* slist, const void* data) {
 	}
 }
 
-void* skiplist_update_s(struct skiplist* slist, const void* data) {
+void* skiplist_replace_s(struct skiplist* slist, const void* data) {
 	struct skip_link* toinsert = skip_link_create(data, slist->__alloc, slist->__heap);
 	struct skip_link* inlist   = NULL;
 	
