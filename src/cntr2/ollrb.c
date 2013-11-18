@@ -341,10 +341,10 @@ object ollrb_create(unknown_traits content_traits, allocator alc) {
 
 /* from ifactory.h  */
 object cntr_create_ollrb(unknown_traits content_traits) {
-	return ollrb_create(content_traits, __global_default_allocator);
+	return ollrb_create_internal(content_traits, __global_default_allocator);
 }
 object cntr_create_ollrb_a(unknown_traits content_traits, allocator alc) {
-	return ollrb_create(content_traits, alc);
+	return ollrb_create_internal(content_traits, alc);
 }
 
 void ollrb_destroy(object o) {

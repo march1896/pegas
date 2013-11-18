@@ -22,7 +22,8 @@ void cntr2_all_test() {
 	test_run_single("osplay object test", cntr2_osplay_test);
 	//allocator_walk(__global_default_allocator, allocator_heap_walk_print, NULL);
 
-	//test_run_single("oskiplist object test", cntr2_oskiplist_test);
+	test_run_single("oskiplist object test", cntr2_oskiplist_test);
+	//allocator_walk(__global_default_allocator, allocator_heap_walk_print, NULL);
 
 	/* check the container/iterator memory leak */
 	allocator_walk(__global_default_allocator, allocator_heap_walk_print, NULL);

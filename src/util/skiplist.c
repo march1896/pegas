@@ -12,18 +12,6 @@ struct skip_link {
 	struct list_link levels[0];
 };
 
-struct skiplist {
-	struct skip_link*     sentinel;
-
-	pf_alloc              __alloc;
-	pf_dealloc            __dealloc;
-	void*                 __heap;
-
-	pf_skiplist_compare   __comp;
-	pf_skiplist_compare_v __compv;
-	void*                 __comp_context;
-};
-
 static struct skip_link* skip_link_create      (const void* owner, pf_alloc __alloc, void* __heap);
 static struct skip_link* skip_link_create_fixed(const void* owner, int level, pf_alloc alc, void* alloc_param);
 static void              skip_link_destroy     (struct skip_link* link, pf_dealloc dlc, void* dealloc_param);
@@ -34,7 +22,6 @@ static void              skip_link_insert_v    (struct skip_link* header, struct
 static struct skip_link* skip_link_insert_sv   (struct skip_link* header, struct skip_link* target, pf_skiplist_compare_v compv, void* cp_context);
 
 static void              skip_link_remove      (struct skip_link* header, struct skip_link* target);
-static void              skip_link_debug_check (struct skip_link* root, pf_skiplist_compare comp);
 
 #define SKIP_LINK_MAX_LEVEL 32
 struct skip_link* skip_link_create(const void* owner, pf_alloc __alloc, void* __heap) {
@@ -225,6 +212,18 @@ struct skip_link* skip_link_insert_sv(struct skip_link* header, struct skip_link
 	return target;
 }
 
+struct skiplist {
+	struct skip_link*     sentinel;
+
+	pf_alloc              __alloc;
+	pf_dealloc            __dealloc;
+	void*                 __heap;
+
+	pf_skiplist_compare   __comp;
+	pf_skiplist_compare_v __compv;
+	void*                 __comp_context;
+};
+
 static struct skiplist* skiplist_create_internal(
 	pf_skiplist_compare comp, 
 	pf_skiplist_compare_v compv, void* cp_context,
@@ -362,6 +361,7 @@ bool skiplist_insert_s(struct skiplist* slist, const void* data) {
 	}
 
 	if (inlist != toinsert) {
+		skip_link_destroy(toinsert, slist->__dealloc, slist->__heap);
 		return false;
 	}
 	return true;
@@ -429,7 +429,7 @@ const struct skip_link* skiplist_search_v(const struct skiplist* slist, const vo
 				} else if (option == skiplist_min_greater || option == skiplist_max_smallerorequal) {
 					/* do nothing, iterate until find the minimum greater one */
 				} else if (option == skiplist_min_greaterorequal || option == skiplist_max_smaller) {
-					/* break, itr contains the minimum greater or equal one, after the last
+					/* break, iterator contains the minimum greater or equal one, after the last
 					 * iteration, candidate will contain the first greater or equal one */
 					candidate = cur;
 					break;

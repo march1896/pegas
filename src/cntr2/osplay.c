@@ -337,10 +337,10 @@ object splayset_create(unknown_traits content_traits, allocator alc) {
 
 /* from ifactory.h  */
 object cntr_create_osplay(unknown_traits content_traits) {
-	return splayset_create(content_traits, __global_default_allocator);
+	return splayset_create_internal(content_traits, __global_default_allocator);
 }
 object cntr_create_osplay_a(unknown_traits content_traits, allocator alc) {
-	return splayset_create(content_traits, alc);
+	return splayset_create_internal(content_traits, alc);
 }
 
 void splayset_destroy(object o) {

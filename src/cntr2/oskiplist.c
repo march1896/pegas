@@ -43,6 +43,7 @@ struct oskiplist {
 
 	int                           size;
 
+	unknown_traits                content_traits;
 	pf_ref_compare                ref_comp;
 	pf_ref_compare_v              ref_comp_v;
 	void*                         comp_context;
@@ -68,8 +69,9 @@ static struct iset_vtable __oskiplist_iset_vtable = {
 	oskiplist_size,             /* __size */
 	oskiplist_empty,            /* __empty */
 	oskiplist_insert_s,         /* __insert */
+	oskiplist_replace_s,        /* __replace */
 	oskiplist_contains,         /* __contains */
-	oskiplist_remove_s,           /* __remove */
+	oskiplist_remove_s,         /* __remove */
 
 	oskiplist_itr_create,       /* __itr_create */
 	oskiplist_itr_assign,       /* __itr_assign */
@@ -257,7 +259,7 @@ static unknown oskiplist_itr_cast(unknown x, unique_id inf_id) {
 }
 
 static void oskiplist_itr_com_init(struct oskiplist_itr* itr, struct oskiplist* list);
-object oskiplist_create_internal(pf_ref_compare comp, pf_ref_compare_v compv, void* cp_context, allocator alc) {
+object oskiplist_create_internal(unknown_traits content_traits, allocator alc) {
 	struct oskiplist* oskiplist = NULL;
 	bool managed_allocator = false;
 
@@ -280,16 +282,10 @@ object oskiplist_create_internal(pf_ref_compare comp, pf_ref_compare_v compv, vo
 
 	oskiplist->size      = 0;
 
-	dbg_assert(comp != NULL || compv != NULL);
-	oskiplist->ref_comp  = comp;
-	oskiplist->ref_comp_v = compv;
-	oskiplist->comp_context = cp_context;
+	dbg_assert(content_traits.__compare_to != NULL);
+	oskiplist->content_traits = content_traits;
 
-	if (comp != NULL) {
-		oskiplist->driver_skiplist  = skiplist_create_a(comp, (pf_alloc)allocator_acquire, (pf_dealloc)allocator_release, alc);
-	} else {
-		oskiplist->driver_skiplist  = skiplist_create_va(compv, cp_context, (pf_alloc)allocator_acquire, (pf_dealloc)allocator_release, alc);
-	}
+	oskiplist->driver_skiplist  = skiplist_create_a(content_traits.__compare_to, (pf_alloc)allocator_acquire, (pf_dealloc)allocator_release, alc);
 
 	oskiplist->allocator = alc;
 	oskiplist->allocator_join_ondispose = managed_allocator;
@@ -301,25 +297,15 @@ object oskiplist_create_internal(pf_ref_compare comp, pf_ref_compare_v compv, vo
 	return (object)oskiplist;
 }
 
-object oskiplist_create(pf_ref_compare ref_comp, allocator alc) {
-	return oskiplist_create_internal(ref_comp, NULL, NULL, alc);
-}
-object oskiplist_create_v(pf_ref_compare_v ref_comp_v, void* comp_context, allocator alc) {
-	return oskiplist_create_internal(NULL, ref_comp_v, comp_context, alc);
+object oskiplist_create(unknown_traits content_traits, allocator alc) {
+	return oskiplist_create_internal(content_traits, alc);
 }
 
-/* from ifactory.h  */
-object cntr_create_oskiplist(pf_ref_compare comp) {
-	return oskiplist_create(comp, __global_default_allocator);
+object cntr_create_oskiplist(unknown_traits content_traits) {
+	return oskiplist_create_internal(content_traits, __global_default_allocator);
 }
-object cntr_create_oskiplist_a(pf_ref_compare comp, allocator alc) {
-	return oskiplist_create(comp, alc);
-}
-object cntr_create_oskiplist_v(pf_ref_compare_v comp_v, void* comp_context) {
-	return oskiplist_create_v(comp_v, comp_context, __global_default_allocator);
-}
-object cntr_create_oskiplist_va(pf_ref_compare_v comp_v, void* comp_context, allocator alc) {
-	return oskiplist_create_v(comp_v, comp_context, alc);
+object cntr_create_oskiplist_a(unknown_traits content_traits, allocator alc) {
+	return oskiplist_create_internal(content_traits, alc);
 }
 
 void oskiplist_destroy(object o) {
@@ -349,9 +335,16 @@ hashcode oskiplist_hashcode(const_object o) {
 	return (hashcode)NULL;
 }
 
+void oskiplist_reference_dispose(const void* __ref, void* context) {
+	struct oskiplist* oslist = (struct oskiplist*)context;
+
+	oslist->content_traits.__destroy(__ref, (pf_dealloc)allocator_release, oslist->allocator);
+}
+
 void oskiplist_clear(object o) {
 	struct oskiplist* oskiplist = (struct oskiplist*)o;
 
+	skiplist_foreach(oskiplist->driver_skiplist, oskiplist_reference_dispose, oskiplist);
 	skiplist_clear(oskiplist->driver_skiplist);
 
 	oskiplist->size = 0;
@@ -474,24 +467,40 @@ void oskiplist_itr_find_upper(const_object o, iterator itr, const void* __ref) {
 
 void oskiplist_insert_s(object o, const_unknown __ref) {
 	struct oskiplist* oskiplist     = (struct oskiplist*)o;
-	void* old_ref = skiplist_insert_s(oskiplist->driver_skiplist, __ref);
+	const_unknown managed_ref = oskiplist->content_traits.__clone(__ref, (pf_alloc)allocator_acquire, oskiplist->allocator);
+	bool res = skiplist_insert_s(oskiplist->driver_skiplist, managed_ref);
 
-	if (old_ref == NULL)
+	if (res == true)
 		oskiplist->size ++;
-
-	return old_ref;
+	else 
+		oskiplist->content_traits.__destroy(managed_ref, (pf_dealloc)allocator_release, oskiplist->allocator);
 }
 
-void oskiplist_insert_m(object o, const void* __ref) {
+void oskiplist_replace_s(object o, const_unknown __ref) {
 	struct oskiplist* oskiplist     = (struct oskiplist*)o;
+	const_unknown managed_ref = oskiplist->content_traits.__clone(__ref, (pf_alloc)allocator_acquire, oskiplist->allocator);
+	bool res = false;
+	const_unknown replaced_ref = NULL;
 
-	skiplist_insert(oskiplist->driver_skiplist, __ref);
+	replaced_ref = skiplist_replace_s(oskiplist->driver_skiplist, managed_ref);
+
+	if (replaced_ref == NULL)
+		oskiplist->size ++;
+	else 
+		oskiplist->content_traits.__destroy(replaced_ref, (pf_dealloc)allocator_release, oskiplist->allocator);
+}
+
+void oskiplist_insert_m(object o, const_unknown __ref) {
+	struct oskiplist* oskiplist = (struct oskiplist*)o;
+	const_unknown managed_ref = oskiplist->content_traits.__clone(__ref, (pf_alloc)allocator_acquire, oskiplist->allocator);
+
+	skiplist_insert(oskiplist->driver_skiplist, managed_ref);
 
 	oskiplist->size ++;
 	return;
 }
 
-bool oskiplist_contains(const_object o, const void* __ref) {
+bool oskiplist_contains(const_object o, const_unknown __ref) {
 	struct oskiplist* oskiplist   = (struct oskiplist*)o;
 
 	return skiplist_contains(oskiplist->driver_skiplist, __ref);
@@ -511,18 +520,39 @@ int oskiplist_count(const_object o, const void* __ref) {
 	return count;
 }
 
-bool oskiplist_remove_s(object o, void* __ref) {
+bool oskiplist_remove_s(object o, const_unknown __ref) {
 	struct oskiplist* oskiplist   = (struct oskiplist*)o;
+	struct skip_link* slink = (struct skip_link*)skiplist_search(oskiplist->driver_skiplist, __ref);
 
-	bool res = skiplist_remove(oskiplist->driver_skiplist, __ref);
-
-	if (res == true) 
+	if (slink != skiplist_sent(oskiplist->driver_skiplist)) {
+		dbg_assert(oskiplist->content_traits.__compare_to(__ref, skip_link_getref(slink)) == 0);
+		oskiplist->content_traits.__destroy(skip_link_getref(slink), (pf_dealloc)allocator_release, oskiplist->allocator);
+		skiplist_remove_link(oskiplist->driver_skiplist, slink);
 		oskiplist->size --;
+		return true;
+	}
 
-	return res;
+	return false;
 }
 
-void* oskiplist_itr_remove(object o, iterator itr) {
+int oskiplist_remove_m(object o, const_unknown __ref) {
+	struct oskiplist* oskiplist   = (struct oskiplist*)o;
+	struct skip_link* slink = (struct skip_link*)skiplist_search(oskiplist->driver_skiplist, __ref);
+	int count = 0;
+
+	while (slink != skiplist_sent(oskiplist->driver_skiplist)) {
+		oskiplist->content_traits.__destroy(skip_link_getref(slink), (pf_dealloc)allocator_release, oskiplist->allocator);
+		skiplist_remove_link(oskiplist->driver_skiplist, slink);
+		oskiplist->size --;
+		count ++;
+
+		slink = (struct skip_link*)skiplist_search(oskiplist->driver_skiplist, __ref);
+	}
+
+	return count;
+}
+
+void oskiplist_itr_remove(object o, iterator itr) {
 	struct oskiplist* oskiplist = (struct oskiplist*)o;
 	struct oskiplist_itr* oitr  = (struct oskiplist_itr*)itr;
 	struct skip_link* link      = (struct skip_link*)oitr->current;
@@ -532,9 +562,11 @@ void* oskiplist_itr_remove(object o, iterator itr) {
 	dbg_assert(oitr->current != NULL);
 
 	skiplist_remove_link(oskiplist->driver_skiplist, link);
+	oskiplist->content_traits.__destroy(obj_ref, (pf_dealloc)allocator_release, oskiplist->allocator);
 
 	oskiplist->size --;
 
-	return (void*)obj_ref;
+	/* invalidate the iterator */
+	oitr->current = NULL;
 }
 
