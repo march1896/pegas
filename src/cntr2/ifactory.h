@@ -14,20 +14,14 @@
 
 /* if create without allocator, it will use the global_default_allocator
  * if the alc == NULL, the create_a will create with a multi-poll allocator for best efficiency */
-object cntr_create_olist();
-object cntr_create_olist_a(allocator alc);
-object cntr_create_olist_i(pf_ref_clone_v clone, pf_ref_destroy_v destroy, pf_ref_equals_v equals);
-object cntr_create_olist_ia(pf_ref_clone_v clone, pf_ref_destroy_v destroy, pf_ref_equals_v equals, allocator alc);
+object cntr_create_olist(unknown_traits content_traits);
+object cntr_create_olist_a(unknown_traits content_traits, allocator alc);
 
-object cntr_create_ollrb(pf_ref_compare comp);
-object cntr_create_ollrb_a(pf_ref_compare comp, allocator alc);
-object cntr_create_ollrb_v(pf_ref_compare_v comp_v, void* comp_context);
-object cntr_create_ollrb_va(pf_ref_compare_v comp_v, void* comp_context, allocator alc);
+object cntr_create_ollrb(unknown_traits content_traits);
+object cntr_create_ollrb_a(unknown_traits content_traits, allocator alc);
 
-object cntr_create_osplay(pf_ref_compare comp);
-object cntr_create_osplay_a(pf_ref_compare comp, allocator alc);
-object cntr_create_osplay_v(pf_ref_compare_v comp_v, void* comp_context);
-object cntr_create_osplay_va(pf_ref_compare_v comp_v, void* comp_context, allocator alc);
+object cntr_create_osplay(unknown_traits content_traits);
+object cntr_create_osplay_a(unknown_traits content_traits, allocator alc);
 
 object cntr_create_oskiplist(pf_ref_compare comp);
 object cntr_create_oskiplist_a(pf_ref_compare comp, allocator alc);

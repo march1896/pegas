@@ -1,4 +1,3 @@
-#include <iallocator.h>
 #include <oallocator.h>
 
 #include <memheap/heap_def.h>
@@ -18,47 +17,47 @@ inline void  allocator_join     (allocator o) {
 	_interface intf = __fast_cast(o, 0);
 	dbg_assert(intf == __cast(o, IALLOCATOR_ID));
 
-	((struct iallocator_vtable*)intf->__vtable)->__join(o);
+	((struct allocator_vtable*)intf->__vtable)->__join(o);
 }
 #ifdef _VERBOSE_ALLOC_DEALLOC_
-inline void* allocator_acquire_v(allocator o, int size, const char* file, int line) {
+inline void* allocator_acquire(allocator o, int size, const char* file, int line) {
 	_interface intf = __fast_cast(o, 0);
 	dbg_assert(intf == __cast(o, IALLOCATOR_ID));
 
-	return ((struct iallocator_vtable*)intf->__vtable)->__acquire(o, size, file, line);
+	return ((struct allocator_vtable*)intf->__vtable)->__acquire(o, size, file, line);
 }
-inline bool  allocator_release_v(allocator o, void* buff, const char* file, int line) {
+inline bool  allocator_release(allocator o, void* buff, const char* file, int line) {
 	_interface intf = __fast_cast(o, 0);
 	dbg_assert(intf == __cast(o, IALLOCATOR_ID));
 
-	return ((struct iallocator_vtable*)intf->__vtable)->__release(o, buff, file, line);
+	return ((struct allocator_vtable*)intf->__vtable)->__release(o, buff, file, line);
 }
 #else 
-inline void* allocator_acquire_c(allocator o, int size) {
+inline void* allocator_acquire(allocator o, int size) {
 	_interface intf = __fast_cast(o, 0);
 	dbg_assert(intf == __cast(o, IALLOCATOR_ID));
 
-	return ((struct iallocator_vtable*)intf->__vtable)->__acquire(o, size);
+	return ((struct allocator_vtable*)intf->__vtable)->__acquire(o, size);
 }
-inline bool  allocator_release_c(allocator o, void* buff) {
+inline bool  allocator_release(allocator o, void* buff) {
 	_interface intf = __fast_cast(o, 0);
 	dbg_assert(intf == __cast(o, IALLOCATOR_ID));
 
-	return ((struct iallocator_vtable*)intf->__vtable)->__release(o, buff);
+	return ((struct allocator_vtable*)intf->__vtable)->__release(o, buff);
 }
 #endif
 inline allocator allocator_get_parent(allocator o) {
 	_interface intf = __fast_cast(o, 0);
 	dbg_assert(intf == __cast(o, IALLOCATOR_ID));
 
-	return ((struct iallocator_vtable*)intf->__vtable)->__get_parent(o);
+	return ((struct allocator_vtable*)intf->__vtable)->__get_parent(o);
 }
 
 inline void allocator_walk(allocator o, pf_process_block per_block_cb, void* param) {
 	_interface intf = __fast_cast(o, 0);
 	dbg_assert(intf == __cast(o, IALLOCATOR_ID));
 
-	((struct iallocator_vtable*)intf->__vtable)->__heap_walk(o, per_block_cb, param);
+	((struct allocator_vtable*)intf->__vtable)->__heap_walk(o, per_block_cb, param);
 }
 
 /*****************************************************************************************
@@ -121,7 +120,7 @@ static void allocator_sysd_walk(allocator alo, pf_process_block per_block_cb, vo
 	//return heap_sysd_walk(me->__driver, per_block_cb, param);
 }
 
-struct iallocator_vtable __allocator_sysd_vtable = {
+struct allocator_vtable __allocator_sysd_vtable = {
 	NULL,  /* pf_iallocator_destroy */
 	allocator_sysd_acquire,
 	allocator_sysd_release,
@@ -227,7 +226,7 @@ static void allocator_llrb_walk(allocator alo, pf_process_block per_block_cb, vo
 	heap_llrb_walk(me->__driver, per_block_cb, param);
 }
 
-struct iallocator_vtable __allocator_llrb_vtable = {
+struct allocator_vtable __allocator_llrb_vtable = {
 	allocator_llrb_join,
 	allocator_llrb_acquire,
 	allocator_llrb_release,
@@ -355,7 +354,7 @@ static void allocator_buddy_walk(allocator alo, pf_process_block per_block_cb, v
 	heap_buddy_walk(me->__driver, per_block_cb, param);
 }
 
-struct iallocator_vtable __allocator_buddy_vtable = {
+struct allocator_vtable __allocator_buddy_vtable = {
 	allocator_buddy_join,
 	allocator_buddy_acquire,
 	allocator_buddy_release,
@@ -484,7 +483,7 @@ static void allocator_spool_walk(allocator alo, pf_process_block per_block_cb, v
 	heap_spool_walk(me->__driver, per_block_cb, param);
 }
 
-struct iallocator_vtable __allocator_spool_vtable = {
+struct allocator_vtable __allocator_spool_vtable = {
 	allocator_spool_join,
 	allocator_spool_acquire,
 	allocator_spool_release,
@@ -597,7 +596,7 @@ static void allocator_mpool_walk(allocator alo, pf_process_block per_block_cb, v
 	heap_mpool_walk(me->__driver, per_block_cb, param);
 }
 
-struct iallocator_vtable __allocator_mpool_vtable = {
+struct allocator_vtable __allocator_mpool_vtable = {
 	allocator_mpool_join,
 	allocator_mpool_acquire,
 	allocator_mpool_release,

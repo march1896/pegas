@@ -9,7 +9,6 @@
 
 #define IALLOCATOR_ID 0X0A0B0C30
 
-#define ITR_BAS_ID 0X0A0B0C20
 #define ITR_REF_ID 0X0A0B0C21
 #define ITR_ACC_ID 0X0A0B0C22
 #define ITR_FWD_ID 0X0A0B0C23
@@ -38,10 +37,6 @@ typedef object allocator;
 typedef object iterator;
 typedef const_object const_iterator;
 
-typedef enum {
-	itr_begin,
-	itr_end,
-	itr_pos_count
-} itr_pos;
+typedef enum iterator_position itr_pos;
 
 #endif /* _INTERFACE_DEFINITIONS_H_ */

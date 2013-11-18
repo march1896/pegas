@@ -1,7 +1,6 @@
 #ifndef _INTERFACE_LIST_H_
 #define _INTERFACE_LIST_H_
 
-/* the interface functions which support, used by clients */
 #include <oo_model.h>
 #include <idef.h>
 
@@ -10,6 +9,7 @@ extern inline       void     ilist_foreach         (object obj, pf_ref_process_v
 extern inline       int      ilist_size            (const_object obj);
 extern inline       void     ilist_add_front       (object obj, const_unknown __ref);
 extern inline       bool     ilist_empty           (const_object obj);
+/* the return value is a reference which is allocated on the __global_default_heap, you should clean it up yourself */
 extern inline const_unknown  ilist_front           (const_object obj);
 extern inline const_unknown  ilist_back            (const_object obj);
 extern inline       void     ilist_add_back        (object obj, const_unknown __ref);
@@ -29,7 +29,6 @@ extern inline       void     ilist_itr_find        (const_object obj, iterator i
 extern inline       void     ilist_itr_remove      (object obj, iterator itr);
 extern inline       void     ilist_itr_insert_before (object obj, iterator itr, const_unknown __ref);
 extern inline       void     ilist_itr_insert_after  (object obj, iterator itr, const_unknown __ref);
-
 /*
 {
 	iterator itr = ilist_itr_create(list, itr_begin);

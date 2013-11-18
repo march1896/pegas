@@ -61,9 +61,6 @@
     <ClCompile Include="..\..\src\cntr2\oallocator.c">
       <Filter>Source Files\cntr2</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\cntr2\iallocator.c">
-      <Filter>Source Files\cntr2</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\util\bst_link.c">
       <Filter>Source Files\util</Filter>
     </ClCompile>
@@ -85,9 +82,6 @@
     <ClCompile Include="..\..\src\util\skiplist.c">
       <Filter>Source Files\util</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\cntr2\oskiplist.c">
-      <Filter>Source Files\cntr2</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\lexer\automaton.c">
       <Filter>Source Files\lexer</Filter>
     </ClCompile>
@@ -97,14 +91,14 @@
     <ClCompile Include="..\..\src\cntr2\imap.c">
       <Filter>Source Files\cntr2</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\cntr2\oo_ref.c">
-      <Filter>Source Files\cntr2</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\cntr2\iobject.c">
       <Filter>Source Files\cntr2</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\util\cominc.c">
       <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cntr2\oo_bridge.c">
+      <Filter>Source Files\cntr2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -197,9 +191,6 @@
     <ClInclude Include="..\..\src\memheap\heap_walk.h">
       <Filter>Source Files\memheap</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\cntr2\iallocator.h">
-      <Filter>Source Files\cntr2</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\cntr2\oallocator.h">
       <Filter>Source Files\cntr2</Filter>
     </ClInclude>
@@ -239,10 +230,10 @@
     <ClInclude Include="..\..\src\cntr2\oskiplist.h">
       <Filter>Source Files\cntr2</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\cntr2\oo_ref.h">
+    <ClInclude Include="..\..\src\cntr2\iobject.h">
       <Filter>Source Files\cntr2</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\cntr2\iobject.h">
+    <ClInclude Include="..\..\src\cntr2\oo_bridge.h">
       <Filter>Source Files\cntr2</Filter>
     </ClInclude>
   </ItemGroup>

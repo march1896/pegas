@@ -17,25 +17,25 @@ static int int_compare(const void* a, const void* b) {
 }
 
 static void __as_set_basic_test() {
-	iset set = cntr_create_osplay(int_compare);
+	iset set = cntr_create_osplay(int_traits);
 	set_test_basic(set);
 	iobject_destroy(set);
 }
 
 static void __as_mset_basic_test() {
-	imset mset = cntr_create_osplay(int_compare);
+	imset mset = cntr_create_osplay(int_traits);
 	mset_test_basic(mset);
 	iobject_destroy(mset);
 }
 
 static void __as_set_bench_test() {
-	iset set = cntr_create_osplay_a(int_compare, NULL);
+	iset set = cntr_create_osplay_a(int_traits, NULL);
 	set_test_bench(set);
 	iobject_destroy(set);
 }
 
 static void __as_mset_bench_test() {
-	imset mset = cntr_create_osplay_a(int_compare, NULL);
+	imset mset = cntr_create_osplay_a(int_traits, NULL);
 	mset_test_bench(mset);
 	iobject_destroy(mset);
 }
