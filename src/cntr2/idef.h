@@ -16,21 +16,22 @@
 #define ITR_BID_ID 0X0A0B0C24
 #define ITR_RAC_ID 0X0A0B0C25
 
-#define IQUEUE_ID 0X0A0B0C01
-#define ISTACK_ID 0X0A0B0C02
-#define ILIST_ID  0X0A0B0C03
-#define ISET_ID   0X0A0B0C04
-#define IMSET_ID  0X0A0B0C05
-#define IMAP_ID   0X0A0B0C06
-#define IMMAP_ID  0X0A0B0C07
+#define IOBJECT_ID 0X0A0B0C00
+#define IQUEUE_ID  0X0A0B0C01
+#define ISTACK_ID  0X0A0B0C02
+#define ILIST_ID   0X0A0B0C03
+#define ISET_ID    0X0A0B0C04
+#define IMSET_ID   0X0A0B0C05
+#define IMAP_ID    0X0A0B0C06
+#define IMMAP_ID   0X0A0B0C07
 
 #include <oo_model.h>
 
 typedef object iqueue;
 typedef object istack;
 typedef object ilist;
-typedef _interface iset;
-typedef _interface imset;
+typedef object iset;
+typedef object imset;
 
 typedef object allocator;
 

@@ -3,6 +3,7 @@
 #include <memheap/heap_global.h>
 #include <cntr2/oallocator.h>
 #include <cntr2/ifactory.h>
+#include <cntr2/iobject.h>
 #include <cntr2/ilist.h>
 #include <cntr2/iitr.h>
 #include <cntr2/ialgo.h>
@@ -66,15 +67,15 @@ void atm_destroy(atm* a) {
 	dbg_assert(a->lifestate < atm_invalid);
 	if (a->lifestate == atm_joined) {
 		/* the states is joined to other automatons */
-		ilist_destroy(a->states);
+		iobject_destroy(a->states);
 		/* accept_states are just pointers */
-		ilist_destroy(a->accept_states);
+		iobject_destroy(a->accept_states);
 	} else if (a->lifestate == atm_active) {
 		/* first destroy each states which belongs to this automaton */
 		foreach(ilist_itr_begin(a->states), ilist_itr_end(a->states), (pf_ref_visit)atm_state_destroy);
-		ilist_destroy(a->states);
+		iobject_destroy(a->states);
 		/* accept_states are just pointers */
-		ilist_destroy(a->accept_states);
+		iobject_destroy(a->accept_states);
 	}
 
 	a->lifestate = atm_invalid;
@@ -106,7 +107,7 @@ void pair_release(struct pair* p, void* context) {
 
 atm* atm_clone(atm* old_atm) {
 	atm* new_atm = atm_create(old_atm->context);
-	iset states_map = as_set(cntr_create_ollrb_a(pair_pointer_compare, old_atm->context->cntr_alc));
+	iset states_map = cntr_create_ollrb_a(pair_pointer_compare, old_atm->context->cntr_alc);
 
 	iterator itr = ilist_itr_create(old_atm->states, itr_begin);
 	for (; itr != ilist_itr_end(old_atm->states); itr_to_next(itr)) {
@@ -135,7 +136,7 @@ atm_state* atm_state_create(atm* a) {
 void atm_state_destroy(atm_state* state) {
 	foreach(ilist_itr_begin(state->transforms), ilist_itr_end(state->transforms), (pf_ref_visit)atm_transform_destroy);
 
-	ilist_destroy(state->transforms);
+	iobject_destroy(state->transforms);
 }
 
 

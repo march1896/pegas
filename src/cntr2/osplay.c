@@ -1,5 +1,6 @@
 #include <string.h>
 
+#include <cntr2/iobject.h>
 #include <cntr2/iset.h>
 #include <cntr2/iitr.h>
 #include <cntr2/ifactory.h>
@@ -11,6 +12,7 @@
 /* this module defines a left-lean red black tree container, which implements iset interface. */
 
 enum splay_interfaces {
+	e_object,
 	e_set,
 	e_mset,
 	e_l_count
@@ -62,8 +64,15 @@ struct osplay {
 	struct osplay_itr             itr_end;
 };
 
-static struct iset_vtable __iset_vtable = {
+static struct iobject_vtable __iobject_vtable = {
 	splayset_destroy,          /* __destroy */
+	splayset_clone,            /* __clone */
+	splayset_equals,           /* __equals */
+	splayset_compare_to,       /* __compare_to */
+	splayset_hashcode,         /* __hashcode */
+};
+
+static struct iset_vtable __iset_vtable = {
 	splayset_clear,            /* __clear */
 	splayset_clear_v,          /* __clear_v */
 	splayset_size,             /* __size */
@@ -81,7 +90,6 @@ static struct iset_vtable __iset_vtable = {
 };
 
 static struct imset_vtable __imset_vtable = {
-	splayset_destroy,          /* __destroy */
 	splayset_clear,            /* __clear */
 	splayset_clear_v,          /* __clear_v */
 	splayset_size,             /* __size */
@@ -217,6 +225,9 @@ static unknown osplay_cast(unknown x, unique_id intf_id) {
 	dbg_assert(__is_object(x));
 
 	switch (intf_id) {
+	case IOBJECT_ID:
+		return (unknown)&o->__iftable[e_object];
+		break;
 	case ISET_ID:
 		return (unknown)&o->__iftable[e_set];
 		break;
@@ -291,6 +302,8 @@ static object splayset_create_internal(pf_ref_compare comp, pf_ref_compare_v com
 	osplay->__offset = osplay;
 	osplay->__cast   = osplay_cast;
 	
+	osplay->__iftable[e_object].__offset = (address)e_object;
+	osplay->__iftable[e_object].__vtable = &__iobject_vtable;
 	osplay->__iftable[e_set].__offset = (address)e_set;
 	osplay->__iftable[e_set].__vtable = &__iset_vtable;
 	osplay->__iftable[e_mset].__offset = (address)e_mset;
@@ -360,6 +373,19 @@ void splayset_destroy(object o) {
 	if (join_alc) {
 		allocator_join(alc);
 	}
+}
+
+object splayset_clone(const_object o) {
+	return NULL;
+}
+bool splayset_equals(const_object o, const_object other) {
+	return false;
+}
+int splayset_compare_to(const_object o, const_object other) {
+	return 1;
+}
+hashcode splayset_hashcode(const_object o) {
+	return (hashcode)NULL;
 }
 
 typedef void (*pf_per_link_operation)(struct splay_link* link, void* param);

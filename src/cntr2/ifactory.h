@@ -4,13 +4,13 @@
 #include <oo_model.h>
 #include <idef.h>
 
-#define as_list(obj)  (_interface)__cast((obj), ILIST_ID)
-#define as_queue(obj) (_interface)__cast((obj), IQUEUE_ID)
-#define as_stack(obj) (_interface)__cast((obj), ISTACK_ID)
-#define as_set(obj)   (_interface)__cast((obj), ISET_ID)
-#define as_mset(obj)  (_interface)__cast((obj), IMSET_ID)
-#define as_map(obj)   (_interface)__cast((obj), IMAP_ID)
-#define as_mmap(obj)  (_interface)__cast((obj), IMMAP_ID)
+// #define as_list(obj)  (_interface)__cast((obj), ILIST_ID)
+// #define as_queue(obj) (_interface)__cast((obj), IQUEUE_ID)
+// #define as_stack(obj) (_interface)__cast((obj), ISTACK_ID)
+// #define as_set(obj)   (_interface)__cast((obj), ISET_ID)
+// #define as_mset(obj)  (_interface)__cast((obj), IMSET_ID)
+// #define as_map(obj)   (_interface)__cast((obj), IMAP_ID)
+// #define as_mmap(obj)  (_interface)__cast((obj), IMMAP_ID)
 
 /* if create without allocator, it will use the global_default_allocator
  * if the alc == NULL, the create_a will create with a multi-poll allocator for best efficiency */

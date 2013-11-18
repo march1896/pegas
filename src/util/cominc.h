@@ -45,5 +45,6 @@ typedef int bool;
 #define container_of(ptr, type, member) \
 	(type *)((char *)ptr - offsetof(type,member))
 
+extern inline rt_error(const char* last_words);
 
 #endif /* _COMINC_H_ */

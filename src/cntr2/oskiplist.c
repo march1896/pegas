@@ -1,5 +1,6 @@
 #include <string.h>
 
+#include <cntr2/iobject.h>
 #include <cntr2/iset.h>
 #include <cntr2/iitr.h>
 #include <cntr2/ifactory.h>
@@ -11,6 +12,7 @@
 /* this module defines a left-lean red black tree container, which implements iset interface. */
 
 enum skiplist_interfaces {
+	e_object,
 	e_set,
 	e_mset,
 	e_l_count
@@ -53,8 +55,15 @@ struct oskiplist {
 	struct oskiplist_itr          itr_end;
 };
 
-static struct iset_vtable __iset_vtable = {
+static struct iobject_vtable __iobject_vtable = {
 	oskiplist_destroy,          /* __destroy */
+	oskiplist_clone,            /* __clone */
+	oskiplist_equals,           /* __equals */
+	oskiplist_compare_to,       /* __compare_to */
+	oskiplist_hashcode,         /* __hashcode */
+};
+
+static struct iset_vtable __iset_vtable = {
 	oskiplist_clear,            /* __clear */
 	oskiplist_clear_v,          /* __clear_v */
 	oskiplist_size,             /* __size */
@@ -72,7 +81,6 @@ static struct iset_vtable __iset_vtable = {
 };
 
 static struct imset_vtable __imset_vtable = {
-	oskiplist_destroy,          /* __destroy */
 	oskiplist_clear,            /* __clear */
 	oskiplist_clear_v,          /* __clear_v */
 	oskiplist_size,             /* __size */
@@ -196,6 +204,9 @@ static unknown oskiplist_cast(unknown x, unique_id intf_id) {
 	dbg_assert(__is_object(x));
 
 	switch (intf_id) {
+	case IOBJECT_ID:
+		return (unknown)&o->__iftable[e_object];
+		break;
 	case ISET_ID:
 		return (unknown)&o->__iftable[e_set];
 		break;
@@ -245,6 +256,8 @@ object oskiplist_create_internal(pf_ref_compare comp, pf_ref_compare_v compv, vo
 	oskiplist->__offset = oskiplist;
 	oskiplist->__cast   = oskiplist_cast;
 	
+	oskiplist->__iftable[e_object].__offset = (address)e_object;
+	oskiplist->__iftable[e_object].__vtable = &__iobject_vtable;
 	oskiplist->__iftable[e_set].__offset = (address)e_set;
 	oskiplist->__iftable[e_set].__vtable = &__iset_vtable;
 	oskiplist->__iftable[e_mset].__offset = (address)e_mset;
@@ -307,6 +320,20 @@ void oskiplist_destroy(object o) {
 		allocator_join(alc);
 	}
 }
+
+object oskiplist_clone(const_object o) {
+	return NULL;
+}
+bool oskiplist_equals(const_object o, const_object other) {
+	return false;
+}
+int oskiplist_compare_to(const_object o, const_object other) {
+	return 1;
+}
+hashcode oskiplist_hashcode(const_object o) {
+	return (hashcode)NULL;
+}
+
 
 struct skiplist_clear_v {
 	pf_ref_dispose_v function;

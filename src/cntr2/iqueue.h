@@ -5,7 +5,6 @@
 #include <oo_model.h>
 #include <idef.h>
 
-extern inline       void     iqueue_destroy     (object obj);
 extern inline       void     iqueue_clear       (object obj);
 extern inline       void     iqueue_foreach     (object obj, pf_ref_process_v process, void* context);
 extern inline       int      iqueue_size        (const_object obj);
@@ -21,7 +20,6 @@ extern inline const_iterator iqueue_itr_end     (const_object obj);
 
 /* below is only useful for the container implementer */
 /* the virtual functions that each container should implement */
-typedef       void     (*pf_iqueue_destroy)     (object c);
 typedef       void     (*pf_iqueue_clear)       (object c);
 typedef       void     (*pf_iqueue_foreach)     (object c, pf_ref_process_v process, void* context);
 typedef       int      (*pf_iqueue_size)        (const_object c);
@@ -37,7 +35,6 @@ typedef const_iterator (*pf_iqueue_itr_end)     (const_object c);
 
 struct iqueue_vtable {
 	/* public */
-	pf_iqueue_destroy     __destroy;
 	pf_iqueue_clear       __clear;
 	pf_iqueue_foreach     __foreach;
 	pf_iqueue_size        __size;

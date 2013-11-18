@@ -3,8 +3,8 @@
 
 #include "cntr2/oo_model.h"
 
-void set_test_basic(_interface set);
+void set_test_basic(object set);
 
-void set_test_bench(_interface set);
+void set_test_bench(object set);
 
 #endif /* _CNTR2_ISET_TEST_H_ */

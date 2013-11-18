@@ -1,11 +1,5 @@
 #include <ilist.h>
 
-inline void ilist_destroy(object obj) {
-	_interface _inf = (_interface)__cast((unknown)obj, ILIST_ID);
-	dbg_assert(_inf != NULL);
-
-	((struct ilist_vtable*)_inf->__vtable)->__destroy(obj);
-}
 inline void ilist_clear(object obj) {
 	_interface _inf = (_interface)__cast((unknown)obj, ILIST_ID);
 	dbg_assert(_inf != NULL);

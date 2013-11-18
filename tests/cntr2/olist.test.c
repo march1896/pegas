@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "cntr2/iobject.h"
 #include "cntr2/ilist.h"
 #include "cntr2/iqueue.h"
 #include "cntr2/istack.h"
@@ -15,19 +16,19 @@ static void __correctness_test() {
 	{
 		ilist list = cntr_create_olist();
 		list_test_basic(list);
-		ilist_destroy(list);
+		iobject_destroy(list);
 	}
 	
 	{
 		iqueue queue = cntr_create_olist();
 		queue_test_basic(queue);
-		iqueue_destroy(queue);
+		iobject_destroy(queue);
 	}	
 
 	{
 		istack stack = cntr_create_olist();
 		stack_test_basic(stack);
-		istack_destroy(stack);
+		iobject_destroy(stack);
 	}	
 }
 

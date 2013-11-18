@@ -100,6 +100,12 @@
     <ClCompile Include="..\..\src\cntr2\oo_ref.c">
       <Filter>Source Files\cntr2</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\cntr2\iobject.c">
+      <Filter>Source Files\cntr2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\util\cominc.c">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
@@ -234,6 +240,9 @@
       <Filter>Source Files\cntr2</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\cntr2\oo_ref.h">
+      <Filter>Source Files\cntr2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cntr2\iobject.h">
       <Filter>Source Files\cntr2</Filter>
     </ClInclude>
   </ItemGroup>
