@@ -1,4 +1,5 @@
 #include <ilist.h>
+#include <iitr.h>
 
 inline void ilist_clear(object obj) {
 	_interface _inf = (_interface)__cast((unknown)obj, ILIST_ID);

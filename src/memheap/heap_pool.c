@@ -141,7 +141,7 @@ void* heap_spool_alloc_v(struct heap_spool* h, int size, const char* file, int l
 	if (h->next == NULL) {
 		if (h->target_size == -1) {
 			/* first allocation, got the size */
-			h->target_size = size >= sizeof(void*) ? size : sizeof(void*); 
+			h->target_size = size >= sizeof(void*) ? size : sizeof(void*);
 		}
 		
 		heap_spool_expand_memory(h);
@@ -319,8 +319,11 @@ bool heap_mpool_dealloc_c(struct heap_mpool* h, void* buff) {
 void* heap_mpool_alloc_v(struct heap_mpool* h, int __size, const char* file, int line) {
 	void* mem;
 	int i = 0;
-	/* for mpool we must know the size of the buff to deside which spool to dealloc */
+	/* for mpool we must know the size of the buff to deside which spool to dealloc, we add size in front of the memblock */
 	int size = __size + sizeof(int);
+
+	/* see heap_spool_alloc, the spool's minimum storage width is pointer width */
+	size = size >= sizeof(void*) ? size : sizeof(void*);
 
 	for (i = 0; i < h->used_pools; i ++) {
 		if (h->spools[i]->target_size == size) {
@@ -331,7 +334,7 @@ void* heap_mpool_alloc_v(struct heap_mpool* h, int __size, const char* file, int
 	if (i == h->used_pools) {
 		if (h->used_pools == h->num_pools) {
 			/* we should never be here */
-			printf("%d %d\n", h->used_pools, h->num_pools);
+			printf("%d %d %d\n", size, h->used_pools, h->num_pools);
 			dbg_assert(false);
 			return NULL;
 		}
@@ -343,6 +346,7 @@ void* heap_mpool_alloc_v(struct heap_mpool* h, int __size, const char* file, int
 		h->used_pools ++;
 
 		mem = heap_spool_alloc_v(h->spools[i], size, file, line);
+		dbg_assert(size == h->spools[i]->target_size);
 		dbg_assert(mem != NULL);
 	}
 	else {

@@ -1,4 +1,5 @@
 #include <iqueue.h>
+#include <iitr.h>
 
 inline void iqueue_clear(object obj) {
 	_interface _inf = (_interface)__cast((unknown)obj, IQUEUE_ID);
