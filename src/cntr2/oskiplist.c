@@ -191,7 +191,7 @@ static void oslist_itr_set_ref(iterator citr, const void* n_ref) {
 	unused(citr);
 	unused(n_ref);
 
-	dbg_assert(false);
+	rt_error("oskiplist iterator is not accessible");
 
 	return;
 }
@@ -245,10 +245,11 @@ static unknown oslist_itr_cast(unknown x, unique_id inf_id) {
 	case IOBJECT_ID:
 		return (unknown)&itr->__iftable[itr_interface_iobject];
 	case ITR_REF_ID:
-	case ITR_ACC_ID:
 	case ITR_FWD_ID:
 	case ITR_BID_ID:
 		return (unknown)&itr->__iftable[itr_interface_iterator];
+	case ITR_ACC_ID:
+		return NULL;
 	case ITR_RAC_ID:
 		return NULL;
 	default:

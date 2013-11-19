@@ -201,21 +201,10 @@ static const void* ollrb_itr_get_ref(const_iterator citr) {
 
 static void ollrb_itr_set_ref(iterator citr, const void* n_ref) {
 	/* llrb does not permit to set ref, which would destroy the inner data structure. */
-	/*
-	struct ollrb_itr* itr   = (struct ollrb_itr*)citr;
-	struct ollrb_node* node = NULL;
-
-	dbg_assert(itr->__cast == ollrb_itr_cast);
-	dbg_assert(itr->__current != NULL);
-
-	node = container_of(itr->__current, struct ollrb_node, link);
-	node->reference = n_ref;
-	*/
-
 	unused(citr);
 	unused(n_ref);
 
-	dbg_assert(false);
+	rt_error("ollrb iterator is not accessible");
 
 	return;
 }
@@ -269,10 +258,11 @@ static unknown ollrb_itr_cast(unknown x, unique_id inf_id) {
 	case IOBJECT_ID:
 		return (unknown)&itr->__iftable[itr_interface_iobject];
 	case ITR_REF_ID:
-	case ITR_ACC_ID:
 	case ITR_FWD_ID:
 	case ITR_BID_ID:
 		return (unknown)&itr->__iftable[itr_interface_iterator];
+	case ITR_ACC_ID:
+		return NULL;
 	case ITR_RAC_ID:
 		return NULL;
 	default:

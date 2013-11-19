@@ -197,7 +197,8 @@ static const_unknown o_dlist_itr_get_ref(const_iterator citr) {
 	dbg_assert(itr->current != NULL);
 
 	node = container_of(itr->current, struct o_dlist_node, link);
-	// TODO: error!!!!!!! we should return a new copy.
+
+	/* return a internal reference as the iitr.h header said */
 	return node->reference;
 }
 
