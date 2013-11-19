@@ -43,11 +43,13 @@ void sort_r(const_iterator begin, const_iterator end, pf_ref_compare comp) {
 }
 
 static void itr_swap_ref(iterator itr_a, iterator itr_b) {
-	const void* ref_a = itr_get_ref(itr_a);
-	const void* ref_b = itr_get_ref(itr_b);
+	const_unknown ref_a = itr_get_ref(itr_a);
+	const_unknown ref_b = itr_get_ref(itr_b);
 
-	itr_set_ref(itr_a, ref_b);
-	itr_set_ref(itr_b, ref_a);
+	// TODO: this is wrong due to the new set_ref/get_ref doc.
+	//itr_set_ref(itr_a, ref_b);
+	//itr_set_ref(itr_b, ref_a);
+	dbg_assert(false);
 }
 
 void reverse_b(const_iterator __begin, const_iterator __end) {

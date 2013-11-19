@@ -17,7 +17,7 @@ enum iterator_position {
 #define itr_equals  iobject_equals
 
 extern inline bool          itr_assign   (const_iterator itr, iterator dest);
-/* itr_get_ref return the referenc to object managed by the container internally, it's not modifiable, modify it on your own risk */
+/* itr_get_ref return the reference to object managed by the container internally, it's not modifiable, modify it on your own risk */
 extern inline const_unknown itr_get_ref  (const_iterator itr);
 extern inline void          itr_set_ref  (iterator itr, const_unknown __ref);
 extern inline void          itr_to_prev  (iterator itr);
