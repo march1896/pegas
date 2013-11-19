@@ -55,7 +55,7 @@ typedef bool (*pf_dealloc_v)  (void* pheap, void* buff, const char* file, int li
 /* the below methods is optional to heap implementer */
 
 /* below defines method to traverse heap, useful for get the statistic of a heap */
-/* TODO: should the block info defined here? in other words, is every heap have the same 'block' concept.
+/* should the block info defined here? in other words, is every heap have the same 'block' concept.
  * this should not be defined in block_com because this is a concept in common, not an implement in common*/
 struct heap_blockinfo {
 	/* true if this block is allocated, false if the block is free */
@@ -72,6 +72,8 @@ struct heap_blockinfo {
 	const char*   file;
 	int           line;
 };
+
+/* this is something like visitor design pattern, it tries to 'double dispatch' some message */
 /* pf_process_block should be provided by the one who want to walk through the heap */
 typedef void (*pf_process_block)(struct heap_blockinfo* block_info, void* param);
 /* pf_heap_walk should be provided by the heap implementor */

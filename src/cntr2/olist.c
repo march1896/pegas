@@ -160,7 +160,7 @@ static iterator o_dlist_itr_clone(const_iterator citr) {
 	n_itr = (struct o_dlist_itr*)allocator_alloc(itr->allocator, sizeof(struct o_dlist_itr));
 
 	memcpy(n_itr, itr, sizeof(struct o_dlist_itr));
-	/* TODO: this is error prone */
+	/* this is error prone */
 	n_itr->__offset = n_itr;
 
 	return (iterator)n_itr;

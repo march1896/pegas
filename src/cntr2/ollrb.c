@@ -156,7 +156,7 @@ static iterator ollrb_itr_clone(const_iterator citr) {
 	n_itr = (struct ollrb_itr*)allocator_alloc(itr->allocator, sizeof(struct ollrb_itr));
 
 	memcpy (n_itr, itr, sizeof(struct ollrb_itr));
-	/* TODO: this is error prone */
+	/* this is error prone */
 	n_itr->__offset = n_itr;
 
 	return (iterator)n_itr;
@@ -195,7 +195,6 @@ static const void* ollrb_itr_get_ref(const_iterator citr) {
 
 	node = container_of(itr->current, struct ollrb_node, link);
 
-	// TODO!!!!: error
 	return node->reference;
 }
 
@@ -585,7 +584,6 @@ void ollrb_itr_find_lower(const_object o, iterator itr, const_unknown __ref) {
 	struct llrb_link* link  = llrb_search(ollrb->sentinel.left, ollrb_direct_lower, &dir);
 
 	dbg_assert(link == NULL); /* we will always direct down */
-	/* TODO: remove const cast */
 	link = (struct llrb_link*)dir.candidate;    /* the last candidate, the most closed to leaf one, is what we want */
 
 	/* make sure the iterator type is right */

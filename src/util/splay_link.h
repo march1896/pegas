@@ -77,8 +77,6 @@ struct splay_link* splay_max        (struct splay_link* root);
 struct splay_link* splay_predesessor(const struct splay_link* link, bool only_sub);
 struct splay_link* splay_successor  (const struct splay_link* link, bool only_sub);
 
-/* TODO: why this interface is here */
-void              splay_swap_link  (struct splay_link** pa, struct splay_link** pb);
 void              splay_debug_check(struct splay_link* root, pf_splay_compare comp);
 void              splay_debug_check_v(struct splay_link* root, pf_splay_compare_v comp_v, void* param);
 
