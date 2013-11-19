@@ -12,31 +12,28 @@ enum iterator_position {
 	itr_pos_count
 };
 
-// extern inline void itr_destroy         (iterator itr);
-// extern inline iterator itr_clone       (const_iterator itr);
-// extern inline bool itr_equals          (const_iterator ia, const_iterator ib);
 #define itr_destroy iobject_destroy
 #define itr_clone   iobject_clone
 #define itr_equals  iobject_equals
 
-/* TODO: dest = itr if they are the same type */
-extern inline bool itr_assign          (const_iterator itr, iterator dest);
-extern inline const_unknown itr_get_ref(const_iterator itr);
-extern inline void itr_set_ref         (iterator itr, const_unknown __ref);
-extern inline void itr_to_prev         (iterator itr);
-extern inline void itr_to_next         (iterator itr);
-extern inline void itr_advance         (iterator itr, int length);
-extern inline int  itr_distance        (const_iterator from, const_iterator to);
+extern inline bool          itr_assign   (const_iterator itr, iterator dest);
+/* itr_get_ref return the reference to object managed by the container internally, it's not modifiable, modify it on your own risk */
+extern inline const_unknown itr_get_ref  (const_iterator itr);
+extern inline void          itr_set_ref  (iterator itr, const_unknown __ref);
+extern inline void          itr_to_prev  (iterator itr);
+extern inline void          itr_to_next  (iterator itr);
+extern inline void          itr_advance  (iterator itr, int length);
+extern inline int           itr_distance (const_iterator from, const_iterator to);
 
 /* below is only useful for the container implementer */
 /* the virtual functions that each container should implement */
-typedef bool     (*pf_itr_equals)      (const_iterator itr_a, const_iterator itr_b);
-typedef const_unknown (*pf_itr_get_ref)(const_iterator citr);
-typedef void     (*pf_itr_set_ref)     (iterator citr, const_unknown object);
-typedef void     (*pf_itr_to_prev)     (iterator citr);
-typedef void     (*pf_itr_to_next)     (iterator citr);
-typedef void*    (*pf_itr_advance)     (iterator citr, int length);
-typedef int      (*pf_itr_distance)    (const_iterator citr_from, const_iterator citr_to);
+typedef bool          (*pf_itr_equals)   (const_iterator itr_a, const_iterator itr_b);
+typedef const_unknown (*pf_itr_get_ref)  (const_iterator citr);
+typedef void          (*pf_itr_set_ref)  (iterator citr, const_unknown object);
+typedef void          (*pf_itr_to_prev)  (iterator citr);
+typedef void          (*pf_itr_to_next)  (iterator citr);
+typedef void*         (*pf_itr_advance)  (iterator citr, int length);
+typedef int           (*pf_itr_distance) (const_iterator citr_from, const_iterator citr_to);
 
 #define is_itrref(itr) (__cast(itr, ITR_REF_ID) != NULL)
 #define is_itracc(itr) (__cast(itr, ITR_ACC_ID) != NULL)

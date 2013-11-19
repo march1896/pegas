@@ -356,7 +356,7 @@ static void set_bench_modify_randomly() {
 
 	for (i = 0; i < __num_modify; i ++) {
 		intptr_t x = rand() % __data_diff_type;
-		bool found = iset_contains(__set, (void*)x);
+		bool found = iset_contains(__set, &x);
 		
 		if (found == false) {
 			iset_insert(__set, &x);
@@ -386,7 +386,7 @@ static void set_bench_search_randomly() {
 	for (i = 0; i < __num_search; i ++) {
 		intptr_t x = rand() % __data_diff_type;
 
-		bool res = iset_contains(__set, (void*)x);
+		bool res = iset_contains(__set, &x);
 		dbg_assert(res == true);
 	}
 
@@ -453,7 +453,7 @@ void set_test_bench(object set) {
 
 	__data_diff_type = 100000;
 	log_printline("[data type: %d, single data max dup: %d]", __data_diff_type, __data_max_count);
-	__num_modify     = 10000000;
+	__num_modify     = 1000000;
 	__num_search     = 100;
 
 	__create_data();
@@ -461,6 +461,6 @@ void set_test_bench(object set) {
 	__destroy_data();
 
 	__num_modify     = 100;
-	__num_search     = 10000000;
+	__num_search     = 1000000;
 	test_run_single("randomly search test", set_bench_search_randomly);
 }

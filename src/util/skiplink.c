@@ -2,14 +2,225 @@
 #include <skiplist.h>
 #include <heap_global.h>
 
-struct skip_link {
+/* we always ops on skip_link instead of the structure it points to */
+typedef struct skip_struct* skiplink;
+struct skip_struct {
 	/* because the skip link is vary sized, so the skip link could not be allocated with 
 	 * the 'owner', like tree links. So the owner could not be retrieved by the relative 
 	 * address(container_of), so, we have to keep a pointer back to the 'owner' */
-	const void*      reference;
+	skiplink*        owner;
 
 	int              num_level;
 	struct list_link levels[0];
+};
+
+static void skiplink_init      (skiplink link, pf_alloc __alloc, void* __heap);
+static void skiplink_init_sent (skiplink link, pf_alloc __alloc, void* __heap);
+static void skiplink_deinit    (skiplink link, pf_dealloc __dealloc, void* __heap);
+
+static void skiplink_insert    (skiplink sent, skiplink target, pf_skiplist_compare comp);
+static bool skiplink_insert_s  (skiplink sent, skiplink target, pf_skiplist_compare comp);
+static void skiplink_insert_v  (skiplink sent, skiplink target, pf_skiplist_compare_v comp, void* comp_context);
+static bool skiplink_insert_sv (skiplink sent, skiplink target, pf_skiplist_compare_v comp, void* comp_context);
+
+static void skiplink_remove    (skiplink sent, skiplink target);
+
+#define SKIP_LINK_MAX_LEVEL 32
+int skiplink_gen_level() {
+	int r = rand();
+	int level = 1;
+
+	while (r & 1 && level < SKIP_LINK_MAX_LEVEL) {
+		r >>= 1;
+		level ++;
+	}
+
+	return level;
+}
+
+static inline void skiplink_init_internal(skiplink link, int level, pf_alloc __alloc, void* __heap) {
+	struct skip_struct* __link = (struct skip_struct*)
+		alloc(__alloc, __heap, sizeof(struct list_link)*level + offsetof(struct skip_struct, levels));
+
+	dbg_assert(sizeof(struct skip_struct) == offsetof(struct skip_struct, levels));
+	dbg_assert((char*)&__link->levels[level] == (char*)__link + sizeof(struct list_link)*level + offsetof(struct skip_struct, levels));
+
+	__link->owner = link;
+	__link->num_level = level;
+	for (level = 0; level < __link->num_level; level ++) {
+		list_init(&__link->levels[level]);
+	}
+
+	link = __link;
+}
+static void skiplink_init(skiplink link, pf_alloc __alloc, void* __heap) {
+	skiplink_init_internal(link, skiplink_gen_level(), __alloc, __heap);
+}
+static void skiplink_init_sent (skiplink link, pf_alloc __alloc, void* __heap) {
+	skiplink_init_internal(link, SKIP_LINK_MAX_LEVEL, __alloc, __heap);
+}
+
+static void skiplink_deinit(skiplink link, pf_dealloc __dealloc, void* __heap);
+	dealloc(__dealloc, __heap, link);
+}
+
+#define SKIPLINK_FROM_LISTLINK(list, level) container_of(((struct list_link*)list - level), struct skip_struct, levels)
+
+inline skiplink skiplink_getowner(skiplink link) {
+	return *(link->owner);
+}
+
+inline skiplink skiplink_prev(skiplink cur) {
+	struct list_link* listlink = cur->levels[0].prev;
+
+	return skiplink_getowner(SKIPLINK_FROM_LISTLINK(listlink, 0));
+}
+
+inline skiplink skiplink_next(skiplink cur) {
+	struct list_link* listlink = cur->levels[0].next;
+
+	return skiplink_getowner(SKIPLINK_FROM_LISTLINK(listlink, 0));
+}
+
+/* insert the target no matter if there is an element in the list which 'equals' to it */
+static bool skiplink_insert_s  (skiplink sent, skiplink target, pf_skiplist_compare comp);
+static void skiplink_insert_v  (skiplink sent, skiplink target, pf_skiplist_compare_v comp, void* comp_context);
+static bool skiplink_insert_sv (skiplink sent, skiplink target, pf_skiplist_compare_v comp, void* comp_context);
+void skiplink_insert(skiplink header, skiplink target, pf_skiplist_compare comp);
+	int i;
+	struct list_link* list = header->levels[header->num_level-1].next;
+
+	dbg_assert(header != target);
+	dbg_assert(header->num_level >= target->num_level);
+	
+	for (i = header->num_level-1; i >= 0; i --) {
+		while (list != &header->levels[i]) {
+			struct skip_link* skiplink = SKIPLINK_FROM_LISTLINK(list, i);
+			if (comp(skiplink->reference, target->reference) >= 0) 
+				break;
+			list = list->next;
+		}
+		list = list->prev;
+		if (target->num_level > i) 
+			list_link(&target->levels[i], list, list->next);
+		list --;
+		list = list->next;
+	}
+}
+
+/* NOTE: remember to delete the skip_link when failed 
+ * if there is no data equal to target's reference, insert the target and return target.
+ * if there is some data equal to target's reference, don't insert target and return the link */
+struct skip_link* skip_link_insert_s(struct skip_link* header, struct skip_link* target, pf_skiplist_compare comp) {
+	int i;
+	struct list_link* list = header->levels[header->num_level-1].next;
+
+	dbg_assert(header != target);
+	dbg_assert(header->num_level >= target->num_level);
+	
+	for (i = header->num_level-1; i >= 0; i --) {
+		int compr = 0;
+		while (list != &header->levels[i]) {
+			struct skip_link* skiplink = SKIPLINK_FROM_LISTLINK(list, i);
+			compr = comp(skiplink->reference, target->reference);
+			if (compr > 0) 
+				break;
+			else if (compr == 0) {
+				/* unlinked the already linked part */
+				while (++i < target->num_level) {
+					list_unlink(&target->levels[i]);
+				}
+				return skiplink;
+			}
+			list = list->next;
+		}
+		list = list->prev;
+		if (target->num_level > i) 
+			list_link(&target->levels[i], list, list->next);
+		list --;
+		list = list->next;
+	}
+	return target;
+}
+
+void skip_link_remove(struct skip_link* header, struct skip_link* target) {
+	int i;
+
+	unused(header);
+
+	for (i = 0; i < target->num_level; i ++) {
+		list_unlink(&target->levels[i]);
+	}
+}
+
+void skip_link_insert_v(struct skip_link* header, struct skip_link* target, pf_skiplist_compare_v compv, void* cp_context) {
+	int i;
+	struct list_link* list = header->levels[header->num_level-1].next;
+
+	dbg_assert(header != target);
+	dbg_assert(header->num_level >= target->num_level);
+	
+	for (i = header->num_level-1; i >= 0; i --) {
+		while (list != &header->levels[i]) {
+			struct skip_link* skiplink = SKIPLINK_FROM_LISTLINK(list, i);
+			if (compv(skiplink->reference, target->reference, cp_context) >= 0) 
+				break;
+			list = list->next;
+		}
+		list = list->prev;
+		if (target->num_level > i) 
+			list_link(&target->levels[i], list, list->next);
+		list --;
+		list = list->next;
+	}
+}
+
+/* NOTE: remember to delete the skip_link when failed 
+ * if there is no data equal to target's reference, insert the target and return target.
+ * if there is some data equal to target's reference, don't insert target and return the link */
+struct skip_link* skip_link_insert_sv(struct skip_link* header, struct skip_link* target, pf_skiplist_compare_v compv, void* cp_context) {
+	int i;
+	struct list_link* list = header->levels[header->num_level-1].next;
+
+	dbg_assert(header != target);
+	dbg_assert(header->num_level >= target->num_level);
+	
+	for (i = header->num_level-1; i >= 0; i --) {
+		int compr = 0;
+		while (list != &header->levels[i]) {
+			struct skip_link* skiplink = SKIPLINK_FROM_LISTLINK(list, i);
+			compr = compv(skiplink->reference, target->reference, cp_context);
+			if (compr > 0) 
+				break;
+			else if (compr == 0) {
+				/* unlinked the already linked part */
+				while (++i < target->num_level) {
+					list_unlink(&target->levels[i]);
+				}
+				return skiplink;
+			}
+			list = list->next;
+		}
+		list = list->prev;
+		if (target->num_level > i) 
+			list_link(&target->levels[i], list, list->next);
+		list --;
+		list = list->next;
+	}
+	return target;
+}
+
+
+struct skiplist {
+	struct skip_link*     sentinel;
+
+	pf_alloc              __alloc;
+	pf_dealloc            __dealloc;
+	void*                 __heap;
+
+	pf_skiplist_compare   __comp;
+	pf_skiplist_compare_v __compv;
+	void*                 __comp_context;
 };
 
 static struct skip_link* skip_link_create      (const void* owner, pf_alloc __alloc, void* __heap);
@@ -22,6 +233,7 @@ static void              skip_link_insert_v    (struct skip_link* header, struct
 static struct skip_link* skip_link_insert_sv   (struct skip_link* header, struct skip_link* target, pf_skiplist_compare_v compv, void* cp_context);
 
 static void              skip_link_remove      (struct skip_link* header, struct skip_link* target);
+static void              skip_link_debug_check (struct skip_link* root, pf_skiplist_compare comp);
 
 #define SKIP_LINK_MAX_LEVEL 32
 struct skip_link* skip_link_create(const void* owner, pf_alloc __alloc, void* __heap) {
@@ -212,18 +424,6 @@ struct skip_link* skip_link_insert_sv(struct skip_link* header, struct skip_link
 	return target;
 }
 
-struct skiplist {
-	struct skip_link*     sentinel;
-
-	pf_alloc              __alloc;
-	pf_dealloc            __dealloc;
-	void*                 __heap;
-
-	pf_skiplist_compare   __comp;
-	pf_skiplist_compare_v __compv;
-	void*                 __comp_context;
-};
-
 static struct skiplist* skiplist_create_internal(
 	pf_skiplist_compare comp, 
 	pf_skiplist_compare_v compv, void* cp_context,
@@ -361,7 +561,6 @@ bool skiplist_insert_s(struct skiplist* slist, const void* data) {
 	}
 
 	if (inlist != toinsert) {
-		skip_link_destroy(toinsert, slist->__dealloc, slist->__heap);
 		return false;
 	}
 	return true;
@@ -429,7 +628,7 @@ const struct skip_link* skiplist_search_v(const struct skiplist* slist, const vo
 				} else if (option == skiplist_min_greater || option == skiplist_max_smallerorequal) {
 					/* do nothing, iterate until find the minimum greater one */
 				} else if (option == skiplist_min_greaterorequal || option == skiplist_max_smaller) {
-					/* break, iterator contains the minimum greater or equal one, after the last
+					/* break, itr contains the minimum greater or equal one, after the last
 					 * iteration, candidate will contain the first greater or equal one */
 					candidate = cur;
 					break;
