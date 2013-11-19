@@ -4,6 +4,8 @@
 #include "iqueue.test.h"
 #include "test_util.h"
 
+#include "memheap/heap_global.h"
+
 static void queue_test_basic_itr_operation(iqueue queue) {
 	int temp_int = 0;
 	iqueue_clear(queue);
@@ -28,19 +30,26 @@ static void queue_test_basic_itr_operation(iqueue queue) {
 		iterator itr = iqueue_itr_create(queue, itr_begin);
 		const_iterator end = iqueue_itr_end(queue);
 		intptr_t current = 1;
+		int* x = NULL;
 
 		/* traverse the queue */
 		for (; !itr_equals(itr, end); itr_to_next(itr)) {
-			dbg_assert(*(int*)itr_get_ref(itr) == current);
+			x = (int*)itr_getvar(itr);
+			dbg_assert(*x == current);
+			hfree(x);
 			current ++;
 		}
 
 		/* test itr_assign */
 		iqueue_itr_assign(queue, itr, itr_begin);
-		dbg_assert(*(int*)itr_get_ref(itr) == 1);
+		x = (int*)itr_getvar(itr);
+		dbg_assert(*x == 1);
+		hfree(x);
 		iqueue_itr_assign(queue, itr, itr_end);
 		itr_to_prev(itr);
-		dbg_assert(*(int*)itr_get_ref(itr) == 4);
+		x = (int*)itr_getvar(itr);
+		dbg_assert(*x == 4);
+		hfree(x);
 
 		itr_destroy(itr);
 	}
@@ -82,7 +91,9 @@ static void queue_test_basic_itr_operation(iqueue queue) {
 
 		/* traverse the queue */
 		for (; !itr_equals(itr, end); itr_to_next(itr)) {
-			dbg_assert(*(int*)itr_get_ref(itr) == 1);
+			int* x = (int*)itr_getvar(itr);
+			dbg_assert(*x == 1);
+			hfree(x);
 		}
 
 		itr_destroy(itr);

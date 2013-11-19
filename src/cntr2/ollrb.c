@@ -8,6 +8,7 @@
 #include <cntr2/oallocator.h>
 
 #include <util/llrb_link.h>
+#include <memheap/heap_global.h>
 
 /* this module defines a left-lean red black tree container, which implements iset interface. */
 
@@ -36,7 +37,9 @@ struct ollrb_itr {
 	 * alloc the memory, but we should know how to delete this memory */
 	allocator                     allocator;
 
-	struct llrblink*             current;
+	struct ollrb*                 container;
+
+	struct llrblink*              current;
 };
 
 /* binary search tree */
@@ -47,9 +50,9 @@ struct ollrb {
 	struct base_interface         __iftable[e_l_count];
 
 	/* just a sentinel to represent the end of the tree, the maximum element of the tree */
-	struct llrblink              sentinel;
+	struct llrblink               sentinel;
 	/* __root == __sentinel.left */
-	struct llrblink*             root;
+	struct llrblink*              root;
 
 	int                           size;
 
@@ -114,8 +117,8 @@ static iterator ollrb_itr_clone(const_iterator citr);
 static bool ollrb_itr_equals(const_iterator itr, const_iterator other);
 static int ollrb_itr_compare_to(const_iterator itr, const_iterator other);
 static hashcode ollrb_itr_hashcode(const_iterator itr);
-static const void* ollrb_itr_get_ref(const_iterator citr);
-static void ollrb_itr_set_ref(iterator citr, const void* n_ref);
+static unknown ollrb_itr_get_ref(const_iterator citr);
+static void ollrb_itr_set_ref(iterator citr, const_unknown n_ref);
 static void ollrb_itr_to_next(iterator citr);
 static void ollrb_itr_to_prev(iterator citr);
 
@@ -170,6 +173,7 @@ static bool ollrb_itr_equals(const_iterator a, const_iterator b) {
 	dbg_assert(__is_object((unknown)b));
 	dbg_assert(itr_a->__cast == ollrb_itr_cast);
 	dbg_assert(itr_b->__cast == ollrb_itr_cast);
+	dbg_assert(itr_a->container == itr_b->container);
 
 	return itr_a->current == itr_b->current;
 }
@@ -186,19 +190,20 @@ hashcode ollrb_itr_hashcode(const_iterator itr) {
 	return 0;
 }
 
-static const void* ollrb_itr_get_ref(const_iterator citr) {
+static unknown ollrb_itr_get_ref(const_iterator citr) {
 	const struct ollrb_itr* itr   = (const struct ollrb_itr*)citr;
 	const struct ollrb_node* node = NULL;
+	struct ollrb* container = itr->container;
 
 	dbg_assert(itr->__cast == ollrb_itr_cast);
 	dbg_assert(itr->current != NULL);
 
 	node = container_of(itr->current, struct ollrb_node, link);
 
-	return node->reference;
+	return container->content_traits.__clone(node->reference, (pf_alloc)__global_default_alloc, __global_default_heap);
 }
 
-static void ollrb_itr_set_ref(iterator citr, const void* n_ref) {
+static void ollrb_itr_set_ref(iterator citr, const_unknown n_ref) {
 	/* llrb does not permit to set ref, which would destroy the inner data structure. */
 	unused(citr);
 	unused(n_ref);
@@ -303,11 +308,11 @@ static object ollrb_create_internal(unknown_traits content_traits, allocator alc
 	ollrb->__iftable[e_mset].__offset = (address)e_mset;
 	ollrb->__iftable[e_mset].__vtable = &__ollrb_imset_vtable;
 
-	ollrb->size      = 0;
+	ollrb->size            = 0;
 	dbg_assert(content_traits.__compare_to != NULL);
-	ollrb->content_traits = content_traits;
+	ollrb->content_traits  = content_traits;
 
-	ollrb->root      = NULL;
+	ollrb->root            = NULL;
 	ollrb->sentinel.left   = NULL;
 	ollrb->sentinel.right  = NULL;
 	ollrb->sentinel.parent = NULL;
@@ -427,6 +432,7 @@ static void ollrb_itr_com_init(struct ollrb_itr* itr, struct ollrb* list) {
 	itr->__iftable[itr_interface_iterator].__vtable = (unknown)&__ollrb_itr_vtable;
 
 	itr->allocator = list->allocator;
+	itr->container = list;
 	/* itr->__current = NULL; */
 }
 

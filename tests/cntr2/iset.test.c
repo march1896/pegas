@@ -4,6 +4,8 @@
 #include "iset.test.h"
 #include "test_util.h"
 
+#include "memheap/heap_global.h"
+
 static void set_test_basic_itr_operation(object set) {
 	int temp_int = 0;
 	iset_clear(set);
@@ -32,19 +34,26 @@ static void set_test_basic_itr_operation(object set) {
 		iterator itr = iset_itr_create(set, itr_begin);
 		const_iterator end = iset_itr_end(set);
 		intptr_t current = 1;
+		int* x = NULL;
 
 		/* traverse the set */
 		for (; !itr_equals(itr, end); itr_to_next(itr)) {
-			dbg_assert(*(int*)itr_get_ref(itr) == current);
+			x = (int*)itr_getvar(itr);
+			dbg_assert(*x == current);
+			hfree(x);
 			current ++;
 		}
 
 		/* test itr_assign */
 		iset_itr_assign(set, itr, itr_begin);
-		dbg_assert(*(int*)itr_get_ref(itr) == 1);
+		x = (int*)itr_getvar(itr);
+		dbg_assert(*x == 1);
+		hfree(x);
 		iset_itr_assign(set, itr, itr_end);
 		itr_to_prev(itr);
-		dbg_assert(*(int*)itr_get_ref(itr) == 8);
+		x = (int*)itr_getvar(itr);
+		dbg_assert(*x == 8);
+		hfree(x);
 
 		/* test itr_find */
 		temp_int = 0;

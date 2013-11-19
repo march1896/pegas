@@ -16,23 +16,27 @@ enum iterator_position {
 #define itr_clone   iobject_clone
 #define itr_equals  iobject_equals
 
-extern inline bool          itr_assign   (const_iterator itr, iterator dest);
-/* itr_get_ref return the reference to object managed by the container internally, it's not modifiable, modify it on your own risk */
-extern inline const_unknown itr_get_ref  (const_iterator itr);
-extern inline void          itr_set_ref  (iterator itr, const_unknown __ref);
+/* itr_getvar return the reference to object on the global heap, you must hfree it. */
+extern inline unknown       itr_getvar   (const_iterator itr);
+extern inline void          itr_setvar   (iterator itr, const_unknown __ref);
 extern inline void          itr_to_prev  (iterator itr);
 extern inline void          itr_to_next  (iterator itr);
 extern inline void          itr_advance  (iterator itr, int length);
 extern inline int           itr_distance (const_iterator from, const_iterator to);
+/* itr_get_ref return the object managed by the container internally, you can not modify it */
+extern inline const_unknown itr_get_ref  (const_iterator itr);
+/* TODO: there seems a relationship between readable and accessible, that is swap able, in which case, 
+ * the itr is readable but can not be set a new value, instead it can swap to each other */
+extern inline void          itr_swap_ref (iterator itr, iterator other);
 
 /* below is only useful for the container implementer */
 /* the virtual functions that each container should implement */
 typedef bool          (*pf_itr_equals)   (const_iterator itr_a, const_iterator itr_b);
-typedef const_unknown (*pf_itr_get_ref)  (const_iterator citr);
-typedef void          (*pf_itr_set_ref)  (iterator citr, const_unknown object);
+typedef unknown       (*pf_itr_get_ref)  (const_iterator citr);
+typedef void          (*pf_itr_set_ref)  (iterator citr, const_unknown __ref);
 typedef void          (*pf_itr_to_prev)  (iterator citr);
 typedef void          (*pf_itr_to_next)  (iterator citr);
-typedef void*         (*pf_itr_advance)  (iterator citr, int length);
+typedef void          (*pf_itr_advance)  (iterator citr, int length);
 typedef int           (*pf_itr_distance) (const_iterator citr_from, const_iterator citr_to);
 
 #define is_itrref(itr) (__cast(itr, ITR_REF_ID) != NULL)

@@ -1,13 +1,13 @@
 #include <iitr.h>
 
-inline const_unknown itr_get_ref(const_iterator itr) {
+inline unknown itr_getvar(const_iterator itr) {
 	_interface intf = __fast_cast(itr, itr_interface_iterator);
 	dbg_assert(intf == __cast((unknown)itr, ITR_REF_ID));
 
 	return ((struct itr_readable_vtable*)(intf->__vtable))->__get_ref(itr);
 }
 
-inline void itr_set_ref(iterator itr, const_unknown __ref) {
+inline void itr_setvar(iterator itr, const_unknown __ref) {
 	_interface intf = __fast_cast(itr, itr_interface_iterator);
 	dbg_assert(intf == __cast(itr, ITR_ACC_ID));
 

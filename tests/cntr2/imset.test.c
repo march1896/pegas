@@ -5,6 +5,8 @@
 #include "imset.test.h"
 #include "test_util.h"
 
+#include "memheap/heap_global.h"
+
 struct counter_t {
 	int count; /* count of element */
 	int sum;   /* sum of all element */
@@ -55,19 +57,26 @@ static void mset_test_basic_itr_operation(object mset) {
 		struct counter_t counter;
 		const_iterator end = imset_itr_end(mset);
 		intptr_t current = 1;
+		int* x = NULL;
 
 		/* traverse the mset */
 		for (; !itr_equals(itr, end); itr_to_next(itr)) {
-			dbg_assert(*(int*)itr_get_ref(itr) == ((current+1)/2));
+			x = (int*)itr_getvar(itr);
+			dbg_assert(*x == ((current+1)/2));
+			hfree(x);
 			current ++;
 		}
 
 		/* test itr_assign */
 		imset_itr_assign(mset, itr, itr_begin);
-		dbg_assert(*(int*)itr_get_ref(itr) == 1);
+		x = (int*)itr_getvar(itr);
+		dbg_assert(*x == 1);
+		hfree(x);
 		imset_itr_assign(mset, itr, itr_end);
 		itr_to_prev(itr);
-		dbg_assert(*(int*)itr_get_ref(itr) == 4);
+		x = (int*)itr_getvar(itr);
+		dbg_assert(*x == 4);
+		hfree(x);
 
 		/* test itr_find_lower, itr_find_upper */
 		/* find element not int the mset */

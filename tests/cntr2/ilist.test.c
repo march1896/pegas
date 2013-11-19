@@ -3,6 +3,7 @@
 
 #include "ilist.test.h"
 #include "test_util.h"
+#include "memheap/heap_global.h"
 
 static void list_test_basic_itr_operation(ilist list) {
 	int temp_int = 0;
@@ -40,19 +41,26 @@ static void list_test_basic_itr_operation(ilist list) {
 		iterator itr = ilist_itr_create(list, itr_begin);
 		const_iterator end = ilist_itr_end(list);
 		intptr_t current = 1;
+		int* x = NULL;
 
 		/* traverse the list */
 		for (; !itr_equals(itr, end); itr_to_next(itr)) {
-			dbg_assert(*(int*)itr_get_ref(itr) == current);
+			x = (int*)itr_getvar(itr);
+			dbg_assert(*x == current);
+			hfree(x);
 			current ++;
 		}
 
 		/* test itr_assign */
 		ilist_itr_assign(list, itr, itr_begin);
-		dbg_assert(*(int*)itr_get_ref(itr) == 1);
+		x = (int*)itr_getvar(itr);
+		dbg_assert(*x == 1);
+		hfree(x);
 		ilist_itr_assign(list, itr, itr_end);
 		itr_to_prev(itr);
-		dbg_assert(*(int*)itr_get_ref(itr) == 8);
+		x = (int*)itr_getvar(itr);
+		dbg_assert(*x == 8);
+		hfree(x);
 
 		/* test itr_find */
 		temp_int = 0;
@@ -115,7 +123,9 @@ static void list_test_basic_itr_operation(ilist list) {
 				!itr_equals(itr, end); 
 				current ++) {
 			if (current != 4) {
-				dbg_assert(*(int*)itr_get_ref(itr) == current);
+				x = (int*)itr_getvar(itr);
+				dbg_assert(*x == current);
+				hfree(x);
 				itr_to_next(itr);
 			}
 		}
@@ -131,7 +141,9 @@ static void list_test_basic_itr_operation(ilist list) {
 		for (current = 1, ilist_itr_assign(list, itr, itr_begin); 
 				!itr_equals(itr, end); 
 				itr_to_next(itr), current ++) {
-			dbg_assert(*(int*)itr_get_ref(itr) == current);
+					x = (int*)itr_getvar(itr);
+					dbg_assert(*x == current);
+					hfree(x);
 		}
 
 		itr_destroy(itr);

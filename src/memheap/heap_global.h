@@ -23,17 +23,17 @@ extern pf_alloc   __global_default_alloc;
 extern pf_dealloc __global_default_dealloc;
 
 /* please don't include system headers after this file */
-#ifdef malloc
-#define sys_malloc malloc
-#undef malloc
+#ifdef halloc
+#define sys_malloc halloc
+#undef halloc
 #endif 
-#ifdef free
-#define sys_free free
-#undef free
+#ifdef hfree
+#define sys_free hfree
+#undef hfree
 #endif
 
-#define malloc(size) alloc(__global_default_alloc, __global_default_heap, size)
-#define free(buff)   dealloc(__global_default_dealloc, __global_default_heap, buff)
+#define halloc(size) alloc(__global_default_alloc, __global_default_heap, size)
+#define hfree(buff)  dealloc(__global_default_dealloc, __global_default_heap, buff)
 
 /*
 #define malloc(size) alloc(heap_sysd_alloc, __global_heap_sysd, size)

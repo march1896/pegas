@@ -8,6 +8,7 @@
 #include <cntr2/oallocator.h>
 
 #include <util/splay_link.h>
+#include <memheap/heap_global.h>
 
 /* this module defines a left-lean red black tree container, which implements iset interface. */
 
@@ -34,8 +35,9 @@ struct osplay_itr {
 	/* the iterator will never alloc memory, when acquire an iterator, the container will 
 	 * alloc the memory, but we should know how to delete this memory */
 	allocator                     allocator;
+	struct osplay*                container;
 
-	struct splaylink*            current;
+	struct splaylink*             current;
 };
 
 /* binary search tree */
@@ -46,9 +48,9 @@ struct osplay {
 	struct base_interface         __iftable[e_l_count];
 
 	/* just a sentinel to represent the end of the tree, the maximum element of the tree */
-	struct splaylink             sentinel;
+	struct splaylink              sentinel;
 	/* __root == __sentinel.left */
-	struct splaylink*            root;
+	struct splaylink*             root;
 
 	int                           size;
 
@@ -113,8 +115,8 @@ static iterator osplay_itr_clone(const_iterator citr);
 static bool osplay_itr_equals(const_iterator a, const_iterator b);
 static int osplay_itr_compare_to(const_iterator itr, const_iterator other);
 static hashcode osplay_itr_hashcode(const_iterator itr);
-static const void* osplay_itr_get_ref(const_iterator citr);
-static void osplay_itr_set_ref(iterator citr, const void* n_ref);
+static unknown osplay_itr_get_ref(const_iterator citr);
+static void osplay_itr_set_ref(iterator citr, const_unknown n_ref);
 static void osplay_itr_to_next(iterator citr);
 static void osplay_itr_to_prev(iterator citr);
 
@@ -183,19 +185,21 @@ static hashcode osplay_itr_hashcode(const_iterator itr) {
 	return 0;
 }
 
-static const void* osplay_itr_get_ref(const_iterator citr) {
+static unknown osplay_itr_get_ref(const_iterator citr) {
 	const struct osplay_itr* itr   = (const struct osplay_itr*)citr;
 	const struct osplay_node* node = NULL;
+	struct osplay* container = itr->container;
 
 	dbg_assert(itr->__cast == osplay_itr_cast);
 	dbg_assert(itr->current != NULL);
 
 	node = container_of(itr->current, struct osplay_node, link);
 
-	return node->reference;
+	//return node->reference;
+	return container->content_traits.__clone(node->reference, (pf_alloc)__global_default_alloc, __global_default_heap);
 }
 
-static void osplay_itr_set_ref(iterator citr, const void* n_ref) {
+static void osplay_itr_set_ref(iterator citr, const_unknown n_ref) {
 	/* splay does not permit to set ref, which would destroy the inner data structure. */
 	unused(citr);
 	unused(n_ref);
@@ -428,6 +432,7 @@ static void osplay_itr_com_init(struct osplay_itr* itr, struct osplay* list) {
 	itr->__iftable[itr_interface_iterator].__vtable = (unknown)&__osplay_itr_vtable;
 
 	itr->allocator = list->allocator;
+	itr->container = list;
 	/* itr->__current = NULL; */
 }
 

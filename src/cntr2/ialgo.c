@@ -1,6 +1,7 @@
 #include <ialgo.h>
 #include <iitr.h>
 #include <ifactory.h>
+#include <memheap/heap_global.h>
 
 void foreach(const_iterator begin, const_iterator end, pf_ref_visit cb) {
 	iterator itr = itr_clone(begin);
@@ -9,8 +10,10 @@ void foreach(const_iterator begin, const_iterator end, pf_ref_visit cb) {
 	dbg_assert(is_itrfwd(end));
 
 	while (!itr_equals(itr, end)) {
-		cb(itr_get_ref(itr));
+		unknown __ref = itr_getvar(itr);
+		cb(__ref);
 		itr_to_next(itr);
+		hfree(__ref);
 	}
 
 	itr_destroy(itr);
@@ -25,8 +28,10 @@ void foreach_v(const_iterator begin, const_iterator end, pf_ref_visit_v cb, void
 	dbg_assert(is_itrfwd(end));
 
 	while (!itr_equals(itr, end)) {
-		cb(itr_get_ref(itr), param);
+		unknown __ref = itr_getvar(itr);
+		cb(__ref, param);
 		itr_to_next(itr);
+		hfree(__ref);
 	}
 
 	itr_destroy(itr);
@@ -43,8 +48,8 @@ void sort_r(const_iterator begin, const_iterator end, pf_ref_compare comp) {
 }
 
 static void itr_swap_ref(iterator itr_a, iterator itr_b) {
-	const_unknown ref_a = itr_get_ref(itr_a);
-	const_unknown ref_b = itr_get_ref(itr_b);
+	const_unknown ref_a = itr_getvar(itr_a);
+	const_unknown ref_b = itr_getvar(itr_b);
 
 	// TODO: this is wrong due to the new set_ref/get_ref doc.
 	//itr_set_ref(itr_a, ref_b);

@@ -8,9 +8,9 @@
 #include <cntr2/oallocator.h>
 
 #include <util/skiplist.h>
+#include <memheap/heap_global.h>
 
 /* this module defines a left-lean red black tree container, which implements iset interface. */
-
 enum skiplist_interfaces {
 	e_object,
 	e_set,
@@ -23,13 +23,14 @@ struct oslist_itr {
 	pf_cast                       __cast;
 
 	/* there is always one interface to implement, since the interface is inherited */
-	struct base_interface          __iftable[itr_interface_count];
+	struct base_interface         __iftable[itr_interface_count];
 
 	/* the iterator will never alloc memory, when acquire an iterator, the container will 
 	 * alloc the memory, but we should know how to delete this memory */
 	allocator                     allocator;
+	struct oslist*                container;
 
-	const struct skiplink*       current;
+	const struct skiplink*        current;
 };
 
 /* binary search tree */
@@ -52,8 +53,8 @@ struct oslist {
 	allocator                     allocator;
 	bool                          allocator_join_ondispose;      
 
-	struct oslist_itr          itr_begin;
-	struct oslist_itr          itr_end;
+	struct oslist_itr             itr_begin;
+	struct oslist_itr             itr_end;
 };
 
 static struct iobject_vtable __oslist_iobject_vtable = {
@@ -107,8 +108,8 @@ static iterator oslist_itr_clone(const_iterator citr);
 static bool oslist_itr_equals(const_iterator a, const_iterator b);
 static int oslist_itr_compare_to(const_iterator itr, const_iterator other);
 static hashcode oslist_itr_hashcode(const_iterator itr);
-static const void* oslist_itr_get_ref(const_iterator citr);
-static void oslist_itr_set_ref(iterator citr, const void* n_ref);
+static unknown oslist_itr_get_ref(const_iterator citr);
+static void oslist_itr_set_ref(iterator citr, const_unknown n_ref);
 static void oslist_itr_to_next(iterator citr);
 static void oslist_itr_to_prev(iterator citr);
 
@@ -176,17 +177,18 @@ static hashcode oslist_itr_hashcode(const_iterator itr) {
 	return 0;
 }
 
-static const void* oslist_itr_get_ref(const_iterator citr) {
+static unknown oslist_itr_get_ref(const_iterator citr) {
 	const struct oslist_itr* itr = (const struct oslist_itr*)citr;
 	const struct skiplink* link    = itr->current;
+	struct oslist* container = itr->container;
 
 	dbg_assert(itr->__cast == oslist_itr_cast);
 	dbg_assert(itr->current != NULL);
 
-	return skip_link_getref(link);
+	return container->content_traits.__clone(skip_link_getref(link), (pf_alloc)__global_default_alloc, __global_default_heap);
 }
 
-static void oslist_itr_set_ref(iterator citr, const void* n_ref) {
+static void oslist_itr_set_ref(iterator citr, const_unknown n_ref) {
 	/* skiplist does not permit to set ref, which would destroy the inner data structure. */
 	unused(citr);
 	unused(n_ref);
@@ -286,7 +288,8 @@ object oslist_create_internal(unknown_traits content_traits, allocator alc) {
 	dbg_assert(content_traits.__compare_to != NULL);
 	oskiplist->content_traits = content_traits;
 
-	oskiplist->driver_skiplist  = skiplist_create_a(content_traits.__compare_to, (pf_alloc)allocator_acquire, (pf_dealloc)allocator_release, alc);
+	oskiplist->driver_skiplist = 
+		skiplist_create_a(content_traits.__compare_to, (pf_alloc)allocator_acquire, (pf_dealloc)allocator_release, alc);
 
 	oskiplist->allocator = alc;
 	oskiplist->allocator_join_ondispose = managed_allocator;
@@ -373,6 +376,7 @@ static void oslist_itr_com_init(struct oslist_itr* itr, struct oslist* list) {
 	itr->__iftable[itr_interface_iterator].__vtable = (unknown)&__oslist_itr_vtable;
 
 	itr->allocator = list->allocator;
+	itr->container = list;
 	/* itr->__current = NULL; */
 }
 
@@ -467,8 +471,9 @@ void oslist_itr_find_upper(const_object o, iterator itr, const void* __ref) {
 }
 
 void oslist_insert_s(object o, const_unknown __ref) {
-	struct oslist* oskiplist     = (struct oslist*)o;
-	const_unknown managed_ref = oskiplist->content_traits.__clone(__ref, (pf_alloc)allocator_acquire, oskiplist->allocator);
+	struct oslist* oskiplist  = (struct oslist*)o;
+	const_unknown managed_ref = 
+		oskiplist->content_traits.__clone(__ref, (pf_alloc)allocator_acquire, oskiplist->allocator);
 	bool res = skiplist_insert_s(oskiplist->driver_skiplist, managed_ref);
 
 	if (res == true)
@@ -478,8 +483,9 @@ void oslist_insert_s(object o, const_unknown __ref) {
 }
 
 void oslist_replace_s(object o, const_unknown __ref) {
-	struct oslist* oskiplist     = (struct oslist*)o;
-	const_unknown managed_ref = oskiplist->content_traits.__clone(__ref, (pf_alloc)allocator_acquire, oskiplist->allocator);
+	struct oslist* oskiplist  = (struct oslist*)o;
+	const_unknown managed_ref = 
+		oskiplist->content_traits.__clone(__ref, (pf_alloc)allocator_acquire, oskiplist->allocator);
 	bool res = false;
 	const_unknown replaced_ref = NULL;
 
@@ -493,7 +499,8 @@ void oslist_replace_s(object o, const_unknown __ref) {
 
 void oslist_insert_m(object o, const_unknown __ref) {
 	struct oslist* oskiplist = (struct oslist*)o;
-	const_unknown managed_ref = oskiplist->content_traits.__clone(__ref, (pf_alloc)allocator_acquire, oskiplist->allocator);
+	const_unknown managed_ref = 
+		oskiplist->content_traits.__clone(__ref, (pf_alloc)allocator_acquire, oskiplist->allocator);
 
 	skiplist_insert(oskiplist->driver_skiplist, managed_ref);
 
@@ -509,8 +516,10 @@ bool oslist_contains(const_object o, const_unknown __ref) {
 
 int oslist_count(const_object o, const void* __ref) {
 	struct oslist* oskiplist = (struct oslist*)o;
-	const struct skiplink* lb = skiplist_search_v(oskiplist->driver_skiplist, __ref, skiplist_min_greaterorequal);
-	const struct skiplink* ub = skiplist_search_v(oskiplist->driver_skiplist, __ref, skiplist_min_greater);
+	const struct skiplink* lb = 
+		skiplist_search_v(oskiplist->driver_skiplist, __ref, skiplist_min_greaterorequal);
+	const struct skiplink* ub = 
+		skiplist_search_v(oskiplist->driver_skiplist, __ref, skiplist_min_greater);
 	int count = 0;
 	
 	while (lb != ub) {

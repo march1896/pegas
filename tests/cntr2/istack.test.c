@@ -4,6 +4,8 @@
 #include "istack.test.h"
 #include "test_util.h"
 
+#include "memheap/heap_global.h"
+
 static void stack_test_basic_itr_operation(istack stack) {
 	int temp_int = 0;
 	istack_clear(stack);
@@ -28,19 +30,26 @@ static void stack_test_basic_itr_operation(istack stack) {
 		iterator itr = istack_itr_create(stack, itr_begin);
 		const_iterator end = istack_itr_end(stack);
 		intptr_t current = 1;
+		int* x = NULL;
 
 		/* traverse the stack */
 		for (; !itr_equals(itr, end); itr_to_next(itr)) {
-			dbg_assert(*(int*)itr_get_ref(itr) == current);
+			x = (int*)itr_getvar(itr);
+			dbg_assert(*x == current);
+			hfree(x);
 			current ++;
 		}
 
 		/* test itr_assign */
 		istack_itr_assign(stack, itr, itr_begin);
-		dbg_assert(*(int*)itr_get_ref(itr) == 1);
+		x = (int*)itr_getvar(itr);
+		dbg_assert(*x == 1);
+		hfree(x);
 		istack_itr_assign(stack, itr, itr_end);
 		itr_to_prev(itr);
-		dbg_assert(*(int*)itr_get_ref(itr) == 4);
+		x = (int*)itr_getvar(itr);
+		dbg_assert(*x == 4);
+		hfree(x);
 
 		itr_destroy(itr);
 	}
@@ -82,7 +91,9 @@ static void stack_test_basic_itr_operation(istack stack) {
 
 		/* traverse the stack */
 		for (; !itr_equals(itr, end); itr_to_next(itr)) {
-			dbg_assert(*(int*)itr_get_ref(itr) == 1);
+			int* x = (int*)itr_getvar(itr);
+			dbg_assert(*x == 1);
+			hfree(x);
 		}
 
 		itr_destroy(itr);

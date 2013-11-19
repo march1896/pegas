@@ -134,7 +134,7 @@ static iterator o_dlist_itr_clone(const_iterator citr);
 static bool o_dlist_itr_equals(const_iterator a, const_iterator b);
 static int o_dlist_itr_compare_to(const_iterator itr, const_iterator other);
 static hashcode o_dlist_itr_hashcode(const_iterator itr);
-static const_unknown o_dlist_itr_get_ref(const_iterator citr);
+static unknown o_dlist_itr_get_ref(const_iterator citr);
 static void o_dlist_itr_set_ref(iterator citr, const_unknown n_ref);
 static void o_dlist_itr_to_next(iterator citr);
 static void o_dlist_itr_to_prev(iterator citr);
@@ -189,9 +189,10 @@ static hashcode o_dlist_itr_hashcode(const_iterator itr) {
 	return 0;
 }
 
-static const_unknown o_dlist_itr_get_ref(const_iterator citr) {
+static unknown o_dlist_itr_get_ref(const_iterator citr) {
 	const struct o_dlist_itr* itr   = (const struct o_dlist_itr*)citr;
 	const struct o_dlist_node* node = NULL;
+	struct o_dlist* container = itr->container;
 
 	dbg_assert(itr->__cast == o_dlist_itr_cast);
 	dbg_assert(itr->current != NULL);
@@ -199,7 +200,7 @@ static const_unknown o_dlist_itr_get_ref(const_iterator citr) {
 	node = container_of(itr->current, struct o_dlist_node, link);
 
 	/* return a internal reference as the iitr.h header said */
-	return node->reference;
+	return container->content_traits.__clone(node->reference, (pf_alloc)__global_default_alloc, __global_default_heap);
 }
 
 static void o_dlist_itr_set_ref(iterator citr, const_unknown n_ref) {
@@ -216,7 +217,8 @@ static void o_dlist_itr_set_ref(iterator citr, const_unknown n_ref) {
 	container->content_traits.__destroy(node->reference, (pf_dealloc)allocator_release, container->allocator);
 
 	/* then clone the new reference */
-	node->reference = container->content_traits.__clone(n_ref, (pf_alloc)allocator_acquire, container->allocator);
+	node->reference = 
+		container->content_traits.__clone(n_ref, (pf_alloc)allocator_acquire, container->allocator);
 }
 
 static void o_dlist_itr_to_next(iterator citr) {

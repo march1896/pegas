@@ -8262,3 +8262,947 @@
   0X049C007016777216 bytes at ..\..\src\cntr2\oallocator.c 92
   0X069D007016777216 bytes at ..\..\src\cntr2\oallocator.c 92
   [cntr2 all test ends, total time use 0.389000]
+  [util all test begins]
+    [llrb_link test begins]
+      [llrb link correctness test begins]
+        [insert   /remove correctness begins]
+        [insert   /remove correctness ends, total time use 0.122000]
+        [insert_s /remove correctness begins]
+        [insert_s /remove correctness ends, total time use 0.072000]
+        [insert_v /remove correctness begins]
+        [insert_v /remove correctness ends, total time use 0.112000]
+        [insert_sv/remove correctness begins]
+        [insert_sv/remove correctness ends, total time use 0.073000]
+        [search correctness begins]
+        [search correctness ends, total time use 0.024000]
+      [llrb link correctness test ends, total time use 0.488000]
+    [llrb_link test ends, total time use 0.493000]
+    [splay_link test begins]
+      [splay link correctness test begins]
+        [insert   /remove correctness begins]
+        [insert   /remove correctness ends, total time use 0.069000]
+        [insert_s /remove correctness begins]
+        [insert_s /remove correctness ends, total time use 0.050000]
+        [insert_v /remove correctness begins]
+        [insert_v /remove correctness ends, total time use 0.068000]
+        [insert_sv/remove correctness begins]
+        [insert_sv/remove correctness ends, total time use 0.050000]
+        [search correctness begins]
+        [search correctness ends, total time use 0.561000]
+      [splay link correctness test ends, total time use 1.041000]
+    [splay_link test ends, total time use 1.045000]
+    [skiplist test begins]
+      [skiplist correctness test begins]
+        [insert   /remove correctness begins]
+        [insert   /remove correctness ends, total time use 0.085000]
+        [insert_s /remove correctness begins]
+        [insert_s /remove correctness ends, total time use 0.093000]
+      [skiplist correctness test ends, total time use 0.187000]
+    [skiplist test ends, total time use 0.191000]
+  [util all test ends, total time use 1.748000]
+  [heap all test begins]
+    [heap_llrb test begins]
+      [heap_llrb correctness test begins]
+      [heap_llrb correctness test ends, total time use 4.270000]
+    [heap_llrb test ends, total time use 4.274000]
+    [heap_buddy test begins]
+      [heap_buddy correctness test begins]
+      [heap_buddy correctness test ends, total time use 4.030000]
+    [heap_buddy test ends, total time use 4.034000]
+    [heap_sysd test begins]
+      [heap_sysd correctness test begins]
+  [cntr2 all test begins]
+    [allocator object test begins]
+      [allocator simple trace test begins]
+      0X013F01B4      60 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      0X013F02CE      90 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      two leak pointer expected
+      [allocator simple trace test ends, total time use 0.027000]
+    [allocator object test ends, total time use 0.032000]
+    [dlist object test begins]
+      [cntr cntr_base correctness begins]
+  [cntr2 all test begins]
+    [allocator object test begins]
+      [allocator simple trace test begins]
+      0X019801B4      60 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      0X019802CE      90 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      two leak pointer expected
+      [allocator simple trace test ends, total time use 0.025000]
+    [allocator object test ends, total time use 0.031000]
+    [dlist object test begins]
+      [cntr cntr_base correctness begins]
+  [cntr2 all test begins]
+    [allocator object test begins]
+      [allocator simple trace test begins]
+      0X01190184      60 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      0X0119029E      90 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      two leak pointer expected
+      [allocator simple trace test ends, total time use 0.032000]
+    [allocator object test ends, total time use 0.038000]
+    [dlist object test begins]
+      [cntr cntr_base correctness begins]
+      [cntr cntr_base correctness ends, total time use 5.924000]
+    [dlist object test ends, total time use 5.930000]
+    [ollrb object test begins]
+      [cntr_llrb correctness begins]
+        [ollrb as set basic test begins]
+        [ollrb as set basic test ends, total time use 0.004000]
+        [ollrb as mset basic test begins]
+        [ollrb as mset basic test ends, total time use 0.003000]
+      [cntr_llrb correctness ends, total time use 0.019000]
+    [ollrb object test ends, total time use 0.027000]
+    [osplay object test begins]
+      [cntr_splay correctness begins]
+        [osplay as set basic test begins]
+        [osplay as set basic test ends, total time use 0.003000]
+        [osplay as mset basic test begins]
+        [osplay as mset basic test ends, total time use 0.002000]
+      [cntr_splay correctness ends, total time use 0.013000]
+    [osplay object test ends, total time use 0.017000]
+    [oskiplist object test begins]
+      [cntr_skiplist correctness begins]
+        [oskiplist as set basic test begins]
+        [oskiplist as set basic test ends, total time use 0.002000]
+        [oskiplist as mset basic test begins]
+        [oskiplist as mset basic test ends, total time use 0.002000]
+      [cntr_skiplist correctness ends, total time use 0.010000]
+    [oskiplist object test ends, total time use 0.014000]
+  0X011901F8      52 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190244       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190264      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X011902A0       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190438      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190474       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190494       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X011904B4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X011904D4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X011904F4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190514       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190534       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190554       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190574       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190594       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X011905B4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X011905D4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X011905F4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190614       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190634       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X011906CC      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190708       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190728       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190748       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190768       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190788       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X011907A8       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X011907C8       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X011907E8       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190808       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190828       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190848       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190868       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190888       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X011908A8       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X011908C8       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190924      60 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190B14      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190B50       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190B70       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190B90       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190BB0       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190BD0       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190BF0       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190C10       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190C30       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190C50       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190C70       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190C90       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190CB0       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190CD0       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190CF0       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190D10       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190D30       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  [cntr2 all test ends, total time use 6.435000]
+  [cntr2 all test begins]
+    [allocator object test begins]
+      [allocator simple trace test begins]
+      0X01190184      60 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      0X0119029E      90 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      two leak pointer expected
+      [allocator simple trace test ends, total time use 0.024000]
+    [allocator object test ends, total time use 0.028000]
+    [dlist object test begins]
+      [cntr cntr_base correctness begins]
+      [cntr cntr_base correctness ends, total time use 0.004000]
+    [dlist object test ends, total time use 0.009000]
+    [ollrb object test begins]
+      [cntr_llrb correctness begins]
+        [ollrb as set basic test begins]
+        [ollrb as set basic test ends, total time use 0.003000]
+        [ollrb as mset basic test begins]
+        [ollrb as mset basic test ends, total time use 0.003000]
+      [cntr_llrb correctness ends, total time use 0.012000]
+    [ollrb object test ends, total time use 0.017000]
+    [osplay object test begins]
+      [cntr_splay correctness begins]
+        [osplay as set basic test begins]
+        [osplay as set basic test ends, total time use 0.002000]
+        [osplay as mset basic test begins]
+        [osplay as mset basic test ends, total time use 0.002000]
+      [cntr_splay correctness ends, total time use 0.010000]
+    [osplay object test ends, total time use 0.015000]
+    [oskiplist object test begins]
+      [cntr_skiplist correctness begins]
+        [oskiplist as set basic test begins]
+        [oskiplist as set basic test ends, total time use 0.003000]
+        [oskiplist as mset basic test begins]
+        [oskiplist as mset basic test ends, total time use 0.002000]
+      [cntr_skiplist correctness ends, total time use 0.011000]
+    [oskiplist object test ends, total time use 0.015000]
+  0X011901F8      52 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190244       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190264      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X011902A0       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190438      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190474       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190494       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X011904B4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X011904D4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X011904F4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190514       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190534       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190554       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190574       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190594       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X011905B4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X011905D4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X011905F4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190614       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190634       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X011906CC      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190708       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190728       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190748       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190768       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190788       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X011907A8       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X011907C8       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X011907E8       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190808       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190828       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190848       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190868       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190888       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X011908A8       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X011908C8       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190924       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190944      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190B24      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190B60       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190B80       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190BA0       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190BC0       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190BE0       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190C00       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190C20       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190C40       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190C60       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190C80       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190CA0       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190CC0       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190CE0       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190D00       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01190D20       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  [cntr2 all test ends, total time use 0.504000]
+  [cntr2 all test begins]
+    [allocator object test begins]
+      [allocator simple trace test begins]
+      0X00F10184      60 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      0X00F1029E      90 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      two leak pointer expected
+      [allocator simple trace test ends, total time use 0.029000]
+    [allocator object test ends, total time use 0.036000]
+    [dlist object test begins]
+      [cntr cntr_base correctness begins]
+      [cntr cntr_base correctness ends, total time use 0.005000]
+    [dlist object test ends, total time use 0.010000]
+    [ollrb object test begins]
+      [cntr_llrb correctness begins]
+        [ollrb as set basic test begins]
+        [ollrb as set basic test ends, total time use 0.002000]
+        [ollrb as mset basic test begins]
+        [ollrb as mset basic test ends, total time use 0.002000]
+      [cntr_llrb correctness ends, total time use 0.011000]
+    [ollrb object test ends, total time use 0.015000]
+    [osplay object test begins]
+      [cntr_splay correctness begins]
+        [osplay as set basic test begins]
+        [osplay as set basic test ends, total time use 0.002000]
+        [osplay as mset basic test begins]
+        [osplay as mset basic test ends, total time use 0.002000]
+      [cntr_splay correctness ends, total time use 0.012000]
+    [osplay object test ends, total time use 0.016000]
+    [oskiplist object test begins]
+      [cntr_skiplist correctness begins]
+        [oskiplist as set basic test begins]
+        [oskiplist as set basic test ends, total time use 0.002000]
+        [oskiplist as mset basic test begins]
+        [oskiplist as mset basic test ends, total time use 0.002000]
+      [cntr_skiplist correctness ends, total time use 0.011000]
+    [oskiplist object test ends, total time use 0.015000]
+  0X00F101C0      32 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F101F8      52 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10244       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10264      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F102A0       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10438      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10474       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10494       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F104B4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F104D4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F104F4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10514       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10534       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10554       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10574       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10594       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F105B4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F105D4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F105F4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10614       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10634       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F106CC      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10708       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10728       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10748       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10768       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10788       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F107A8       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F107C8       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F107E8       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10808       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10828       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10848       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10868       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10888       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F108A8       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F108C8       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10AEC      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10B28       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10B48       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10B68       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10B88       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10BA8       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10BC8       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10BE8       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10C08       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10C28       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10C48       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10C68       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10C88       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10CA8       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10CC8       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10CE8       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00F10D08       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  [cntr2 all test ends, total time use 0.527000]
+  [cntr2 all test begins]
+    [allocator object test begins]
+      [allocator simple trace test begins]
+      0X01220184      60 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      0X0122029E      90 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      two leak pointer expected
+      [allocator simple trace test ends, total time use 0.026000]
+    [allocator object test ends, total time use 0.031000]
+    [dlist object test begins]
+      [cntr cntr_base correctness begins]
+      [cntr cntr_base correctness ends, total time use 57.841999]
+    [dlist object test ends, total time use 57.848000]
+    [ollrb object test begins]
+      [cntr_llrb correctness begins]
+        [ollrb as set basic test begins]
+        [ollrb as set basic test ends, total time use 0.004000]
+        [ollrb as mset basic test begins]
+        [ollrb as mset basic test ends, total time use 0.004000]
+      [cntr_llrb correctness ends, total time use 0.019000]
+    [ollrb object test ends, total time use 0.027000]
+    [osplay object test begins]
+      [cntr_splay correctness begins]
+        [osplay as set basic test begins]
+        [osplay as set basic test ends, total time use 0.001000]
+        [osplay as mset basic test begins]
+        [osplay as mset basic test ends, total time use 0.003000]
+      [cntr_splay correctness ends, total time use 0.009000]
+    [osplay object test ends, total time use 0.014000]
+    [oskiplist object test begins]
+      [cntr_skiplist correctness begins]
+        [oskiplist as set basic test begins]
+        [oskiplist as set basic test ends, total time use 0.002000]
+        [oskiplist as mset basic test begins]
+        [oskiplist as mset basic test ends, total time use 0.002000]
+      [cntr_skiplist correctness ends, total time use 0.010000]
+    [oskiplist object test ends, total time use 0.013000]
+  0X012201C0      32 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X012201F8      52 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220244       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220264      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X012202A0       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220438      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220474       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220494       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X012204B4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X012204D4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X012204F4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220514       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220534       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220554       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220574       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220594       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X012205B4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X012205D4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X012205F4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220614       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220634       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X012206CC      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220708       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220728       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220748       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220768       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220788       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X012207A8       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X012207C8       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X012207E8       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220808       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220828       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220848       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220868       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220888       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X012208A8       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X012208C8       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220924      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220AF4      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220B30       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220B50       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220B70       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220B90       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220BB0       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220BD0       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220BF0       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220C10       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220C30       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220C50       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220C70       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220C90       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220CB0       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220CD0       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01220CF0       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  [cntr2 all test ends, total time use 58.351002]
+  [cntr2 all test begins]
+    [allocator object test begins]
+      [allocator simple trace test begins]
+      0X01260184      60 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      0X0126029E      90 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      two leak pointer expected
+      [allocator simple trace test ends, total time use 0.025000]
+    [allocator object test ends, total time use 0.031000]
+    [dlist object test begins]
+      [cntr cntr_base correctness begins]
+      [cntr cntr_base correctness ends, total time use 0.003000]
+    [dlist object test ends, total time use 0.008000]
+  [cntr2 all test ends, total time use 0.047000]
+  [cntr2 all test begins]
+    [allocator object test begins]
+      [allocator simple trace test begins]
+      0X01030184      60 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      0X0103029E      90 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      two leak pointer expected
+      [allocator simple trace test ends, total time use 0.028000]
+    [allocator object test ends, total time use 0.035000]
+    [dlist object test begins]
+      [cntr cntr_base correctness begins]
+      [cntr cntr_base correctness ends, total time use 0.004000]
+    [dlist object test ends, total time use 0.008000]
+  [cntr2 all test ends, total time use 0.052000]
+  [cntr2 all test begins]
+    [allocator object test begins]
+      [allocator simple trace test begins]
+      0X00FE0184      60 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      0X00FE029E      90 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      two leak pointer expected
+      [allocator simple trace test ends, total time use 0.027000]
+    [allocator object test ends, total time use 0.038000]
+    [dlist object test begins]
+      [cntr cntr_base correctness begins]
+      [cntr cntr_base correctness ends, total time use 0.003000]
+    [dlist object test ends, total time use 0.008000]
+    [ollrb object test begins]
+      [cntr_llrb correctness begins]
+        [ollrb as set basic test begins]
+        [ollrb as set basic test ends, total time use 0.002000]
+        [ollrb as mset basic test begins]
+        [ollrb as mset basic test ends, total time use 0.002000]
+      [cntr_llrb correctness ends, total time use 0.010000]
+    [ollrb object test ends, total time use 0.014000]
+  0X00FE0244       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00FE0264      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00FE0438      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00FE0474       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00FE0494       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00FE04B4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00FE04D4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00FE04F4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00FE0514       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00FE0534       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00FE0554       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00FE0574       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00FE0594       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00FE05B4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00FE05D4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00FE05F4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00FE0614       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00FE0634       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  [cntr2 all test ends, total time use 0.230000]
+  [cntr2 all test begins]
+    [allocator object test begins]
+      [allocator simple trace test begins]
+      0X00350184      60 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      0X0035029E      90 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      two leak pointer expected
+      [allocator simple trace test ends, total time use 0.033000]
+    [allocator object test ends, total time use 0.037000]
+    [dlist object test begins]
+      [cntr cntr_base correctness begins]
+      [cntr cntr_base correctness ends, total time use 0.003000]
+    [dlist object test ends, total time use 0.007000]
+    [ollrb object test begins]
+      [cntr_llrb correctness begins]
+        [ollrb as set basic test begins]
+        [ollrb as set basic test ends, total time use 0.002000]
+        [ollrb as mset basic test begins]
+        [ollrb as mset basic test ends, total time use 0.002000]
+      [cntr_llrb correctness ends, total time use 0.010000]
+    [ollrb object test ends, total time use 0.014000]
+  0X00350244       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00350264      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00350438      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00350474       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00350494       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X003504B4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X003504D4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X003504F4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00350514       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00350534       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00350554       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00350574       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00350594       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X003505B4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X003505D4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X003505F4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00350614       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00350634       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  [cntr2 all test ends, total time use 0.221000]
+  [cntr2 all test begins]
+    [allocator object test begins]
+      [allocator simple trace test begins]
+      0X00360184      60 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      0X0036029E      90 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      two leak pointer expected
+      [allocator simple trace test ends, total time use 0.035000]
+    [allocator object test ends, total time use 0.042000]
+    [dlist object test begins]
+      [cntr cntr_base correctness begins]
+      [cntr cntr_base correctness ends, total time use 0.004000]
+    [dlist object test ends, total time use 0.009000]
+    [ollrb object test begins]
+      [cntr_llrb correctness begins]
+        [ollrb as set basic test begins]
+        [ollrb as set basic test ends, total time use 0.001000]
+      [cntr_llrb correctness ends, total time use 0.005000]
+    [ollrb object test ends, total time use 0.009000]
+  [cntr2 all test ends, total time use 0.071000]
+  [cntr2 all test begins]
+    [allocator object test begins]
+      [allocator simple trace test begins]
+      0X00D40184      60 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      0X00D4029E      90 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      two leak pointer expected
+      [allocator simple trace test ends, total time use 0.028000]
+    [allocator object test ends, total time use 0.033000]
+    [dlist object test begins]
+      [cntr cntr_base correctness begins]
+      [cntr cntr_base correctness ends, total time use 0.004000]
+    [dlist object test ends, total time use 0.009000]
+    [ollrb object test begins]
+      [cntr_llrb correctness begins]
+        [ollrb as set basic test begins]
+        [ollrb as set basic test ends, total time use 0.001000]
+        [ollrb as mset basic test begins]
+        [ollrb as mset basic test ends, total time use 0.002000]
+      [cntr_llrb correctness ends, total time use 0.009000]
+    [ollrb object test ends, total time use 0.015000]
+  0X00D40244       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D40264      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D40438      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D40474       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D40494       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D404B4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D404D4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D404F4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D40514       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D40534       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D40554       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D40574       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D40594       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D405B4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D405D4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D405F4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D40614       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D40634       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  [cntr2 all test ends, total time use 0.225000]
+  [cntr2 all test begins]
+    [allocator object test begins]
+      [allocator simple trace test begins]
+      0X01020184      60 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      0X0102029E      90 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      two leak pointer expected
+      [allocator simple trace test ends, total time use 0.030000]
+    [allocator object test ends, total time use 0.034000]
+    [dlist object test begins]
+      [cntr cntr_base correctness begins]
+      [cntr cntr_base correctness ends, total time use 0.003000]
+    [dlist object test ends, total time use 0.007000]
+    [ollrb object test begins]
+      [cntr_llrb correctness begins]
+        [ollrb as set basic test begins]
+        [ollrb as set basic test ends, total time use 0.002000]
+        [ollrb as mset basic test begins]
+        [ollrb as mset basic test ends, total time use 0.003000]
+      [cntr_llrb correctness ends, total time use 0.009000]
+    [ollrb object test ends, total time use 0.013000]
+  [cntr2 all test ends, total time use 0.065000]
+  [cntr2 all test begins]
+    [allocator object test begins]
+      [allocator simple trace test begins]
+      0X011A0184      60 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      0X011A029E      90 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      two leak pointer expected
+      [allocator simple trace test ends, total time use 0.023000]
+    [allocator object test ends, total time use 0.028000]
+    [dlist object test begins]
+      [cntr cntr_base correctness begins]
+      [cntr cntr_base correctness ends, total time use 0.003000]
+    [dlist object test ends, total time use 0.007000]
+    [ollrb object test begins]
+      [cntr_llrb correctness begins]
+        [ollrb as set basic test begins]
+        [ollrb as set basic test ends, total time use 0.002000]
+        [ollrb as mset basic test begins]
+        [ollrb as mset basic test ends, total time use 0.003000]
+      [cntr_llrb correctness ends, total time use 0.012000]
+    [ollrb object test ends, total time use 0.017000]
+  [cntr2 all test ends, total time use 0.061000]
+  [cntr2 all test begins]
+    [allocator object test begins]
+      [allocator simple trace test begins]
+      0X010E0184      60 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      0X010E029E      90 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      two leak pointer expected
+      [allocator simple trace test ends, total time use 0.035000]
+    [allocator object test ends, total time use 0.042000]
+    [dlist object test begins]
+      [cntr cntr_base correctness begins]
+      [cntr cntr_base correctness ends, total time use 0.003000]
+    [dlist object test ends, total time use 0.009000]
+    [ollrb object test begins]
+      [cntr_llrb correctness begins]
+        [ollrb as set basic test begins]
+        [ollrb as set basic test ends, total time use 0.002000]
+        [ollrb as mset basic test begins]
+        [ollrb as mset basic test ends, total time use 0.002000]
+      [cntr_llrb correctness ends, total time use 0.012000]
+    [ollrb object test ends, total time use 0.016000]
+  0X010E0244       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X010E0264      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X010E0438      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X010E0474       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X010E0494       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X010E04B4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X010E04D4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X010E04F4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X010E0514       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X010E0534       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X010E0554       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X010E0574       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X010E0594       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X010E05B4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X010E05D4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X010E05F4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X010E0614       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X010E0634       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  [cntr2 all test ends, total time use 0.237000]
+  [cntr2 all test begins]
+    [allocator object test begins]
+      [allocator simple trace test begins]
+      0X00D60184      60 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      0X00D6029E      90 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      two leak pointer expected
+      [allocator simple trace test ends, total time use 0.027000]
+    [allocator object test ends, total time use 0.031000]
+    [dlist object test begins]
+      [cntr cntr_base correctness begins]
+      [cntr cntr_base correctness ends, total time use 0.004000]
+    [dlist object test ends, total time use 0.008000]
+    [ollrb object test begins]
+      [cntr_llrb correctness begins]
+        [ollrb as set basic test begins]
+        [ollrb as set basic test ends, total time use 0.002000]
+        [ollrb as mset basic test begins]
+        [ollrb as mset basic test ends, total time use 0.002000]
+      [cntr_llrb correctness ends, total time use 0.009000]
+    [ollrb object test ends, total time use 0.013000]
+  0X00D60244       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D60264      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D60438      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D60474       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D60494       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D604B4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D604D4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D604F4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D60514       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D60534       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D60554       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D60574       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D60594       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D605B4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D605D4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D605F4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D60614       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X00D60634       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  [cntr2 all test ends, total time use 0.255000]
+  [cntr2 all test begins]
+    [allocator object test begins]
+      [allocator simple trace test begins]
+      0X01460184      60 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      0X0146029E      90 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      two leak pointer expected
+      [allocator simple trace test ends, total time use 0.027000]
+    [allocator object test ends, total time use 0.033000]
+    [dlist object test begins]
+      [cntr cntr_base correctness begins]
+      [cntr cntr_base correctness ends, total time use 0.004000]
+    [dlist object test ends, total time use 0.009000]
+    [ollrb object test begins]
+      [cntr_llrb correctness begins]
+        [ollrb as set basic test begins]
+        [ollrb as set basic test ends, total time use 0.002000]
+        [ollrb as mset basic test begins]
+        [ollrb as mset basic test ends, total time use 0.002000]
+      [cntr_llrb correctness ends, total time use 0.013000]
+    [ollrb object test ends, total time use 0.016000]
+  0X01460244       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01460264      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01460438      36 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01460474       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01460494       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X014604B4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X014604D4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X014604F4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01460514       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01460534       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01460554       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01460574       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01460594       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X014605B4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X014605D4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X014605F4       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01460614       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  0X01460634       8 bytes at ..\..\src\cntr2\oo_bridge.c 40
+  [cntr2 all test ends, total time use 0.207000]
+  [cntr2 all test begins]
+    [allocator object test begins]
+      [allocator simple trace test begins]
+      0X01120184      60 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      0X0112029E      90 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      two leak pointer expected
+      [allocator simple trace test ends, total time use 0.035000]
+    [allocator object test ends, total time use 0.043000]
+    [dlist object test begins]
+      [cntr cntr_base correctness begins]
+      [cntr cntr_base correctness ends, total time use 0.003000]
+    [dlist object test ends, total time use 0.007000]
+    [ollrb object test begins]
+      [cntr_llrb correctness begins]
+        [ollrb as set basic test begins]
+        [ollrb as set basic test ends, total time use 0.002000]
+        [ollrb as mset basic test begins]
+        [ollrb as mset basic test ends, total time use 0.003000]
+      [cntr_llrb correctness ends, total time use 0.012000]
+    [ollrb object test ends, total time use 0.017000]
+  [cntr2 all test ends, total time use 0.075000]
+  [cntr2 all test begins]
+    [allocator object test begins]
+      [allocator simple trace test begins]
+      0X00CA0184      60 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      0X00CA029E      90 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      two leak pointer expected
+      [allocator simple trace test ends, total time use 0.039000]
+    [allocator object test ends, total time use 0.045000]
+    [dlist object test begins]
+      [cntr cntr_base correctness begins]
+      [cntr cntr_base correctness ends, total time use 0.004000]
+    [dlist object test ends, total time use 0.009000]
+    [ollrb object test begins]
+      [cntr_llrb correctness begins]
+        [ollrb as set basic test begins]
+        [ollrb as set basic test ends, total time use 0.003000]
+        [ollrb as mset basic test begins]
+        [ollrb as mset basic test ends, total time use 0.002000]
+      [cntr_llrb correctness ends, total time use 0.010000]
+    [ollrb object test ends, total time use 0.016000]
+  [cntr2 all test ends, total time use 0.077000]
+  [cntr2 all test begins]
+    [allocator object test begins]
+      [allocator simple trace test begins]
+      0X00F50184      60 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      0X00F5029E      90 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      two leak pointer expected
+      [allocator simple trace test ends, total time use 0.028000]
+    [allocator object test ends, total time use 0.032000]
+    [dlist object test begins]
+      [cntr cntr_base correctness begins]
+      [cntr cntr_base correctness ends, total time use 0.004000]
+    [dlist object test ends, total time use 0.009000]
+    [ollrb object test begins]
+      [cntr_llrb correctness begins]
+        [ollrb as set basic test begins]
+        [ollrb as set basic test ends, total time use 0.002000]
+        [ollrb as mset basic test begins]
+        [ollrb as mset basic test ends, total time use 0.002000]
+      [cntr_llrb correctness ends, total time use 0.011000]
+    [ollrb object test ends, total time use 0.015000]
+    [osplay object test begins]
+      [cntr_splay correctness begins]
+        [osplay as set basic test begins]
+        [osplay as set basic test ends, total time use 0.002000]
+        [osplay as mset basic test begins]
+        [osplay as mset basic test ends, total time use 0.002000]
+      [cntr_splay correctness ends, total time use 0.010000]
+    [osplay object test ends, total time use 0.015000]
+    [oskiplist object test begins]
+      [cntr_skiplist correctness begins]
+        [oskiplist as set basic test begins]
+        [oskiplist as set basic test ends, total time use 0.002000]
+        [oskiplist as mset basic test begins]
+        [oskiplist as mset basic test ends, total time use 0.003000]
+      [cntr_skiplist correctness ends, total time use 0.009000]
+    [oskiplist object test ends, total time use 0.014000]
+  [cntr2 all test ends, total time use 0.096000]
+  [cntr2 all test begins]
+    [allocator object test begins]
+      [allocator simple trace test begins]
+      0X01100184      60 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      0X0110029E      90 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      two leak pointer expected
+      [allocator simple trace test ends, total time use 0.062000]
+    [allocator object test ends, total time use 0.067000]
+    [dlist object test begins]
+      [cntr cntr_base correctness begins]
+      [cntr cntr_base correctness ends, total time use 0.003000]
+    [dlist object test ends, total time use 0.007000]
+    [ollrb object test begins]
+      [cntr_llrb correctness begins]
+        [ollrb as set basic test begins]
+        [ollrb as set basic test ends, total time use 0.002000]
+        [ollrb as mset basic test begins]
+        [ollrb as mset basic test ends, total time use 0.003000]
+      [cntr_llrb correctness ends, total time use 0.011000]
+    [ollrb object test ends, total time use 0.016000]
+    [osplay object test begins]
+      [cntr_splay correctness begins]
+        [osplay as set basic test begins]
+        [osplay as set basic test ends, total time use 0.002000]
+        [osplay as mset basic test begins]
+        [osplay as mset basic test ends, total time use 0.002000]
+      [cntr_splay correctness ends, total time use 0.013000]
+    [osplay object test ends, total time use 0.018000]
+    [oskiplist object test begins]
+      [cntr_skiplist correctness begins]
+        [oskiplist as set basic test begins]
+        [oskiplist as set basic test ends, total time use 0.002000]
+        [oskiplist as mset basic test begins]
+        [oskiplist as mset basic test ends, total time use 0.002000]
+      [cntr_skiplist correctness ends, total time use 0.011000]
+    [oskiplist object test ends, total time use 0.016000]
+  [cntr2 all test ends, total time use 0.141000]
+  [cntr2 all test begins]
+    [allocator object test begins]
+      [allocator simple trace test begins]
+      0X00340184      60 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      0X0034029E      90 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      two leak pointer expected
+      [allocator simple trace test ends, total time use 0.031000]
+    [allocator object test ends, total time use 0.042000]
+    [dlist object test begins]
+      [cntr cntr_base correctness begins]
+      [cntr cntr_base correctness ends, total time use 0.003000]
+    [dlist object test ends, total time use 0.007000]
+    [ollrb object test begins]
+      [cntr_llrb correctness begins]
+        [ollrb as set basic test begins]
+        [ollrb as set basic test ends, total time use 0.002000]
+        [ollrb as mset basic test begins]
+        [ollrb as mset basic test ends, total time use 0.002000]
+      [cntr_llrb correctness ends, total time use 0.010000]
+    [ollrb object test ends, total time use 0.014000]
+    [osplay object test begins]
+      [cntr_splay correctness begins]
+        [osplay as set basic test begins]
+        [osplay as set basic test ends, total time use 0.002000]
+        [osplay as mset basic test begins]
+        [osplay as mset basic test ends, total time use 0.002000]
+      [cntr_splay correctness ends, total time use 0.011000]
+    [osplay object test ends, total time use 0.015000]
+    [oskiplist object test begins]
+      [cntr_skiplist correctness begins]
+        [oskiplist as set basic test begins]
+        [oskiplist as set basic test ends, total time use 0.002000]
+        [oskiplist as mset basic test begins]
+        [oskiplist as mset basic test ends, total time use 0.002000]
+      [cntr_skiplist correctness ends, total time use 0.011000]
+    [oskiplist object test ends, total time use 0.015000]
+  [cntr2 all test ends, total time use 0.108000]
+  [cntr2 all test begins]
+    [allocator object test begins]
+      [allocator simple trace test begins]
+      0X01360184      60 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      0X0136029E      90 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      two leak pointer expected
+      [allocator simple trace test ends, total time use 0.026000]
+    [allocator object test ends, total time use 0.031000]
+    [dlist object test begins]
+      [cntr cntr_base correctness begins]
+      [cntr cntr_base correctness ends, total time use 0.003000]
+    [dlist object test ends, total time use 0.007000]
+    [ollrb object test begins]
+      [cntr_llrb correctness begins]
+        [ollrb as set basic test begins]
+        [ollrb as set basic test ends, total time use 0.002000]
+        [ollrb as mset basic test begins]
+        [ollrb as mset basic test ends, total time use 0.002000]
+      [cntr_llrb correctness ends, total time use 0.011000]
+    [ollrb object test ends, total time use 0.015000]
+    [osplay object test begins]
+      [cntr_splay correctness begins]
+        [osplay as set basic test begins]
+        [osplay as set basic test ends, total time use 0.002000]
+        [osplay as mset basic test begins]
+        [osplay as mset basic test ends, total time use 0.002000]
+      [cntr_splay correctness ends, total time use 0.012000]
+    [osplay object test ends, total time use 0.014000]
+    [oskiplist object test begins]
+      [cntr_skiplist correctness begins]
+        [oskiplist as set basic test begins]
+        [oskiplist as set basic test ends, total time use 0.002000]
+        [oskiplist as mset basic test begins]
+        [oskiplist as mset basic test ends, total time use 0.003000]
+      [cntr_skiplist correctness ends, total time use 0.011000]
+    [oskiplist object test ends, total time use 0.016000]
+  [cntr2 all test ends, total time use 0.097000]

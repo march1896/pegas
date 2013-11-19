@@ -32,8 +32,8 @@ extern inline void list_remove_back(struct listlink* sent);
 
 extern inline void list_remove(struct listlink* sent, struct listlink *node);
 
-typedef void (*pf_list_link_process)  (struct listlink* each);
-typedef void (*pf_list_link_process_v)(struct listlink* each, void* param);
+typedef void (*pf_list_link_process)  (struct listlink* link);
+typedef void (*pf_list_link_process_v)(struct listlink* link, void* param);
 extern inline void list_foreach  (struct listlink* sent, pf_list_link_process process);
 extern inline void list_foreach_v(struct listlink* sent, pf_list_link_process_v process_v, void* param);
 
