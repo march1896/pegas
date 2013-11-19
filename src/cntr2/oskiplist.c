@@ -536,19 +536,21 @@ bool oslist_remove_s(object o, const_unknown __ref) {
 }
 
 int oslist_remove_m(object o, const_unknown __ref) {
-	struct oslist* oskiplist   = (struct oslist*)o;
-	struct skip_link* slink = (struct skip_link*)skiplist_search(oskiplist->driver_skiplist, __ref);
+	struct oslist* oskiplist = (struct oslist*)o;
+	const struct skip_link* lb = skiplist_search_v(oskiplist->driver_skiplist, __ref, skiplist_min_greaterorequal);
+	const struct skip_link* ub = skiplist_search_v(oskiplist->driver_skiplist, __ref, skiplist_min_greater);
 	int count = 0;
 
-	while (slink != skiplist_sent(oskiplist->driver_skiplist)) {
-		oskiplist->content_traits.__destroy(skip_link_getref(slink), (pf_dealloc)allocator_release, oskiplist->allocator);
-		skiplist_remove_link(oskiplist->driver_skiplist, slink);
-		oskiplist->size --;
+	while (lb != ub) {
+		struct skip_link* cur = (struct skip_link*)lb;
+		lb = skip_link_next(lb);
+		oskiplist->content_traits.__destroy(skip_link_getref(cur), (pf_dealloc)allocator_release, oskiplist->allocator);
+		skiplist_remove_link(oskiplist->driver_skiplist, cur);
+		
 		count ++;
-
-		slink = (struct skip_link*)skiplist_search(oskiplist->driver_skiplist, __ref);
 	}
 
+	oskiplist->size -= count;
 	return count;
 }
 

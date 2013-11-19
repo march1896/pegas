@@ -482,7 +482,7 @@ void mset_test_bench(object mset) {
 	__data_diff_type = 100000;
 	__data_max_count = 10;
 	log_printline("[data type: %d, single data max dup: %d]", __data_diff_type, __data_max_count);
-	__num_modify     = 10000000;
+	__num_modify     = 1000000;
 	__num_search     = 100;
 
 	__create_data();
@@ -490,6 +490,6 @@ void mset_test_bench(object mset) {
 	__destroy_data();
 
 	__num_modify     = 100;
-	__num_search     = 10000000;
+	__num_search     = 1000000;
 	test_run_single("randomly search test", mset_bench_search_randomly);
 }
