@@ -25,7 +25,7 @@ enum list_interfaces {
 };
 
 struct o_dlist_node {
-	struct list_link              link;
+	struct listlink              link;
 
 	unknown                       reference;
 };
@@ -43,7 +43,7 @@ struct o_dlist_itr {
 	 * alloc the memory, but we should know how to delete this memory */
 	allocator                     allocator;
 
-	struct list_link*             current;
+	struct listlink*             current;
 };
 
 struct o_dlist {
@@ -52,7 +52,7 @@ struct o_dlist {
 	
 	struct base_interface         __iftable[e_l_count];
 
-	struct list_link              sentinel;
+	struct listlink              sentinel;
 	int                           size;
 
 	unknown_traits                content_traits;
@@ -365,7 +365,7 @@ hashcode olist_hashcode(const_object o) {
 	return 0;
 }
 
-static void olistlink_dispose(struct list_link* link, void* context) {
+static void olistlink_dispose(struct listlink* link, void* context) {
 	struct o_dlist_node* node = container_of(link, struct o_dlist_node, link);
 	struct o_dlist* olist = (struct o_dlist*)context;
 
@@ -388,7 +388,7 @@ struct olistlink_foreach_pack {
 	pf_ref_process_v callback;
 	void*              context;
 };
-static void olistlink_foreach_v(struct list_link* link, void* context) {
+static void olistlink_foreach_v(struct listlink* link, void* context) {
 	struct o_dlist_node* node = container_of(link, struct o_dlist_node, link);
 	struct olistlink_foreach_pack* pack = (struct olistlink_foreach_pack*)context;
 
@@ -470,7 +470,7 @@ void olist_remove_front(object o) {
 	struct o_dlist* olist = (struct o_dlist*)o;
 
 	if (olist->size > 0) {
-		struct list_link* link    = olist->sentinel.next;
+		struct listlink* link    = olist->sentinel.next;
 		struct o_dlist_node* node = container_of(link, struct o_dlist_node, link);
 		unknown object_ref   = node->reference;
 
@@ -496,7 +496,7 @@ void olist_remove_back(object o) {
 	struct o_dlist* olist = (struct o_dlist*)o;
 
 	if (olist->size > 0) {
-		struct list_link* link    = olist->sentinel.prev;
+		struct listlink* link    = olist->sentinel.prev;
 		struct o_dlist_node* node = container_of(link, struct o_dlist_node, link);
 		unknown object_ref        = node->reference;
 
@@ -519,7 +519,7 @@ void olist_remove_back(object o) {
 
 bool olist_contains(const_object o, const_unknown __ref) {
 	const struct o_dlist* olist  = (const struct o_dlist*)o;
-	const struct list_link* link = olist->sentinel.next;
+	const struct listlink* link = olist->sentinel.next;
 
 	while (link != &olist->sentinel) {
 		struct o_dlist_node* temp = container_of(link, struct o_dlist_node, link);
@@ -536,7 +536,7 @@ bool olist_contains(const_object o, const_unknown __ref) {
 
 bool olist_remove(object o, const_unknown __ref) {
 	struct o_dlist* olist  = (struct o_dlist*)o;
-	struct list_link* link = olist->sentinel.next;
+	struct listlink* link = olist->sentinel.next;
 
 	while (link != &olist->sentinel) {
 		struct o_dlist_node* temp = container_of(link, struct o_dlist_node, link);
@@ -647,7 +647,7 @@ void olist_itr_assign(const_object o, iterator __itr, itr_pos pos) {
 void olist_itr_find(const_object o, iterator itr, const_unknown __ref) {
 	struct o_dlist* olist    = (struct o_dlist*)o;
 	struct o_dlist_itr* oitr = (struct o_dlist_itr*)itr;
-	struct list_link* link   = olist->sentinel.next;
+	struct listlink* link   = olist->sentinel.next;
 
 	/* make sure the type information is right */
 	dbg_assert(itr->__iftable[itr_interface_iterator].__offset == (address)itr_interface_iterator);

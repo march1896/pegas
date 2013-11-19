@@ -110,11 +110,13 @@ void cntr2_allocator_recursive_spawn_test() {
 	log_printline("%s leak detect:\n", "blade");
 	allocator_walk(blade, heap_leak_print_to_terminal, NULL);
 	*/
+
+	allocator_join(grand_father);
 }
 
 void cntr2_oallocator_test() {
 	test_run_single("allocator simple trace test", allocator_trace_test);
 
-	// TODO: remove the printf
-	test_run_single("allocator recursive spawn test", cntr2_allocator_recursive_spawn_test);
+	// this test will add some leak info to the stdout.
+	// test_run_single("allocator recursive spawn test", cntr2_allocator_recursive_spawn_test);
 }

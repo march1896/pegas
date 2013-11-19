@@ -25,7 +25,7 @@ struct heap_spool {
 	int              level;           /* level is the current storage level */
 
 	void*            next;
-	struct list_link sentinel;
+	struct listlink sentinel;
 };
 
 #define HEAP_POOL_START_LEVEL 4

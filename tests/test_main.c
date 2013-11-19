@@ -5,7 +5,7 @@
 extern void util_all_test();
 extern void heap_all_test();
 extern void cntr2_all_test();
-extern void cntr_all_test();
+/*extern void cntr_all_test();*/
 
 int main() {
 	unsigned int iseed = (unsigned int)time(NULL);

@@ -3,14 +3,14 @@
 
 #include <cominc.h>
 
-struct splay_link {
-	struct splay_link*  left;
-	struct splay_link*  right;
-	struct splay_link*  parent;
+struct splaylink {
+	struct splaylink*  left;
+	struct splaylink*  right;
+	struct splaylink*  parent;
 };
 
-typedef int (*pf_splay_compare)  (const struct splay_link* l, const struct splay_link* r);
-typedef int (*pf_splay_compare_v)(const struct splay_link* l, const struct splay_link* r, void* param);
+typedef int (*pf_splay_compare)  (const struct splaylink* l, const struct splaylink* r);
+typedef int (*pf_splay_compare_v)(const struct splaylink* l, const struct splaylink* r, void* param);
 /**
  * @brief insert target into a tree.
  * 		if comp(tree_node, target) == 0, it will directly compare the address of tree_node and target to insert.
@@ -22,7 +22,7 @@ typedef int (*pf_splay_compare_v)(const struct splay_link* l, const struct splay
  *
  * @return the new tree root after insertion.
  */
-struct splay_link* splay_insert(struct splay_link* root, struct splay_link* target, pf_splay_compare comp);
+struct splaylink* splay_insert(struct splaylink* root, struct splaylink* target, pf_splay_compare comp);
 
 /**
  * @brief insert a single instance into the tree.
@@ -36,7 +36,7 @@ struct splay_link* splay_insert(struct splay_link* root, struct splay_link* targ
  *
  * @return the new tree root after insertion.
  */
-struct splay_link* splay_insert_s(struct splay_link* root, struct splay_link* target, pf_splay_compare comp, struct splay_link** dup);
+struct splaylink* splay_insert_s(struct splaylink* root, struct splaylink* target, pf_splay_compare comp, struct splaylink** dup);
 
 /**
  * @brief remove a link from a tree.
@@ -49,12 +49,12 @@ struct splay_link* splay_insert_s(struct splay_link* root, struct splay_link* ta
  *
  * @return the new tree root after remove, NULL if no element in the tree.
  */
-struct splay_link* splay_remove(struct splay_link* root, struct splay_link* target, pf_splay_compare comp);
+struct splaylink* splay_remove(struct splaylink* root, struct splaylink* target, pf_splay_compare comp);
 
 /* the verbose version of insert/remove */
-struct splay_link* splay_insert_v(struct splay_link* root, struct splay_link* target, pf_splay_compare_v comp, void* param);
-struct splay_link* splay_insert_sv(struct splay_link* root, struct splay_link* target, pf_splay_compare_v comp, void* param, struct splay_link** dup);
-struct splay_link* splay_remove_v(struct splay_link* root, struct splay_link* target, pf_splay_compare_v comp, void* param);
+struct splaylink* splay_insert_v(struct splaylink* root, struct splaylink* target, pf_splay_compare_v comp, void* param);
+struct splaylink* splay_insert_sv(struct splaylink* root, struct splaylink* target, pf_splay_compare_v comp, void* param, struct splaylink** dup);
+struct splaylink* splay_remove_v(struct splaylink* root, struct splaylink* target, pf_splay_compare_v comp, void* param);
 
 /**
  * @brief splay_search callback, given the current link, this function will decide which child will be searched next.
@@ -67,18 +67,18 @@ struct splay_link* splay_remove_v(struct splay_link* root, struct splay_link* ta
  *
  * @return see @brief
  */
-typedef int (*pf_splay_direct)(const struct splay_link* cur, void* param);
+typedef int (*pf_splay_direct)(const struct splaylink* cur, void* param);
 
-struct splay_link* splay_search(struct splay_link* root, pf_splay_direct direct, void* param);
-struct splay_link* splay_dynamic_search(struct splay_link** p_root, pf_splay_direct direct, void* param);
+struct splaylink* splay_search(struct splaylink* root, pf_splay_direct direct, void* param);
+struct splaylink* splay_dynamic_search(struct splaylink** p_root, pf_splay_direct direct, void* param);
 
-struct splay_link* splay_min        (struct splay_link* root);
-struct splay_link* splay_max        (struct splay_link* root);
-struct splay_link* splay_predesessor(const struct splay_link* link, bool only_sub);
-struct splay_link* splay_successor  (const struct splay_link* link, bool only_sub);
+struct splaylink* splay_min        (struct splaylink* root);
+struct splaylink* splay_max        (struct splaylink* root);
+struct splaylink* splay_predesessor(const struct splaylink* link, bool only_sub);
+struct splaylink* splay_successor  (const struct splaylink* link, bool only_sub);
 
-void              splay_debug_check(struct splay_link* root, pf_splay_compare comp);
-void              splay_debug_check_v(struct splay_link* root, pf_splay_compare_v comp_v, void* param);
+void              splay_debug_check(struct splaylink* root, pf_splay_compare comp);
+void              splay_debug_check_v(struct splaylink* root, pf_splay_compare_v comp_v, void* param);
 
 
 #endif /* _SPLAY_LINK_H_ */

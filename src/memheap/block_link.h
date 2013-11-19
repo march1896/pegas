@@ -16,18 +16,18 @@
  * 1, find free block first fit.
  * 2, find free block best fit.
  */
-struct list_link;
-int block_data_size_from_blick(struct list_link *link);
+struct listlink;
+int block_data_size_from_blick(struct listlink *link);
 
-struct list_link *blink_inc_find_ff (struct list_link *phead, int req);
-struct list_link *blink_inc_find_bf (struct list_link *phead, int req);
-void   blink_inc_pop  (struct list_link *psent, struct list_link *pbd);
-void   blink_inc_push (struct list_link *psent, struct list_link *pbd);
+struct listlink *blink_inc_find_ff (struct listlink *phead, int req);
+struct listlink *blink_inc_find_bf (struct listlink *phead, int req);
+void   blink_inc_pop  (struct listlink *psent, struct listlink *pbd);
+void   blink_inc_push (struct listlink *psent, struct listlink *pbd);
 
-struct list_link *blink_rnd_find_ff (struct list_link *phead, int req);
-struct list_link *blink_rnd_find_bf (struct list_link *phead, int req);
-void   blink_rnd_pop  (struct list_link *psent, struct list_link *pbd);
-void   blink_rnd_push (struct list_link *psent, struct list_link *pbd);
+struct listlink *blink_rnd_find_ff (struct listlink *phead, int req);
+struct listlink *blink_rnd_find_bf (struct listlink *phead, int req);
+void   blink_rnd_pop  (struct listlink *psent, struct listlink *pbd);
+void   blink_rnd_push (struct listlink *psent, struct listlink *pbd);
 
 #define blink_find(ph, reg) blink_rnd_find_ff((ph), reg)
 #define blink_push(ph, pbd) blink_rnd_push((ph), (pbd))

@@ -5,7 +5,7 @@
 #include <util/list_link.h>
 #include <util/math.h>
 
-int block_data_size_from_blick(struct list_link *link) {
+int block_data_size_from_blick(struct listlink *link) {
 	struct heap_buddy_block *pb = container_of(link, struct heap_buddy_block, link);
 
 	return block_com_data_size(&pb->common);
@@ -74,7 +74,7 @@ void heap_buddy_init_v(struct heap_buddy* pheap, void* __parent, pf_alloc __allo
 	pheap->expand_size      = max(HEAP_MINIMUM_EXPAND_SIZE, __expand_size);
 }
 
-static void block_c_pool_dispose(struct list_link* link, void* param) {
+static void block_c_pool_dispose(struct listlink* link, void* param) {
 	struct block_c_pool* blk_pool = 
 		container_of(link, struct block_c_pool, link);
 	struct heap_buddy* pheap = (struct heap_buddy*)param;
@@ -94,7 +94,7 @@ void heap_buddy_deinit(struct heap_buddy* pheap) {
 static void* heap_buddy_alloc_try(struct heap_buddy* pheap, int size) {
 	int bit = 0;
 
-	struct list_link *prop = NULL;
+	struct listlink *prop = NULL;
 	struct heap_buddy_block *pb = NULL;
 
 	for (bit = mlog2(size); bit < BUDDY_COUNT; bit ++) {
@@ -116,8 +116,8 @@ static void* heap_buddy_alloc_try(struct heap_buddy* pheap, int size) {
 		struct block_c *rem = NULL;
 
 		/* When pb is deallocated, the data field should be used as list_link */
-		if (size < sizeof(struct list_link)) 
-			size = sizeof(struct list_link);
+		if (size < sizeof(struct listlink)) 
+			size = sizeof(struct listlink);
 
 		/* Split the block, add the remain block to free container */
 		rem = block_com_split(&pb->common, size, pheap->split_threshold);
@@ -287,7 +287,7 @@ struct block_process_param_pack {
 };
 
 /* this is exactly the same as llrb heap, shoudl this function be moved to somewhere else */
-static void traverse_mem(struct list_link* link, void* param) {
+static void traverse_mem(struct listlink* link, void* param) {
 	/* unpack the parameters */
 	struct block_process_param_pack* pack = (struct block_process_param_pack*)param;
 	pf_process_block per_block_cb  = pack->per_block_cb;

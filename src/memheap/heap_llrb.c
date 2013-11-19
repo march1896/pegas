@@ -1,7 +1,7 @@
 #include <heap_llrb.h>
 #include <util/math.h>
 
-static int block_comp(const struct llrb_link *l, const struct llrb_link *r) {
+static int block_comp(const struct llrblink *l, const struct llrblink *r) {
 	struct heap_llrb_block *plb, *prb;
 	unsigned lsz, rsz;
 	plb = container_of(l, struct heap_llrb_block, link);
@@ -19,7 +19,7 @@ static int block_comp(const struct llrb_link *l, const struct llrb_link *r) {
  * Find a proper block in the llrb, here we try to find the smallest 
  * block who can hold greater or equal than size.
  */
-static struct llrb_link *llrb_link_findbysize(struct llrb_link *c, int size) {
+static struct llrblink *llrb_link_findbysize(struct llrblink *c, int size) {
 	struct heap_llrb_block *pb;
 	int sz;
 	
@@ -34,7 +34,7 @@ static struct llrb_link *llrb_link_findbysize(struct llrb_link *c, int size) {
 	else if (c->left == NULL)
 		return c;
 	else {
-		struct llrb_link *found = llrb_link_findbysize(c->left, size);
+		struct llrblink *found = llrb_link_findbysize(c->left, size);
 		if (found) 
 			return found;
 		else return c;
@@ -102,7 +102,7 @@ void heap_llrb_init_v(struct heap_llrb* pheap, void* __parent, pf_alloc __alloc,
 	pheap->expand_size      = max(HEAP_MINIMUM_EXPAND_SIZE, __expand_size);
 }
 
-static void block_c_pool_dispose(struct list_link* link, void* param) {
+static void block_c_pool_dispose(struct listlink* link, void* param) {
 	struct block_c_pool* blk_pool = 
 		container_of(link, struct block_c_pool, link);
 	struct heap_llrb* pheap = (struct heap_llrb*)param;
@@ -120,7 +120,7 @@ void heap_llrb_deinit(struct heap_llrb* pheap) {
 }
 
 static void* heap_llrb_alloc_try(struct heap_llrb* pheap, int size) {
-	struct llrb_link* alink = llrb_link_findbysize(pheap->llrb_root, size);
+	struct llrblink* alink = llrb_link_findbysize(pheap->llrb_root, size);
 	struct heap_llrb_block* pb = container_of(alink, struct heap_llrb_block, link);
 	struct block_c* rem = NULL;
 	
@@ -133,7 +133,7 @@ static void* heap_llrb_alloc_try(struct heap_llrb* pheap, int size) {
 	pheap->llrb_root = llrb_remove(pheap->llrb_root, alink, block_comp);
 
 	/* When pb is deallocated, the data field should be used as llrb_link */
-	if (size < sizeof(struct llrb_link)) size = sizeof(struct llrb_link);
+	if (size < sizeof(struct llrblink)) size = sizeof(struct llrblink);
 
 	/* Split the block, add the remain block to free container */
 	rem = block_com_split(&pb->common, size, pheap->split_threthhold);
@@ -316,7 +316,7 @@ struct block_process_param_pack {
 	void*            param;
 };
 
-static void traverse_mem(struct list_link* link, void* param) {
+static void traverse_mem(struct listlink* link, void* param) {
 	/* unpack the parameters */
 	struct block_process_param_pack* pack = (struct block_process_param_pack*)param;
 	pf_process_block per_block_cb  = pack->per_block_cb;

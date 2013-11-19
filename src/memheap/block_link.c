@@ -3,8 +3,8 @@
 
 /**********************************************************************************/
 
-struct list_link *blink_inc_find_ff (struct list_link* psent, int req) {
-	struct list_link *itr = psent->next;
+struct listlink *blink_inc_find_ff (struct listlink* psent, int req) {
+	struct listlink *itr = psent->next;
 	while (itr != psent) {
 		if (block_data_size_from_blick(itr) >= req) 
 			return itr;
@@ -15,21 +15,21 @@ struct list_link *blink_inc_find_ff (struct list_link* psent, int req) {
 	return NULL;
 }
 
-struct list_link *blink_inc_find_bf (struct list_link* psent, int req) {
+struct listlink *blink_inc_find_bf (struct listlink* psent, int req) {
 	return blink_inc_find_ff(psent, req);
 }
 
-void   blink_inc_pop  (struct list_link* psent, struct list_link *pbd) {
+void   blink_inc_pop  (struct listlink* psent, struct listlink *pbd) {
 	list_remove(psent, pbd);
 }
 
-void   blink_inc_push (struct list_link* psent, struct list_link *pbd) {
+void   blink_inc_push (struct listlink* psent, struct listlink *pbd) {
 	if (list_empty(psent)) {
 		list_insert_front(psent, pbd);
 	}
 	else {
-		struct list_link* next = psent->next;
-		struct list_link* prev = NULL;
+		struct listlink* next = psent->next;
+		struct listlink* prev = NULL;
 		int sz = block_data_size_from_blick(pbd);
 
 		while (next != psent) {
@@ -46,12 +46,12 @@ void   blink_inc_push (struct list_link* psent, struct list_link *pbd) {
 	return;
 }
 
-struct list_link *blink_rnd_find_ff (struct list_link* psent, int req) {
+struct listlink *blink_rnd_find_ff (struct listlink* psent, int req) {
 	return blink_inc_find_ff(psent, req);
 }
-struct list_link *blink_rnd_find_bf (struct list_link* psent, int req) {
-	struct list_link *best = NULL;
-	struct list_link *itr = psent->next;
+struct listlink *blink_rnd_find_bf (struct listlink* psent, int req) {
+	struct listlink *best = NULL;
+	struct listlink *itr = psent->next;
 	int bsz = -1;
 
 	while (itr != psent) {
@@ -69,9 +69,9 @@ struct list_link *blink_rnd_find_bf (struct list_link* psent, int req) {
 
 	return best;
 }
-void blink_rnd_pop  (struct list_link* psent, struct list_link *pbd) {
+void blink_rnd_pop  (struct listlink* psent, struct listlink *pbd) {
 	list_remove(psent, pbd);
 }
-void blink_rnd_push (struct list_link* psent, struct list_link *pbd) {
+void blink_rnd_push (struct listlink* psent, struct listlink *pbd) {
 	list_insert_front(psent, pbd);
 }

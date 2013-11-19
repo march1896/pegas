@@ -7,16 +7,16 @@
  * @brief LLRB 2-3 tree, a direct copy from Sedgewick's paper, 
  * 		http://www.cs.princeton.edu/~rs/talks/LLRB/LLRB.pdf
  */
-struct llrb_link {
-	struct llrb_link*  left;
-	struct llrb_link*  right;
-	struct llrb_link*  parent;
+struct llrblink {
+	struct llrblink*  left;
+	struct llrblink*  right;
+	struct llrblink*  parent;
 
 	unsigned           color;
 };
 
-typedef int (*pf_llrb_compare)  (const struct llrb_link* l, const struct llrb_link* r);
-typedef int (*pf_llrb_compare_v)(const struct llrb_link* l, const struct llrb_link* r, void* param);
+typedef int (*pf_llrb_compare)  (const struct llrblink* l, const struct llrblink* r);
+typedef int (*pf_llrb_compare_v)(const struct llrblink* l, const struct llrblink* r, void* param);
 
 /**
  * @brief insert target into a tree.
@@ -29,7 +29,7 @@ typedef int (*pf_llrb_compare_v)(const struct llrb_link* l, const struct llrb_li
  *
  * @return the new tree root after insertion.
  */
-struct llrb_link* llrb_insert(struct llrb_link* root, struct llrb_link* target, pf_llrb_compare comp);
+struct llrblink* llrb_insert(struct llrblink* root, struct llrblink* target, pf_llrb_compare comp);
 
 /**
  * @brief insert a single instance into the tree.
@@ -43,7 +43,7 @@ struct llrb_link* llrb_insert(struct llrb_link* root, struct llrb_link* target, 
  *
  * @return the new tree root after insertion.
  */
-struct llrb_link* llrb_insert_s(struct llrb_link* root, struct llrb_link* target, pf_llrb_compare comp, struct llrb_link** dup);
+struct llrblink* llrb_insert_s(struct llrblink* root, struct llrblink* target, pf_llrb_compare comp, struct llrblink** dup);
 
 /**
  * @brief remove a link from a tree.
@@ -56,12 +56,12 @@ struct llrb_link* llrb_insert_s(struct llrb_link* root, struct llrb_link* target
  *
  * @return the new tree root after remove, NULL if no element in the tree.
  */
-struct llrb_link* llrb_remove(struct llrb_link* root, struct llrb_link* target, pf_llrb_compare comp);
+struct llrblink* llrb_remove(struct llrblink* root, struct llrblink* target, pf_llrb_compare comp);
 
 /* the verbose version of insert/remove */
-struct llrb_link* llrb_insert_v(struct llrb_link* root, struct llrb_link* target, pf_llrb_compare_v comp, void* param);
-struct llrb_link* llrb_insert_sv(struct llrb_link* root, struct llrb_link* target, pf_llrb_compare_v comp, void* param, struct llrb_link** dup);
-struct llrb_link* llrb_remove_v(struct llrb_link* root, struct llrb_link* target, pf_llrb_compare_v comp, void* param);
+struct llrblink* llrb_insert_v(struct llrblink* root, struct llrblink* target, pf_llrb_compare_v comp, void* param);
+struct llrblink* llrb_insert_sv(struct llrblink* root, struct llrblink* target, pf_llrb_compare_v comp, void* param, struct llrblink** dup);
+struct llrblink* llrb_remove_v(struct llrblink* root, struct llrblink* target, pf_llrb_compare_v comp, void* param);
 
 /**
  * @brief llrb_search callback, given the current link, this function will decide which child will be searched next.
@@ -74,17 +74,17 @@ struct llrb_link* llrb_remove_v(struct llrb_link* root, struct llrb_link* target
  *
  * @return see @brief
  */
-typedef int (*pf_llrb_direct)(const struct llrb_link* cur, void* param);
+typedef int (*pf_llrb_direct)(const struct llrblink* cur, void* param);
 
-struct llrb_link* llrb_search(struct llrb_link* root, pf_llrb_direct direct, void* param);
+struct llrblink* llrb_search(struct llrblink* root, pf_llrb_direct direct, void* param);
 
-struct llrb_link* llrb_min        (struct llrb_link* root);
-struct llrb_link* llrb_max        (struct llrb_link* root);
-struct llrb_link* llrb_predesessor(const struct llrb_link* link, bool only_sub);
-struct llrb_link* llrb_successor  (const struct llrb_link* link, bool only_sub);
+struct llrblink* llrb_min        (struct llrblink* root);
+struct llrblink* llrb_max        (struct llrblink* root);
+struct llrblink* llrb_predesessor(const struct llrblink* link, bool only_sub);
+struct llrblink* llrb_successor  (const struct llrblink* link, bool only_sub);
 
-void              llrb_debug_check(struct llrb_link* root, pf_llrb_compare comp);
-void              llrb_debug_check_v(struct llrb_link* root, pf_llrb_compare_v comp_v, void* param);
+void              llrb_debug_check(struct llrblink* root, pf_llrb_compare comp);
+void              llrb_debug_check_v(struct llrblink* root, pf_llrb_compare_v comp_v, void* param);
 
 
 #endif /* _LLRB_LINK_H_ */

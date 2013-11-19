@@ -1,8 +1,8 @@
 #include <splay_link.h>
 
-static inline struct splay_link *__splay_rotate_left(struct splay_link* n) {
-	struct splay_link* r = n->right;
-	struct splay_link* p = n->parent;
+static inline struct splaylink *__splay_rotate_left(struct splaylink* n) {
+	struct splaylink* r = n->right;
+	struct splaylink* p = n->parent;
 
 	dbg_assert(r != NULL);
 
@@ -24,9 +24,9 @@ static inline struct splay_link *__splay_rotate_left(struct splay_link* n) {
 	return r;
 }
 
-static inline struct splay_link *__splay_rotate_right(struct splay_link *n) {
-	struct splay_link *l = n->left;
-	struct splay_link *p = n->parent;
+static inline struct splaylink *__splay_rotate_right(struct splaylink *n) {
+	struct splaylink *l = n->left;
+	struct splaylink *p = n->parent;
 
 	dbg_assert(l != NULL);
 
@@ -48,7 +48,7 @@ static inline struct splay_link *__splay_rotate_right(struct splay_link *n) {
 	return l;
 }
 
-static inline void __splay(struct splay_link* n) {
+static inline void __splay(struct splaylink* n) {
 	while (n->parent) {
 		if (!n->parent->parent) {
 			/* Zip step */
@@ -81,7 +81,7 @@ static inline void __splay(struct splay_link* n) {
 	}
 }
 
-static inline void splay_init(struct splay_link *n) {
+static inline void splay_init(struct splaylink *n) {
 	dbg_assert(n != NULL);
 
 	n->left = NULL;
@@ -92,7 +92,7 @@ static inline void splay_init(struct splay_link *n) {
 /*
  * use a <key, address> pair as the real key stored in the tree.
  */
-static inline int __compare_wrap(const struct splay_link* a, const struct splay_link* b, pf_splay_compare raw_comp) {
+static inline int __compare_wrap(const struct splaylink* a, const struct splaylink* b, pf_splay_compare raw_comp) {
 	int raw_result = raw_comp(a, b);
 
 	if (raw_result != 0) return raw_result;
@@ -105,7 +105,7 @@ static inline int __compare_wrap(const struct splay_link* a, const struct splay_
 	return 0;
 }
 
-static inline int __compare_wrap_v(const struct splay_link* a, const struct splay_link* b, pf_splay_compare_v raw_comp, void* param) {
+static inline int __compare_wrap_v(const struct splaylink* a, const struct splaylink* b, pf_splay_compare_v raw_comp, void* param) {
 	int raw_result = raw_comp(a, b, param);
 
 	if (raw_result != 0) return raw_result;
@@ -118,8 +118,8 @@ static inline int __compare_wrap_v(const struct splay_link* a, const struct spla
 	return 0;
 }
 
-struct splay_link *splay_remove(struct splay_link *root, struct splay_link *target, pf_splay_compare comp) {
-	struct splay_link* fwd = root;
+struct splaylink *splay_remove(struct splaylink *root, struct splaylink *target, pf_splay_compare comp) {
+	struct splaylink* fwd = root;
 
 	dbg_assert(root != NULL && target != NULL);
 	while (fwd != target) {
@@ -154,7 +154,7 @@ struct splay_link *splay_remove(struct splay_link *root, struct splay_link *targ
 	}
 	else {
 		/* TODO: randomly ? */
-		struct splay_link* swap_node = splay_min(target->right);
+		struct splaylink* swap_node = splay_min(target->right);
 		dbg_assert(swap_node != NULL);
 		
 		if (swap_node->parent == target) {
@@ -223,8 +223,8 @@ struct splay_link *splay_remove(struct splay_link *root, struct splay_link *targ
 	return NULL;
 }
 
-struct splay_link* splay_remove_v(struct splay_link* root, struct splay_link* target, pf_splay_compare_v comp_v, void* param) {
-	struct splay_link* fwd = root;
+struct splaylink* splay_remove_v(struct splaylink* root, struct splaylink* target, pf_splay_compare_v comp_v, void* param) {
+	struct splaylink* fwd = root;
 
 	dbg_assert(root != NULL && target != NULL);
 	while (fwd != target) {
@@ -259,7 +259,7 @@ struct splay_link* splay_remove_v(struct splay_link* root, struct splay_link* ta
 	}
 	else {
 		/* TODO: randomly ? */
-		struct splay_link* swap_node = splay_min(target->right);
+		struct splaylink* swap_node = splay_min(target->right);
 		dbg_assert(swap_node != NULL);
 		
 		if (swap_node->parent == target) {
@@ -328,9 +328,9 @@ struct splay_link* splay_remove_v(struct splay_link* root, struct splay_link* ta
 	return NULL;
 }
 
-struct splay_link *splay_insert(struct splay_link *root, struct splay_link *nlink, pf_splay_compare comp) {
-	struct splay_link* fwd = root;
-	struct splay_link* par = NULL;
+struct splaylink *splay_insert(struct splaylink *root, struct splaylink *nlink, pf_splay_compare comp) {
+	struct splaylink* fwd = root;
+	struct splaylink* par = NULL;
 	int compr = 0;
 
 	splay_init(nlink);
@@ -364,9 +364,9 @@ struct splay_link *splay_insert(struct splay_link *root, struct splay_link *nlin
 	return nlink;
 }
 
-struct splay_link* splay_insert_v(struct splay_link* root, struct splay_link* nlink, pf_splay_compare_v comp, void* param) {
-	struct splay_link* fwd = root;
-	struct splay_link* par = NULL;
+struct splaylink* splay_insert_v(struct splaylink* root, struct splaylink* nlink, pf_splay_compare_v comp, void* param) {
+	struct splaylink* fwd = root;
+	struct splaylink* par = NULL;
 	int compr = 0;
 
 	splay_init(nlink);
@@ -399,9 +399,9 @@ struct splay_link* splay_insert_v(struct splay_link* root, struct splay_link* nl
 	return nlink;
 }
 
-struct splay_link* splay_insert_s(struct splay_link* root, struct splay_link* nlink, pf_splay_compare comp, struct splay_link** dup) {
-	struct splay_link* fwd = root;
-	struct splay_link* par = NULL;
+struct splaylink* splay_insert_s(struct splaylink* root, struct splaylink* nlink, pf_splay_compare comp, struct splaylink** dup) {
+	struct splaylink* fwd = root;
+	struct splaylink* par = NULL;
 	int compr = 0;
 	*dup = NULL;
 
@@ -437,9 +437,9 @@ struct splay_link* splay_insert_s(struct splay_link* root, struct splay_link* nl
 	return nlink;
 }
 
-struct splay_link* splay_insert_sv(struct splay_link* root, struct splay_link* nlink, pf_splay_compare_v comp, void* param, struct splay_link** dup) {
-	struct splay_link* fwd = root;
-	struct splay_link* par = NULL;
+struct splaylink* splay_insert_sv(struct splaylink* root, struct splaylink* nlink, pf_splay_compare_v comp, void* param, struct splaylink** dup) {
+	struct splaylink* fwd = root;
+	struct splaylink* par = NULL;
 	int compr = 0;
 	*dup = NULL;
 
@@ -475,8 +475,8 @@ struct splay_link* splay_insert_sv(struct splay_link* root, struct splay_link* n
 	return nlink;
 }
 
-struct splay_link* splay_search(struct splay_link* root, pf_splay_direct direct, void* param) {
-	struct splay_link* fwd = root;
+struct splaylink* splay_search(struct splaylink* root, pf_splay_direct direct, void* param) {
+	struct splaylink* fwd = root;
 
 	while (fwd != NULL) {
 		int comp_res = direct(fwd, param);
@@ -496,8 +496,8 @@ struct splay_link* splay_search(struct splay_link* root, pf_splay_direct direct,
 	return NULL;
 }
 
-struct splay_link* splay_dynamic_search(struct splay_link** p_root, pf_splay_direct direct, void* param) {
-	struct splay_link* fwd = *p_root;
+struct splaylink* splay_dynamic_search(struct splaylink** p_root, pf_splay_direct direct, void* param) {
+	struct splaylink* fwd = *p_root;
 
 	while (fwd != NULL) {
 		int comp_res = direct(fwd, param);
@@ -518,10 +518,10 @@ struct splay_link* splay_dynamic_search(struct splay_link** p_root, pf_splay_dir
 	return NULL;
 }
 
-static void __splay_check(struct splay_link *c, pf_splay_compare comp) {
-	struct splay_link *lc = c->left;
-	struct splay_link *rc = c->right;
-	struct splay_link *par = c->parent;
+static void __splay_check(struct splaylink *c, pf_splay_compare comp) {
+	struct splaylink *lc = c->left;
+	struct splaylink *rc = c->right;
+	struct splaylink *par = c->parent;
 	int cmpr = 0;
 
 	if (c == NULL)
@@ -549,7 +549,7 @@ static void __splay_check(struct splay_link *c, pf_splay_compare comp) {
 		__splay_check(c->right, comp);
 }
 
-void splay_debug_check(struct splay_link *root, pf_splay_compare comp) {
+void splay_debug_check(struct splaylink *root, pf_splay_compare comp) {
 	if (root == NULL)
 		return;
 
@@ -557,10 +557,10 @@ void splay_debug_check(struct splay_link *root, pf_splay_compare comp) {
 	__splay_check(root, comp);
 }
 
-static void __splay_check_v(struct splay_link *c, pf_splay_compare_v comp_v, void* param) {
-	struct splay_link *lc = c->left;
-	struct splay_link *rc = c->right;
-	struct splay_link *par = c->parent;
+static void __splay_check_v(struct splaylink *c, pf_splay_compare_v comp_v, void* param) {
+	struct splaylink *lc = c->left;
+	struct splaylink *rc = c->right;
+	struct splaylink *par = c->parent;
 	int cmpr = 0;
 
 	if (c == NULL)
@@ -589,7 +589,7 @@ static void __splay_check_v(struct splay_link *c, pf_splay_compare_v comp_v, voi
 		__splay_check_v(c->right, comp_v, param);
 }
 
-void splay_debug_check_v(struct splay_link* root, pf_splay_compare_v comp_v, void* param) {
+void splay_debug_check_v(struct splaylink* root, pf_splay_compare_v comp_v, void* param) {
 	if (root == NULL)
 		return;
 
@@ -597,7 +597,7 @@ void splay_debug_check_v(struct splay_link* root, pf_splay_compare_v comp_v, voi
 	__splay_check_v(root, comp_v, param);
 }
 
-struct splay_link* splay_min(struct splay_link* root) {
+struct splaylink* splay_min(struct splaylink* root) {
 	if (root == NULL) return NULL;
 
 	while (root->left != NULL) {
@@ -607,7 +607,7 @@ struct splay_link* splay_min(struct splay_link* root) {
 	return root;
 }
 
-struct splay_link* splay_max(struct splay_link* root) {
+struct splaylink* splay_max(struct splaylink* root) {
 	if (root == NULL) return NULL;
 
 	while (root->right != NULL) {
@@ -617,17 +617,17 @@ struct splay_link* splay_max(struct splay_link* root) {
 	return root;
 }
 
-struct splay_link* splay_predesessor(const struct splay_link* link, bool only_sub) {
+struct splaylink* splay_predesessor(const struct splaylink* link, bool only_sub) {
 	if (link->left != NULL) {
 		/* find the max element in the left sub tree */
-		struct splay_link* fwd = link->left;
+		struct splaylink* fwd = link->left;
 
 		while (fwd->right != NULL) 
 			fwd = fwd->right;
 		return fwd;
 	}
 	else if (!only_sub && link->parent) {
-		const struct splay_link* fwd = link;
+		const struct splaylink* fwd = link;
 
 		while (fwd->parent != NULL) {
 			if (fwd->parent->right == fwd) break;
@@ -640,10 +640,10 @@ struct splay_link* splay_predesessor(const struct splay_link* link, bool only_su
 	return NULL;
 }
 
-struct splay_link* splay_successor(const struct splay_link* link, bool only_sub) {
+struct splaylink* splay_successor(const struct splaylink* link, bool only_sub) {
 	if (link->right != NULL) {
 		/* find the minimum element in the right sub tree */
-		struct splay_link* fwd = link->right;
+		struct splaylink* fwd = link->right;
 
 		while (fwd->left != NULL)
 			fwd = fwd->left;
@@ -651,7 +651,7 @@ struct splay_link* splay_successor(const struct splay_link* link, bool only_sub)
 		return fwd;
 	}
 	else if (!only_sub && link->parent) {
-		const struct splay_link* fwd = link;
+		const struct splaylink* fwd = link;
 
 		while (fwd->parent != NULL) {
 			if (fwd->parent->left == fwd) break;

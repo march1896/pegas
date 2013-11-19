@@ -11,7 +11,7 @@ struct heap_buddy_block {
 	struct block_c 		common;		
 
 	/* members to maintain double linked list */
-	struct list_link    link;
+	struct listlink    link;
 };
 
 #define BUDDY_COUNT 32
@@ -22,9 +22,9 @@ struct heap_buddy {
 	pf_dealloc         __parent_dealloc;
 
 	/* point to the single free list */
-	struct list_link   buddy[BUDDY_COUNT]; 
+	struct listlink   buddy[BUDDY_COUNT]; 
 
-	struct list_link   memlist;
+	struct listlink   memlist;
 
 	unsigned int       split_threshold;
 	unsigned int       expand_size;

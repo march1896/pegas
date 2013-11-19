@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "test_util.h"
 
-typedef struct splay_link tree_link;
+typedef struct splaylink tree_link;
 #define tree_insert splay_insert
 #define tree_insert_s splay_insert_s
 #define tree_insert_v splay_insert_v

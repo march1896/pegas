@@ -4,9 +4,9 @@
 #include <cominc.h>
 #include <memheap/heap_def.h>
 
-extern inline const struct skip_link* skip_link_next(const struct skip_link* cur);
-extern inline const struct skip_link* skip_link_prev(const struct skip_link* cur);
-extern inline const void*             skip_link_getref(const struct skip_link* slink);
+extern inline const struct skiplink* skip_link_next(const struct skiplink* cur);
+extern inline const struct skiplink* skip_link_prev(const struct skiplink* cur);
+extern inline const void*             skip_link_getref(const struct skiplink* slink);
 
 typedef int (*pf_skiplist_compare)(const void* ref_a, const void* ref_b);
 typedef int (*pf_skiplist_compare_v)(const void* ref_a, const void* ref_b, void* context);
@@ -25,14 +25,14 @@ bool skiplist_insert_s             (struct skiplist* list, const void* data);
 void* skiplist_replace_s           (struct skiplist* list, const void* data);
 bool skiplist_contains             (const struct skiplist* list, const void* data);
 bool skiplist_remove               (struct skiplist* list, const void* data);
-void skiplist_remove_link          (struct skiplist* list, struct skip_link* link);
+void skiplist_remove_link          (struct skiplist* list, struct skiplink* link);
 void skiplist_clear                (struct skiplist* list);
 bool skiplist_empty                (const struct skiplist* list);
 
-extern inline const struct skip_link* skiplist_first(const struct skiplist* list);
-extern inline const struct skip_link* skiplist_last (const struct skiplist* list);
-extern inline const struct skip_link* skiplist_sent (const struct skiplist* list);
-const struct skip_link* skiplist_search(const struct skiplist* list, const void* data);
+extern inline const struct skiplink* skiplist_first(const struct skiplist* list);
+extern inline const struct skiplink* skiplist_last (const struct skiplist* list);
+extern inline const struct skiplink* skiplist_sent (const struct skiplist* list);
+const struct skiplink* skiplist_search(const struct skiplist* list, const void* data);
 enum skiplist_search_option {
 	skiplist_equal,
 	skiplist_min_greater,
@@ -42,7 +42,7 @@ enum skiplist_search_option {
 	skiplist_search_count
 };
 /* the result may contains sentinel link */
-const struct skip_link* skiplist_search_v(const struct skiplist* slist, const void* data, enum skiplist_search_option option);
+const struct skiplink* skiplist_search_v(const struct skiplist* slist, const void* data, enum skiplist_search_option option);
 
 typedef void (*pf_skiplist_ref_visit)(const void* __ref, void* context);
 /* note, if you change the inner value of ref, it may destroy the skiplist order */

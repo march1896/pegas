@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "test_util.h"
 
-typedef struct llrb_link tree_link;
+typedef struct llrblink tree_link;
 #define tree_insert llrb_insert
 #define tree_insert_s llrb_insert_s
 #define tree_insert_v llrb_insert_v

@@ -252,7 +252,7 @@ extern inline void block_com_merge(struct block_c* pstart, struct block_c* pend)
  * block_c_pool defines this kind of buff, see heap_llrb or heap_buddy for details */
 #include <util/list_link.h>
 struct block_c_pool {
-	struct list_link link;
+	struct listlink link;
 
 	void*            memory;
 	int              size;

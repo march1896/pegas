@@ -16,24 +16,24 @@ void heap_wrap_deinit(struct heap_wrap* h) {
 
 #ifndef _VERBOSE_ALLOC_DEALLOC_
 void* heap_wrap_alloc_c(struct heap_wrap* h, int size) {
-	int __size = size + sizeof(struct list_link);
+	int __size = size + sizeof(struct listlink);
 	void* buff = alloc(h->__parent_alloc, h->__parent, size);
 
 	dbg_assert(buff != NULL);
 	/* link the allocated block in to list */
 	{
-		struct list_link* n_link = (struct list_link*)buff;
+		struct listlink* n_link = (struct listlink*)buff;
 		list_insert_back(&h->allocated, n_link);
 	}
 
 	/* return the 'real' address */
-	return (char*)buff + sizeof(struct list_link);
+	return (char*)buff + sizeof(struct listlink);
 }
 
 bool  heap_wrap_dealloc_c(struct heap_wrap* h, void* buff) {
 	/* first get the real address of the block */
-	void* real_addr = (char*)buff - sizeof(struct list_link);
-	struct list_link* link = (struct list_link*)real_addr;
+	void* real_addr = (char*)buff - sizeof(struct listlink);
+	struct listlink* link = (struct listlink*)real_addr;
 
 	/* remove it from the allocated list */
 	list_remove(&h->allocated, link);
@@ -47,27 +47,27 @@ bool  heap_wrap_dealloc_c(struct heap_wrap* h, void* buff) {
 #else /* #defined _VERBOSE_ALLOC_DEALLOC_ */
 
 void* heap_wrap_alloc_v(struct heap_wrap* h, int size, const char* file ,int line) {
-	int __size = size + sizeof(struct list_link);
+	int __size = size + sizeof(struct listlink);
 	//void* buff = alloc(h->__alloc, h->__parent, __size);
 	void* buff = h->__parent_alloc(h->__parent, __size, file, line);
 
 	dbg_assert(buff != NULL);
 	/* link the allocated block in to list */
 	{
-		struct list_link* n_link = (struct list_link*)buff;
+		struct listlink* n_link = (struct listlink*)buff;
 		list_insert_back(&h->allocated, n_link);
 	}
 
 	/* return the 'real' address */
-	buff = (void*)((char*)buff + sizeof(struct list_link));
+	buff = (void*)((char*)buff + sizeof(struct listlink));
 	return buff;
 }
 
 
 bool  heap_wrap_dealloc_v(struct heap_wrap* h, void* buff, const char* file, int line) {
 	/* first get the real address of the block */
-	void* real_addr = (char*)buff - sizeof(struct list_link);
-	struct list_link* link = (struct list_link*)real_addr;
+	void* real_addr = (char*)buff - sizeof(struct listlink);
+	struct listlink* link = (struct listlink*)real_addr;
 
 	/* remove it from the allocated list */
 	list_remove(&h->allocated, link);

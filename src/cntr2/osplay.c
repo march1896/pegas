@@ -19,7 +19,7 @@ enum splay_interfaces {
 };
 
 struct osplay_node {
-	struct splay_link             link;
+	struct splaylink             link;
 
 	unknown                       reference;
 };
@@ -35,7 +35,7 @@ struct osplay_itr {
 	 * alloc the memory, but we should know how to delete this memory */
 	allocator                     allocator;
 
-	struct splay_link*            current;
+	struct splaylink*            current;
 };
 
 /* binary search tree */
@@ -46,9 +46,9 @@ struct osplay {
 	struct base_interface         __iftable[e_l_count];
 
 	/* just a sentinel to represent the end of the tree, the maximum element of the tree */
-	struct splay_link             sentinel;
+	struct splaylink             sentinel;
 	/* __root == __sentinel.left */
-	struct splay_link*            root;
+	struct splaylink*            root;
 
 	int                           size;
 
@@ -268,7 +268,7 @@ static unknown osplay_itr_cast(unknown x, unique_id inf_id) {
 	return NULL;
 }
 
-static int osplay_splaylink_compare(const struct splay_link* a, const struct splay_link* b, void* param) {
+static int osplay_splaylink_compare(const struct splaylink* a, const struct splaylink* b, void* param) {
 	pf_ref_compare ref_comp = (pf_ref_compare)param;
 
 	struct osplay_node* node_a = container_of(a, struct osplay_node, link);
@@ -363,8 +363,8 @@ hashcode splayset_hashcode(const_object o) {
 	return (hashcode)NULL;
 }
 
-typedef void (*pf_per_link_operation)(struct splay_link* link, void* param);
-static void splay_traverse(struct splay_link* cur, pf_per_link_operation cb, void* param) {
+typedef void (*pf_per_link_operation)(struct splaylink* link, void* param);
+static void splay_traverse(struct splaylink* cur, pf_per_link_operation cb, void* param) {
 	if (cur == NULL) return;
 
 	splay_traverse(cur->left, cb, param);
@@ -387,7 +387,7 @@ static inline void osplay_attach_sentinel(struct osplay* osplay) {
 		osplay->root->parent = &osplay->sentinel;
 }
 
-static void splaylink_dispose(struct splay_link* link, void* param) {
+static void splaylink_dispose(struct splaylink* link, void* param) {
 	struct osplay_node* node = container_of(link, struct osplay_node, link);
 	struct osplay* osplay = (struct osplay*)param;
 
@@ -496,10 +496,10 @@ void splayset_itr_assign(const_object o, iterator itr, itr_pos pos) {
 struct direct_s {
 	pf_ref_compare  comp;
 	const_unknown   target;
-	const struct splay_link* candidate; /* only useful for multiple instances */
+	const struct splaylink* candidate; /* only useful for multiple instances */
 };
 
-static int osplay_direct(const struct splay_link* link, void* param) {
+static int osplay_direct(const struct splaylink* link, void* param) {
 	struct osplay_node* node = container_of(link, struct osplay_node, link);
 	struct direct_s* dir    = (struct direct_s*)param;
 	int    compr            = 0;
@@ -514,7 +514,7 @@ static int osplay_direct(const struct splay_link* link, void* param) {
 		return -1;
 }
 
-static int osplay_direct_lower(const struct splay_link* link, void* param) {
+static int osplay_direct_lower(const struct splaylink* link, void* param) {
 	struct osplay_node* node = container_of(link, struct osplay_node, link);
 	struct direct_s* dir    = (struct direct_s*)param;
 	int    compr            = 0;
@@ -536,7 +536,7 @@ static int osplay_direct_lower(const struct splay_link* link, void* param) {
 	return 0;
 }
 
-static int osplay_direct_upper(const struct splay_link* link, void* param) {
+static int osplay_direct_upper(const struct splaylink* link, void* param) {
 	struct osplay_node* node = container_of(link, struct osplay_node, link);
 	struct direct_s* dir    = (struct direct_s*)param;
 	int    compr            = 0;
@@ -561,7 +561,7 @@ void splayset_itr_find_s(const_object o, iterator itr, const_unknown __ref) {
 	struct osplay* osplay    = (struct osplay*)o;
 	struct osplay_itr* oitr  = (struct osplay_itr*)itr;
 	struct direct_s   dir    = { osplay->content_traits.__compare_to, __ref, NULL };
-	struct splay_link* find_res = NULL; 
+	struct splaylink* find_res = NULL; 
 	
 	osplay_detach_sentinel(osplay);
 	find_res = splay_dynamic_search(&osplay->root, osplay_direct, &dir);
@@ -585,14 +585,14 @@ void splayset_itr_find_lower_m(const_object o, iterator itr, const_unknown __ref
 	struct osplay* osplay    = (struct osplay*)o;
 	struct osplay_itr* oitr  = (struct osplay_itr*)itr;
 	struct direct_s   dir    = { osplay->content_traits.__compare_to, __ref, NULL };
-	struct splay_link* link  = NULL;
+	struct splaylink* link  = NULL;
 
 	osplay_detach_sentinel(osplay);
 	link = splay_dynamic_search(&osplay->root, osplay_direct_lower, &dir);
 	osplay_attach_sentinel(osplay);
 
 	dbg_assert(link == NULL); /* we will always direct down */
-	link = (struct splay_link*)dir.candidate;    /* the last candidate, the most closed to leaf one, is what we want */
+	link = (struct splaylink*)dir.candidate;    /* the last candidate, the most closed to leaf one, is what we want */
 
 	/* make sure the iterator type is right */
 	dbg_assert(itr->__iftable[itr_interface_iterator].__offset == (address)itr_interface_iterator);
@@ -610,14 +610,14 @@ void splayset_itr_find_upper_m(const_object o, iterator itr, const_unknown __ref
 	struct osplay* osplay    = (struct osplay*)o;
 	struct osplay_itr* oitr  = (struct osplay_itr*)itr;
 	struct direct_s   dir    = { osplay->content_traits.__compare_to, __ref, NULL };
-	struct splay_link* link  = NULL;
+	struct splaylink* link  = NULL;
 	
 	osplay_detach_sentinel(osplay);
 	link = splay_dynamic_search(&osplay->root, osplay_direct_upper, &dir);
 	osplay_attach_sentinel(osplay);
 
 	dbg_assert(link == NULL); /* we will always direct down */
-	link = (struct splay_link*)dir.candidate;
+	link = (struct splaylink*)dir.candidate;
 
 	/* make sure the iterator type is right */
 	dbg_assert(itr->__iftable[itr_interface_iterator].__offset == (address)itr_interface_iterator);
@@ -635,7 +635,7 @@ void splayset_insert_s(object o, const_unknown __ref) {
 	struct osplay* osplay    = (struct osplay*)o;
 	struct osplay_node* node = (struct osplay_node*)
 		allocator_alloc(osplay->allocator, sizeof(struct osplay_node));
-	struct splay_link* duplicated = NULL;
+	struct splaylink* duplicated = NULL;
 
 	/* just assign the reference, delay the clone operation if there is no duplicates */
 	node->reference = (unknown)__ref;
@@ -659,7 +659,7 @@ void splayset_replace_s(object o, const_unknown __ref) {
 	struct osplay* osplay    = (struct osplay*)o;
 	struct osplay_node* node = (struct osplay_node*)
 		allocator_alloc(osplay->allocator, sizeof(struct osplay_node));
-	struct splay_link* duplicated = NULL;
+	struct splaylink* duplicated = NULL;
 
 	node->reference = osplay->content_traits.__clone(__ref, (pf_alloc)allocator_acquire, osplay->allocator);
 
@@ -702,7 +702,7 @@ void splayset_insert_m(object o, const_unknown __ref) {
 bool splayset_contains(const_object o, const_unknown __ref) {
 	struct osplay* osplay   = (struct osplay*)o;
 	struct direct_s   dir   = { osplay->content_traits.__compare_to, __ref, NULL };
-	struct splay_link* link = NULL;
+	struct splaylink* link = NULL;
 	
 	osplay_detach_sentinel(osplay);
 	link = splay_dynamic_search(&osplay->root, osplay_direct, &dir);
@@ -718,7 +718,7 @@ bool splayset_contains(const_object o, const_unknown __ref) {
 int splayset_count_m(const_object o, const_unknown __ref) {
 	struct osplay*     osplay   = (struct osplay*)o;
 	struct direct_s   dir       = { osplay->content_traits.__compare_to, __ref, NULL };
-	const struct splay_link* lb = NULL;
+	const struct splaylink* lb = NULL;
 	
 	osplay_detach_sentinel(osplay);
 	lb = splay_dynamic_search(&osplay->root, osplay_direct_lower, &dir);
@@ -728,7 +728,7 @@ int splayset_count_m(const_object o, const_unknown __ref) {
 	lb = (dir.candidate);
 	dir.candidate = NULL;
 	if (lb != NULL) {
-		const struct splay_link* ub = splay_search(osplay->root, osplay_direct_upper, &dir);
+		const struct splaylink* ub = splay_search(osplay->root, osplay_direct_upper, &dir);
 		int count = 0;
 
 		dbg_assert(ub == NULL);
@@ -751,7 +751,7 @@ int splayset_count_m(const_object o, const_unknown __ref) {
 bool splayset_remove_s(object o, const_unknown __ref) {
 	struct osplay* osplay   = (struct osplay*)o;
 	struct direct_s   dir   = { osplay->content_traits.__compare_to, __ref, NULL };
-	struct splay_link* link = NULL;
+	struct splaylink* link = NULL;
 	
 	osplay_detach_sentinel(osplay);
 	link = splay_dynamic_search(&osplay->root, osplay_direct, &dir);
@@ -779,7 +779,7 @@ bool splayset_remove_s(object o, const_unknown __ref) {
 int splayset_remove_m(object o, const_unknown __ref) {
 	struct osplay* osplay   = (struct osplay*)o;
 	struct direct_s   dir   = { osplay->content_traits.__compare_to, __ref, NULL };
-	struct splay_link* link = NULL;
+	struct splaylink* link = NULL;
 	int count = 0;
 
 	osplay_detach_sentinel(osplay);

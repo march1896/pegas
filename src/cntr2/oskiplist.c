@@ -29,7 +29,7 @@ struct oslist_itr {
 	 * alloc the memory, but we should know how to delete this memory */
 	allocator                     allocator;
 
-	const struct skip_link*       current;
+	const struct skiplink*       current;
 };
 
 /* binary search tree */
@@ -178,7 +178,7 @@ static hashcode oslist_itr_hashcode(const_iterator itr) {
 
 static const void* oslist_itr_get_ref(const_iterator citr) {
 	const struct oslist_itr* itr = (const struct oslist_itr*)citr;
-	const struct skip_link* link    = itr->current;
+	const struct skiplink* link    = itr->current;
 
 	dbg_assert(itr->__cast == oslist_itr_cast);
 	dbg_assert(itr->current != NULL);
@@ -427,7 +427,7 @@ void oslist_itr_assign(const_object o, iterator itr, itr_pos pos) {
 void oslist_itr_find(const_object o, iterator itr, const void* __ref) {
 	struct oslist* olist      = (struct oslist*)o;
 	struct oslist_itr* oitr   = (struct oslist_itr*)itr;
-	const struct skip_link* link = NULL;
+	const struct skiplink* link = NULL;
 
 	link = skiplist_search(olist->driver_skiplist, __ref);
 
@@ -441,7 +441,7 @@ void oslist_itr_find(const_object o, iterator itr, const void* __ref) {
 void oslist_itr_find_lower(const_object o, iterator itr, const void* __ref) {
 	struct oslist* oskiplist = (struct oslist*)o;
 	struct oslist_itr* oitr  = (struct oslist_itr*)itr;
-	const struct skip_link* link = NULL;
+	const struct skiplink* link = NULL;
 
 	link = skiplist_search_v(oskiplist->driver_skiplist, __ref, skiplist_min_greaterorequal);
 
@@ -455,7 +455,7 @@ void oslist_itr_find_lower(const_object o, iterator itr, const void* __ref) {
 void oslist_itr_find_upper(const_object o, iterator itr, const void* __ref) {
 	struct oslist* oskiplist = (struct oslist*)o;
 	struct oslist_itr* oitr  = (struct oslist_itr*)itr;
-	const struct skip_link* link = NULL;
+	const struct skiplink* link = NULL;
 
 	link = skiplist_search_v(oskiplist->driver_skiplist, __ref, skiplist_min_greater);
 
@@ -509,8 +509,8 @@ bool oslist_contains(const_object o, const_unknown __ref) {
 
 int oslist_count(const_object o, const void* __ref) {
 	struct oslist* oskiplist = (struct oslist*)o;
-	const struct skip_link* lb = skiplist_search_v(oskiplist->driver_skiplist, __ref, skiplist_min_greaterorequal);
-	const struct skip_link* ub = skiplist_search_v(oskiplist->driver_skiplist, __ref, skiplist_min_greater);
+	const struct skiplink* lb = skiplist_search_v(oskiplist->driver_skiplist, __ref, skiplist_min_greaterorequal);
+	const struct skiplink* ub = skiplist_search_v(oskiplist->driver_skiplist, __ref, skiplist_min_greater);
 	int count = 0;
 	
 	while (lb != ub) {
@@ -523,7 +523,7 @@ int oslist_count(const_object o, const void* __ref) {
 
 bool oslist_remove_s(object o, const_unknown __ref) {
 	struct oslist* oskiplist   = (struct oslist*)o;
-	struct skip_link* slink = (struct skip_link*)skiplist_search(oskiplist->driver_skiplist, __ref);
+	struct skiplink* slink = (struct skiplink*)skiplist_search(oskiplist->driver_skiplist, __ref);
 
 	if (slink != skiplist_sent(oskiplist->driver_skiplist)) {
 		dbg_assert(oskiplist->content_traits.__compare_to(__ref, skip_link_getref(slink)) == 0);
@@ -538,12 +538,12 @@ bool oslist_remove_s(object o, const_unknown __ref) {
 
 int oslist_remove_m(object o, const_unknown __ref) {
 	struct oslist* oskiplist = (struct oslist*)o;
-	const struct skip_link* lb = skiplist_search_v(oskiplist->driver_skiplist, __ref, skiplist_min_greaterorequal);
-	const struct skip_link* ub = skiplist_search_v(oskiplist->driver_skiplist, __ref, skiplist_min_greater);
+	const struct skiplink* lb = skiplist_search_v(oskiplist->driver_skiplist, __ref, skiplist_min_greaterorequal);
+	const struct skiplink* ub = skiplist_search_v(oskiplist->driver_skiplist, __ref, skiplist_min_greater);
 	int count = 0;
 
 	while (lb != ub) {
-		struct skip_link* cur = (struct skip_link*)lb;
+		struct skiplink* cur = (struct skiplink*)lb;
 		lb = skip_link_next(lb);
 		oskiplist->content_traits.__destroy(skip_link_getref(cur), (pf_dealloc)allocator_release, oskiplist->allocator);
 		skiplist_remove_link(oskiplist->driver_skiplist, cur);
@@ -558,7 +558,7 @@ int oslist_remove_m(object o, const_unknown __ref) {
 void oslist_itr_remove(object o, iterator itr) {
 	struct oslist* oskiplist = (struct oslist*)o;
 	struct oslist_itr* oitr  = (struct oslist_itr*)itr;
-	struct skip_link* link      = (struct skip_link*)oitr->current;
+	struct skiplink* link      = (struct skiplink*)oitr->current;
 	const void* obj_ref         = skip_link_getref(link);
 
 	dbg_assert(oitr->__cast == oslist_itr_cast);

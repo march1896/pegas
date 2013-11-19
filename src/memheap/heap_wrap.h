@@ -21,7 +21,7 @@ typedef bool (*pf_dealloc_v)  (void* pheap, void* buff, const char* file, int li
 
 /* heap_wrap_node describes an allocated block */
 struct heap_wrap_node {
-	struct list_link link;
+	struct listlink link;
 
 	void*            rel_addr;
 };
@@ -31,7 +31,7 @@ struct heap_wrap {
 	pf_alloc         __parent_alloc;
 	pf_dealloc       __parent_dealloc;
 
-	struct list_link allocated;
+	struct listlink allocated;
 };
 
 /* define the functions inside the macro make us available keep the file/line information 

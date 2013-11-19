@@ -19,7 +19,7 @@ enum llrb_interfaces {
 };
 
 struct ollrb_node {
-	struct llrb_link              link;
+	struct llrblink              link;
 
 	unknown                       reference;
 };
@@ -36,7 +36,7 @@ struct ollrb_itr {
 	 * alloc the memory, but we should know how to delete this memory */
 	allocator                     allocator;
 
-	struct llrb_link*             current;
+	struct llrblink*             current;
 };
 
 /* binary search tree */
@@ -47,9 +47,9 @@ struct ollrb {
 	struct base_interface         __iftable[e_l_count];
 
 	/* just a sentinel to represent the end of the tree, the maximum element of the tree */
-	struct llrb_link              sentinel;
+	struct llrblink              sentinel;
 	/* __root == __sentinel.left */
-	struct llrb_link*             root;
+	struct llrblink*             root;
 
 	int                           size;
 
@@ -272,7 +272,7 @@ static unknown ollrb_itr_cast(unknown x, unique_id inf_id) {
 }
 
 /* the llrb compare context is a pf_ref_compare function pointer */
-static int ollrb_llrblink_compare(const struct llrb_link* a, const struct llrb_link* b, void* param) {
+static int ollrb_llrblink_compare(const struct llrblink* a, const struct llrblink* b, void* param) {
 	pf_ref_compare ref_comp = (pf_ref_compare)param;
 
 	struct ollrb_node* node_a = container_of(a, struct ollrb_node, link);
@@ -367,8 +367,8 @@ hashcode ollrb_hashcode(const_object o) {
 	return (hashcode)NULL;
 }
 
-typedef void (*pf_per_link_operation)(struct llrb_link* link, void* param);
-static void llrb_traverse(struct llrb_link* cur, pf_per_link_operation cb, void* param) {
+typedef void (*pf_per_link_operation)(struct llrblink* link, void* param);
+static void llrb_traverse(struct llrblink* cur, pf_per_link_operation cb, void* param) {
 	if (cur == NULL) return;
 
 	llrb_traverse(cur->left, cb, param);
@@ -384,7 +384,7 @@ static inline void ollrb_reassociate(struct ollrb* ollrb) {
 		ollrb->root->parent = &ollrb->sentinel;
 }
 
-static void ollrblink_dispose(struct llrb_link* link, void* param) {
+static void ollrblink_dispose(struct llrblink* link, void* param) {
 	struct ollrb_node* node = container_of(link, struct ollrb_node, link);
 	struct ollrb* ollrb     = (struct ollrb*)param;
 
@@ -496,10 +496,10 @@ void ollrb_itr_assign(const_object o, iterator itr, itr_pos pos) {
 struct direct_s {
 	pf_ref_compare   comp;
 	const_unknown    target;
-	const struct llrb_link* candidate; /* only useful for multiple instances */
+	const struct llrblink* candidate; /* only useful for multiple instances */
 };
 
-static int ollrb_direct(const struct llrb_link* link, void* param) {
+static int ollrb_direct(const struct llrblink* link, void* param) {
 	struct ollrb_node* node = container_of(link, struct ollrb_node, link);
 	struct direct_s* dir    = (struct direct_s*)param;
 	int    compr            = 0;
@@ -514,7 +514,7 @@ static int ollrb_direct(const struct llrb_link* link, void* param) {
 		return -1;
 }
 
-static int ollrb_direct_lower(const struct llrb_link* link, void* param) {
+static int ollrb_direct_lower(const struct llrblink* link, void* param) {
 	struct ollrb_node* node = container_of(link, struct ollrb_node, link);
 	struct direct_s* dir    = (struct direct_s*)param;
 	int    compr            = 0;
@@ -536,7 +536,7 @@ static int ollrb_direct_lower(const struct llrb_link* link, void* param) {
 	return 0;
 }
 
-static int ollrb_direct_upper(const struct llrb_link* link, void* param) {
+static int ollrb_direct_upper(const struct llrblink* link, void* param) {
 	struct ollrb_node* node = container_of(link, struct ollrb_node, link);
 	struct direct_s* dir    = (struct direct_s*)param;
 	int    compr            = 0;
@@ -561,7 +561,7 @@ void ollrb_itr_find(const_object o, iterator itr, const_unknown __ref) {
 	struct ollrb* ollrb     = (struct ollrb*)o;
 	struct ollrb_itr* oitr  = (struct ollrb_itr*)itr;
 	struct direct_s   dir   = { ollrb->content_traits.__compare_to, __ref, NULL };
-	struct llrb_link* link  = llrb_search(ollrb->sentinel.left, ollrb_direct, &dir);
+	struct llrblink* link  = llrb_search(ollrb->sentinel.left, ollrb_direct, &dir);
 
 	dbg_assert(dir.candidate == NULL);
 
@@ -581,10 +581,10 @@ void ollrb_itr_find_lower(const_object o, iterator itr, const_unknown __ref) {
 	struct ollrb* ollrb     = (struct ollrb*)o;
 	struct ollrb_itr* oitr  = (struct ollrb_itr*)itr;
 	struct direct_s   dir   = { ollrb->content_traits.__compare_to, __ref, NULL };
-	struct llrb_link* link  = llrb_search(ollrb->sentinel.left, ollrb_direct_lower, &dir);
+	struct llrblink* link  = llrb_search(ollrb->sentinel.left, ollrb_direct_lower, &dir);
 
 	dbg_assert(link == NULL); /* we will always direct down */
-	link = (struct llrb_link*)dir.candidate;    /* the last candidate, the most closed to leaf one, is what we want */
+	link = (struct llrblink*)dir.candidate;    /* the last candidate, the most closed to leaf one, is what we want */
 
 	/* make sure the iterator type is right */
 	dbg_assert(itr->__iftable[itr_interface_iterator].__offset == (address)itr_interface_iterator);
@@ -602,10 +602,10 @@ void ollrb_itr_find_upper(const_object o, iterator itr, const_unknown __ref) {
 	struct ollrb* ollrb     = (struct ollrb*)o;
 	struct ollrb_itr* oitr  = (struct ollrb_itr*)itr;
 	struct direct_s   dir   = { ollrb->content_traits.__compare_to, __ref, NULL };
-	struct llrb_link* link  = llrb_search(ollrb->sentinel.left, ollrb_direct_upper, &dir);
+	struct llrblink* link  = llrb_search(ollrb->sentinel.left, ollrb_direct_upper, &dir);
 
 	dbg_assert(link == NULL); /* we will always direct down */
-	link = (struct llrb_link*)dir.candidate;
+	link = (struct llrblink*)dir.candidate;
 
 	/* make sure the iterator type is right */
 	dbg_assert(itr->__iftable[itr_interface_iterator].__offset == (address)itr_interface_iterator);
@@ -623,7 +623,7 @@ void ollrb_insert_s(object o, const_unknown __ref) {
 	struct ollrb* ollrb     = (struct ollrb*)o;
 	struct ollrb_node* node = (struct ollrb_node*)
 		allocator_alloc(ollrb->allocator, sizeof(struct ollrb_node));
-	struct llrb_link* duplicated = NULL;
+	struct llrblink* duplicated = NULL;
 
 	/* just assign the reference, delay the clone operation if there is no duplicates */
 	node->reference = (unknown)__ref;
@@ -647,7 +647,7 @@ void ollrb_replace_s(object o, const_unknown __ref) {
 	struct ollrb* ollrb     = (struct ollrb*)o;
 	struct ollrb_node* node = (struct ollrb_node*)
 		allocator_alloc(ollrb->allocator, sizeof(struct ollrb_node));
-	struct llrb_link* duplicated = NULL;
+	struct llrblink* duplicated = NULL;
 
 	/* just assign the reference, delay the clone operation if there is no duplicates */
 	node->reference = ollrb->content_traits.__clone(__ref, (pf_alloc)allocator_acquire, ollrb->allocator);
@@ -689,7 +689,7 @@ void ollrb_insert_m(object o, const_unknown __ref) {
 bool ollrb_contains(const_object o, const_unknown __ref) {
 	struct ollrb* ollrb    = (struct ollrb*)o;
 	struct direct_s   dir  = { ollrb->content_traits.__compare_to, __ref, NULL };
-	struct llrb_link* link = llrb_search(ollrb->sentinel.left, ollrb_direct, &dir);
+	struct llrblink* link = llrb_search(ollrb->sentinel.left, ollrb_direct, &dir);
 
 	if (link != NULL) {
 		return true;
@@ -701,13 +701,13 @@ bool ollrb_contains(const_object o, const_unknown __ref) {
 int ollrb_count(const_object o, const_unknown __ref) {
 	struct ollrb*     ollrb    = (struct ollrb*)o;
 	struct direct_s   dir      = { ollrb->content_traits.__compare_to, __ref, NULL };
-	const struct llrb_link* lb = llrb_search(ollrb->sentinel.left, ollrb_direct_lower, &dir);
+	const struct llrblink* lb = llrb_search(ollrb->sentinel.left, ollrb_direct_lower, &dir);
 	dbg_assert(lb == NULL);
 	lb = (dir.candidate);
 
 	dir.candidate = NULL;
 	if (lb != NULL) {
-		const struct llrb_link* ub = llrb_search(ollrb->sentinel.left, ollrb_direct_upper, &dir);
+		const struct llrblink* ub = llrb_search(ollrb->sentinel.left, ollrb_direct_upper, &dir);
 		int count = 0;
 
 		dbg_assert(ub == NULL);
@@ -730,7 +730,7 @@ int ollrb_count(const_object o, const_unknown __ref) {
 bool ollrb_remove_s(object o, const_unknown __ref) {
 	struct ollrb* ollrb     = (struct ollrb*)o;
 	struct direct_s   dir   = { ollrb->content_traits.__compare_to, __ref, NULL };
-	struct llrb_link* link   = llrb_search(ollrb->sentinel.left, ollrb_direct, &dir);
+	struct llrblink* link   = llrb_search(ollrb->sentinel.left, ollrb_direct, &dir);
 
 	if (link != NULL) {
 		struct ollrb_node* node = container_of(link, struct ollrb_node, link);
@@ -756,7 +756,7 @@ bool ollrb_remove_s(object o, const_unknown __ref) {
 int ollrb_remove_m(object o, const_unknown __ref) {
 	struct ollrb* ollrb     = (struct ollrb*)o;
 	struct direct_s   dir   = { ollrb->content_traits.__compare_to, __ref, NULL };
-	struct llrb_link* link  = llrb_search(ollrb->sentinel.left, ollrb_direct, &dir);
+	struct llrblink* link  = llrb_search(ollrb->sentinel.left, ollrb_direct, &dir);
 	int count = 0;
 
 	while (link != NULL) {

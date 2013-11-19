@@ -16,7 +16,7 @@
 struct heap_llrb_block {
 	struct block_c     common;
 
-	struct llrb_link   link;
+	struct llrblink   link;
 };
 
 struct heap_llrb {
@@ -27,10 +27,10 @@ struct heap_llrb {
 	pf_dealloc         __parent_dealloc;
 
 	/* point to the single free list */
-	struct llrb_link*  llrb_root; 
+	struct llrblink*  llrb_root; 
 
 	/* this list holds a list of memory which is used by this heap */
-	struct list_link   memlist;
+	struct listlink   memlist;
 
 	unsigned int       split_threthhold;
 	unsigned int       expand_size;

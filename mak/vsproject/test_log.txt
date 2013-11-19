@@ -7928,3 +7928,337 @@
   0X04CA007016777216 bytes at ..\..\src\cntr2\oallocator.c 92
   0X06CB007016777216 bytes at ..\..\src\cntr2\oallocator.c 92
   [cntr2 all test ends, total time use 0.370000]
+  [util all test begins]
+    [llrb_link test begins]
+      [llrb link correctness test begins]
+        [insert   /remove correctness begins]
+        [insert   /remove correctness ends, total time use 0.101000]
+        [insert_s /remove correctness begins]
+        [insert_s /remove correctness ends, total time use 0.064000]
+        [insert_v /remove correctness begins]
+        [insert_v /remove correctness ends, total time use 0.109000]
+        [insert_sv/remove correctness begins]
+        [insert_sv/remove correctness ends, total time use 0.069000]
+        [search correctness begins]
+        [search correctness ends, total time use 0.024000]
+      [llrb link correctness test ends, total time use 0.450000]
+    [llrb_link test ends, total time use 0.466000]
+    [splay_link test begins]
+      [splay link correctness test begins]
+        [insert   /remove correctness begins]
+        [insert   /remove correctness ends, total time use 0.068000]
+        [insert_s /remove correctness begins]
+        [insert_s /remove correctness ends, total time use 0.049000]
+        [insert_v /remove correctness begins]
+        [insert_v /remove correctness ends, total time use 0.067000]
+        [insert_sv/remove correctness begins]
+        [insert_sv/remove correctness ends, total time use 0.051000]
+        [search correctness begins]
+  [util all test begins]
+    [llrb_link test begins]
+      [llrb link correctness test begins]
+        [insert   /remove correctness begins]
+        [insert   /remove correctness ends, total time use 0.101000]
+        [insert_s /remove correctness begins]
+        [insert_s /remove correctness ends, total time use 0.076000]
+        [insert_v /remove correctness begins]
+        [insert_v /remove correctness ends, total time use 0.110000]
+        [insert_sv/remove correctness begins]
+        [insert_sv/remove correctness ends, total time use 0.069000]
+        [search correctness begins]
+        [search correctness ends, total time use 0.024000]
+      [llrb link correctness test ends, total time use 0.457000]
+    [llrb_link test ends, total time use 0.465000]
+    [splay_link test begins]
+      [splay link correctness test begins]
+        [insert   /remove correctness begins]
+        [insert   /remove correctness ends, total time use 0.068000]
+        [insert_s /remove correctness begins]
+        [insert_s /remove correctness ends, total time use 0.051000]
+        [insert_v /remove correctness begins]
+        [insert_v /remove correctness ends, total time use 0.069000]
+        [insert_sv/remove correctness begins]
+        [insert_sv/remove correctness ends, total time use 0.051000]
+        [search correctness begins]
+        [search correctness ends, total time use 0.551000]
+      [splay link correctness test ends, total time use 1.029000]
+    [splay_link test ends, total time use 1.033000]
+    [skiplist test begins]
+      [skiplist correctness test begins]
+        [insert   /remove correctness begins]
+        [insert   /remove correctness ends, total time use 0.085000]
+        [insert_s /remove correctness begins]
+        [insert_s /remove correctness ends, total time use 0.093000]
+      [skiplist correctness test ends, total time use 0.188000]
+    [skiplist test ends, total time use 0.192000]
+  [util all test ends, total time use 1.698000]
+  [heap all test begins]
+    [heap_llrb test begins]
+      [heap_llrb correctness test begins]
+      [heap_llrb correctness test ends, total time use 4.150000]
+    [heap_llrb test ends, total time use 4.154000]
+    [heap_buddy test begins]
+      [heap_buddy correctness test begins]
+      [heap_buddy correctness test ends, total time use 4.274000]
+    [heap_buddy test ends, total time use 4.279000]
+    [heap_sysd test begins]
+      [heap_sysd correctness test begins]
+      [heap_sysd correctness test ends, total time use 9.075000]
+    [heap_sysd test ends, total time use 9.079000]
+    [heap_spool test begins]
+      [heap_spool correctness test begins]
+      [heap_spool correctness test ends, total time use 0.003000]
+    [heap_spool test ends, total time use 0.008000]
+    [heap_mpool test begins]
+      [heap_mpool correctness test begins]
+      [heap_mpool correctness test ends, total time use 0.006000]
+    [heap_mpool test ends, total time use 0.011000]
+  [heap all test ends, total time use 17.542000]
+  [cntr2 all test begins]
+    [allocator object test begins]
+      [allocator simple trace test begins]
+      0X033301B4      60 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      0X033302CE      90 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      two leak pointer expected
+      [allocator simple trace test ends, total time use 0.021000]
+      [allocator recursive spawn test begins]
+      before parent is joined
+      grand_father leak detect:
+      0X033300A0      24 bytes at ..\..\src\cntr2\oallocator.c 257
+      0X033300D0      32 bytes at ..\..\src\memheap\heap_factory.c 29
+      0X03330108      24 bytes at ..\..\src\cntr2\oallocator.c 257
+      0X03330138      32 bytes at ..\..\src\memheap\heap_factory.c 29
+      0X03330170      28 bytes at ..\..\src\memheap\heap_llrb.c 48
+      0X033301A4      28 bytes at ..\..\src\memheap\heap_llrb.c 48
+      0X033301D8      28 bytes at ..\..\src\memheap\heap_llrb.c 48
+      0X03B400A0 4194304 bytes at ..\..\src\memheap\heap_llrb.c 51
+      0X04B500A0 8388608 bytes at ..\..\src\memheap\heap_llrb.c 51
+      0X06B600A0 8388608 bytes at ..\..\src\memheap\heap_llrb.c 51
+      father leak detect:
+      0X03B400D0      24 bytes at ..\..\src\cntr2\oallocator.c 257
+      0X03B40100      32 bytes at ..\..\src\memheap\heap_factory.c 29
+      0X03B40138      24 bytes at ..\..\src\cntr2\oallocator.c 257
+      0X03B40168      32 bytes at ..\..\src\memheap\heap_factory.c 29
+      0X03B401A0      28 bytes at ..\..\src\memheap\heap_llrb.c 48
+      0X03B401D4      28 bytes at ..\..\src\memheap\heap_llrb.c 48
+      0X03B40208      16 bytes at ..\..\tests\cntr2\oallocator.test.c 82
+      0X04B500D0 4194304 bytes at ..\..\src\memheap\heap_llrb.c 51
+      0X06B600D0 4194304 bytes at ..\..\src\memheap\heap_llrb.c 51
+      uncle leak detect:
+      brother leak detect:
+      blade leak detect:
+      0X06B601F5      51 bytes at ..\..\tests\cntr2\oallocator.test.c 73
+      0X06B60295      71 bytes at ..\..\tests\cntr2\oallocator.test.c 73
+      after parent is joined
+      grand_father leak detect:
+      0X03330108      24 bytes at ..\..\src\cntr2\oallocator.c 257
+      0X03330138      32 bytes at ..\..\src\memheap\heap_factory.c 29
+      uncle leak detect:
+      [allocator recursive spawn test ends, total time use 0.209000]
+    [allocator object test ends, total time use 0.237000]
+    [dlist object test begins]
+      [cntr cntr_base correctness begins]
+      [cntr cntr_base correctness ends, total time use 0.002000]
+    [dlist object test ends, total time use 0.006000]
+    [ollrb object test begins]
+      [cntr_llrb correctness begins]
+        [ollrb as set basic test begins]
+        [ollrb as set basic test ends, total time use 0.003000]
+        [ollrb as mset basic test begins]
+        [ollrb as mset basic test ends, total time use 0.002000]
+      [cntr_llrb correctness ends, total time use 0.011000]
+    [ollrb object test ends, total time use 0.015000]
+    [osplay object test begins]
+      [cntr_splay correctness begins]
+        [osplay as set basic test begins]
+        [osplay as set basic test ends, total time use 0.002000]
+        [osplay as mset basic test begins]
+        [osplay as mset basic test ends, total time use 0.002000]
+      [cntr_splay correctness ends, total time use 0.010000]
+    [osplay object test ends, total time use 0.014000]
+    [oskiplist object test begins]
+      [cntr_skiplist correctness begins]
+        [oskiplist as set basic test begins]
+        [oskiplist as set basic test ends, total time use 0.002000]
+        [oskiplist as mset basic test begins]
+        [oskiplist as mset basic test ends, total time use 0.003000]
+      [cntr_skiplist correctness ends, total time use 0.011000]
+    [oskiplist object test ends, total time use 0.015000]
+  0X01150070      24 bytes at ..\..\src\cntr2\oallocator.c 92
+  0X011500A0      32 bytes at ..\..\src\cntr2\oallocator.c 92
+  0X011500D8      28 bytes at ..\..\src\cntr2\oallocator.c 92
+  0X03330070 4194304 bytes at ..\..\src\cntr2\oallocator.c 92
+  0X03730088      28 bytes at ..\..\src\cntr2\oallocator.c 92
+  0X037300BC      28 bytes at ..\..\src\cntr2\oallocator.c 92
+  0X037300F0      28 bytes at ..\..\src\cntr2\oallocator.c 92
+  0X03B40070 8388608 bytes at ..\..\src\cntr2\oallocator.c 92
+  0X04B5007016777216 bytes at ..\..\src\cntr2\oallocator.c 92
+  0X06B6007016777216 bytes at ..\..\src\cntr2\oallocator.c 92
+  [cntr2 all test ends, total time use 0.372000]
+  [util all test begins]
+    [llrb_link test begins]
+      [llrb link correctness test begins]
+        [insert   /remove correctness begins]
+        [insert   /remove correctness ends, total time use 0.103000]
+        [insert_s /remove correctness begins]
+        [insert_s /remove correctness ends, total time use 0.068000]
+        [insert_v /remove correctness begins]
+        [insert_v /remove correctness ends, total time use 0.100000]
+        [insert_sv/remove correctness begins]
+        [insert_sv/remove correctness ends, total time use 0.067000]
+        [search correctness begins]
+        [search correctness ends, total time use 0.025000]
+      [llrb link correctness test ends, total time use 0.439000]
+    [llrb_link test ends, total time use 0.443000]
+    [splay_link test begins]
+      [splay link correctness test begins]
+        [insert   /remove correctness begins]
+        [insert   /remove correctness ends, total time use 0.074000]
+        [insert_s /remove correctness begins]
+        [insert_s /remove correctness ends, total time use 0.051000]
+        [insert_v /remove correctness begins]
+        [insert_v /remove correctness ends, total time use 0.069000]
+        [insert_sv/remove correctness begins]
+        [insert_sv/remove correctness ends, total time use 0.052000]
+        [search correctness begins]
+  [util all test begins]
+    [llrb_link test begins]
+      [llrb link correctness test begins]
+        [insert   /remove correctness begins]
+        [insert   /remove correctness ends, total time use 0.110000]
+        [insert_s /remove correctness begins]
+        [insert_s /remove correctness ends, total time use 0.064000]
+        [insert_v /remove correctness begins]
+        [insert_v /remove correctness ends, total time use 0.112000]
+        [insert_sv/remove correctness begins]
+        [insert_sv/remove correctness ends, total time use 0.067000]
+        [search correctness begins]
+        [search correctness ends, total time use 0.024000]
+      [llrb link correctness test ends, total time use 0.456000]
+    [llrb_link test ends, total time use 0.469000]
+    [splay_link test begins]
+      [splay link correctness test begins]
+        [insert   /remove correctness begins]
+        [insert   /remove correctness ends, total time use 0.068000]
+        [insert_s /remove correctness begins]
+        [insert_s /remove correctness ends, total time use 0.050000]
+        [insert_v /remove correctness begins]
+        [insert_v /remove correctness ends, total time use 0.068000]
+        [insert_sv/remove correctness begins]
+        [insert_sv/remove correctness ends, total time use 0.052000]
+        [search correctness begins]
+        [search correctness ends, total time use 0.559000]
+      [splay link correctness test ends, total time use 1.036000]
+    [splay_link test ends, total time use 1.041000]
+    [skiplist test begins]
+      [skiplist correctness test begins]
+        [insert   /remove correctness begins]
+        [insert   /remove correctness ends, total time use 0.086000]
+        [insert_s /remove correctness begins]
+        [insert_s /remove correctness ends, total time use 0.093000]
+      [skiplist correctness test ends, total time use 0.187000]
+    [skiplist test ends, total time use 0.191000]
+  [util all test ends, total time use 1.714000]
+  [heap all test begins]
+    [heap_llrb test begins]
+      [heap_llrb correctness test begins]
+      [heap_llrb correctness test ends, total time use 4.220000]
+    [heap_llrb test ends, total time use 4.224000]
+    [heap_buddy test begins]
+      [heap_buddy correctness test begins]
+      [heap_buddy correctness test ends, total time use 4.382000]
+    [heap_buddy test ends, total time use 4.387000]
+    [heap_sysd test begins]
+      [heap_sysd correctness test begins]
+      [heap_sysd correctness test ends, total time use 9.431000]
+    [heap_sysd test ends, total time use 9.434000]
+    [heap_spool test begins]
+      [heap_spool correctness test begins]
+      [heap_spool correctness test ends, total time use 0.002000]
+    [heap_spool test ends, total time use 0.007000]
+    [heap_mpool test begins]
+      [heap_mpool correctness test begins]
+      [heap_mpool correctness test ends, total time use 0.006000]
+    [heap_mpool test ends, total time use 0.010000]
+  [heap all test ends, total time use 18.076000]
+  [cntr2 all test begins]
+    [allocator object test begins]
+      [allocator simple trace test begins]
+      0X031A01B4      60 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      0X031A02CE      90 bytes at ..\..\tests\cntr2\oallocator.test.c 29
+      two leak pointer expected
+      [allocator simple trace test ends, total time use 0.024000]
+      [allocator recursive spawn test begins]
+      before parent is joined
+      grand_father leak detect:
+      0X031A00A0      24 bytes at ..\..\src\cntr2\oallocator.c 257
+      0X031A00D0      32 bytes at ..\..\src\memheap\heap_factory.c 29
+      0X031A0108      24 bytes at ..\..\src\cntr2\oallocator.c 257
+      0X031A0138      32 bytes at ..\..\src\memheap\heap_factory.c 29
+      0X031A0170      28 bytes at ..\..\src\memheap\heap_llrb.c 48
+      0X031A01A4      28 bytes at ..\..\src\memheap\heap_llrb.c 48
+      0X031A01D8      28 bytes at ..\..\src\memheap\heap_llrb.c 48
+      0X039B00A0 4194304 bytes at ..\..\src\memheap\heap_llrb.c 51
+      0X049C00A0 8388608 bytes at ..\..\src\memheap\heap_llrb.c 51
+      0X069D00A0 8388608 bytes at ..\..\src\memheap\heap_llrb.c 51
+      father leak detect:
+      0X039B00D0      24 bytes at ..\..\src\cntr2\oallocator.c 257
+      0X039B0100      32 bytes at ..\..\src\memheap\heap_factory.c 29
+      0X039B0138      24 bytes at ..\..\src\cntr2\oallocator.c 257
+      0X039B0168      32 bytes at ..\..\src\memheap\heap_factory.c 29
+      0X039B01A0      28 bytes at ..\..\src\memheap\heap_llrb.c 48
+      0X039B01D4      28 bytes at ..\..\src\memheap\heap_llrb.c 48
+      0X039B0208      16 bytes at ..\..\tests\cntr2\oallocator.test.c 82
+      0X049C00D0 4194304 bytes at ..\..\src\memheap\heap_llrb.c 51
+      0X069D00D0 4194304 bytes at ..\..\src\memheap\heap_llrb.c 51
+      uncle leak detect:
+      brother leak detect:
+      blade leak detect:
+      0X069D01F5      51 bytes at ..\..\tests\cntr2\oallocator.test.c 73
+      0X069D0295      71 bytes at ..\..\tests\cntr2\oallocator.test.c 73
+      after parent is joined
+      grand_father leak detect:
+      0X031A0108      24 bytes at ..\..\src\cntr2\oallocator.c 257
+      0X031A0138      32 bytes at ..\..\src\memheap\heap_factory.c 29
+      uncle leak detect:
+      [allocator recursive spawn test ends, total time use 0.208000]
+    [allocator object test ends, total time use 0.238000]
+    [dlist object test begins]
+      [cntr cntr_base correctness begins]
+      [cntr cntr_base correctness ends, total time use 0.002000]
+    [dlist object test ends, total time use 0.006000]
+    [ollrb object test begins]
+      [cntr_llrb correctness begins]
+        [ollrb as set basic test begins]
+        [ollrb as set basic test ends, total time use 0.002000]
+        [ollrb as mset basic test begins]
+        [ollrb as mset basic test ends, total time use 0.002000]
+      [cntr_llrb correctness ends, total time use 0.015000]
+    [ollrb object test ends, total time use 0.019000]
+    [osplay object test begins]
+      [cntr_splay correctness begins]
+        [osplay as set basic test begins]
+        [osplay as set basic test ends, total time use 0.002000]
+        [osplay as mset basic test begins]
+        [osplay as mset basic test ends, total time use 0.002000]
+      [cntr_splay correctness ends, total time use 0.010000]
+    [osplay object test ends, total time use 0.014000]
+    [oskiplist object test begins]
+      [cntr_skiplist correctness begins]
+        [oskiplist as set basic test begins]
+        [oskiplist as set basic test ends, total time use 0.002000]
+        [oskiplist as mset basic test begins]
+        [oskiplist as mset basic test ends, total time use 0.002000]
+      [cntr_skiplist correctness ends, total time use 0.013000]
+    [oskiplist object test ends, total time use 0.022000]
+  0X002F0070      24 bytes at ..\..\src\cntr2\oallocator.c 92
+  0X002F00A0      32 bytes at ..\..\src\cntr2\oallocator.c 92
+  0X002F00D8      28 bytes at ..\..\src\cntr2\oallocator.c 92
+  0X031A0070 4194304 bytes at ..\..\src\cntr2\oallocator.c 92
+  0X035A0088      28 bytes at ..\..\src\cntr2\oallocator.c 92
+  0X035A00BC      28 bytes at ..\..\src\cntr2\oallocator.c 92
+  0X035A00F0      28 bytes at ..\..\src\cntr2\oallocator.c 92
+  0X039B0070 8388608 bytes at ..\..\src\cntr2\oallocator.c 92
+  0X049C007016777216 bytes at ..\..\src\cntr2\oallocator.c 92
+  0X069D007016777216 bytes at ..\..\src\cntr2\oallocator.c 92
+  [cntr2 all test ends, total time use 0.389000]

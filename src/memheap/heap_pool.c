@@ -17,7 +17,7 @@ void  heap_spool_init(struct heap_spool* h, void* __parent, pf_alloc __alloc, pf
 }
 
 void heap_spool_deinit(struct heap_spool* h) {
-	struct list_link* itr = h->sentinel.next;
+	struct listlink* itr = h->sentinel.next;
 
 	/* return memory in the pool */
 	while (itr != &h->sentinel) {
@@ -48,9 +48,9 @@ void heap_spool_expand_memory(struct heap_spool* h) {
 #else 
 	int block_size = h->target_size;
 #endif
-	int expand_size = (1 << h->level) * block_size + sizeof(struct list_link);
+	int expand_size = (1 << h->level) * block_size + sizeof(struct listlink);
 	void* n_mem = alloc(h->__alloc, h->__parent, expand_size);
-	struct list_link* link = (struct list_link*)n_mem;
+	struct listlink* link = (struct listlink*)n_mem;
 	char* m_start = (char*)(link + 1);
 	char* m_end   = (char*)n_mem + expand_size;
 	char* m_last  = m_end - block_size;
@@ -105,11 +105,11 @@ bool heap_spool_dealloc_c(struct heap_spool* h, void* buff) {
 	
 #ifdef _HEAP_POOL_DEBUG_CHECK_
 	{
-		struct list_link* link = h->sentinel.next;
+		struct listlink* link = h->sentinel.next;
 		int level = h->start_level;
 		while (link != &h->sentinel) {
 			int block_size = h->target_size;
-			int mem_size = (1 << level) * block_size + sizeof(struct list_link);
+			int mem_size = (1 << level) * block_size + sizeof(struct listlink);
 			char* m_start = (char*)(link + 1);
 			char* m_last  = (char*)link + mem_size - block_size;
 			dbg_assert(m_last == m_start + (1 << level) * block_size - block_size);
@@ -168,11 +168,11 @@ bool heap_spool_dealloc_v(struct heap_spool* h, void* buff, const char* file, in
 
 #ifdef _HEAP_POOL_DEBUG_CHECK_
 	{
-		struct list_link* link = h->sentinel.next;
+		struct listlink* link = h->sentinel.next;
 		int level = h->start_level;
 		while (link != &h->sentinel) {
 			int block_size = sizeof(struct pool_block_header) + h->target_size;
-			int mem_size = (1 << level) * block_size + sizeof(struct list_link);
+			int mem_size = (1 << level) * block_size + sizeof(struct listlink);
 			char* m_start = (char*)(link + 1);
 			char* m_last  = (char*)link + mem_size - block_size;
 			dbg_assert(m_last == m_start + (1 << level) * block_size -block_size);
