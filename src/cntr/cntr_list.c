@@ -8,7 +8,7 @@
 #include <memheap/heap_global.h>
 
 typedef struct __open_link {
-	struct list_link link;
+	struct listlink link;
 
 	void* object;
 } object_link;
@@ -78,7 +78,7 @@ typedef struct __cntr_list {
 	int                         size;
 	unsigned int                flags;
 
-	struct list_link            sent; /* sentinel */
+	struct listlink            sent; /* sentinel */
 
 	pf_preremove_cb             prerm;  /* pre remove call back */
 } cntr_list;
@@ -128,8 +128,8 @@ static void cntr_list_destroy(cntr cl) {
 static void cntr_list_clear(cntr cl) {
 	cntr_list* pcl = (cntr_list*)cl;
 
-	struct list_link* sent = &pcl->sent;
-	struct list_link* next = sent->next;
+	struct listlink* sent = &pcl->sent;
+	struct listlink* next = sent->next;
 	
 	object_link* obj_link = NULL;
 
@@ -212,7 +212,7 @@ static void* cntr_list_remove_front(cntr cl) {
 	cntr_list* pcl = (cntr_list*)cl;
 
 	if (pcl->size > 0) {
-		struct list_link* node = NULL;
+		struct listlink* node = NULL;
 		object_link* obj_link  = NULL;
 		void* object           = NULL;
 
@@ -239,7 +239,7 @@ static void*  cntr_list_remove_back (cntr cl) {
 	cntr_list* pcl = (cntr_list*)cl;
 
 	if (pcl->size > 0) {
-		struct list_link* node = NULL;
+		struct listlink* node = NULL;
 		object_link* obj_link  = NULL;
 		void* object           = NULL;
 
@@ -267,7 +267,7 @@ static void*  cntr_list_remove_back (cntr cl) {
 /* TODO: should we care about the validity of the iterator, or just leave it to the client, i++, i-- */
 static void oplink_to_prev(citer itr) {
 	citer_base* cur = (citer_base*)itr;
-	struct list_link* link_cur = (struct list_link*)(cur->connection);
+	struct listlink* link_cur = (struct listlink*)(cur->connection);
 
 	dbg_assert(link_cur);
 	cur->connection = link_cur->prev;
@@ -275,7 +275,7 @@ static void oplink_to_prev(citer itr) {
 
 static void oplink_to_next(citer itr) {
 	citer_base* cur = (citer_base*)itr;
-	struct list_link* link_cur = (struct list_link*)(cur->connection);
+	struct listlink* link_cur = (struct listlink*)(cur->connection);
 
 	dbg_assert(link_cur);
 	cur->connection = link_cur->next;
@@ -283,7 +283,7 @@ static void oplink_to_next(citer itr) {
 
 static void* oplink_get_ref(citer itr) {
 	citer_base* cur = (citer_base*)itr;
-	struct list_link* link_cur = (struct list_link*)(cur->connection);
+	struct listlink* link_cur = (struct listlink*)(cur->connection);
 	object_link* obj_link = container_of(link_cur, object_link, link);
 
 	dbg_assert(obj_link);
@@ -292,7 +292,7 @@ static void* oplink_get_ref(citer itr) {
 
 static void oplink_set_ref(citer itr, void* n_ref) {
 	citer_base* cur = (citer_base*)itr;
-	struct list_link* link_cur = (struct list_link*)(cur->connection);
+	struct listlink* link_cur = (struct listlink*)(cur->connection);
 	object_link* obj_link = container_of(link_cur, object_link, link);
 
 	dbg_assert(obj_link);
@@ -342,7 +342,7 @@ static bool  cntr_list_find(cntr cl, void* object, citer itr) {
 	cntr_list* pcl = (cntr_list*)cl;
 	citer_base* ci = (citer_base*)itr;
 
-	struct list_link* node = (&pcl->sent)->next;
+	struct listlink* node = (&pcl->sent)->next;
 	object_link* obj_link  = NULL;
 
 	while (node != &pcl->sent) {
@@ -363,8 +363,8 @@ static bool  cntr_list_find(cntr cl, void* object, citer itr) {
 static void  cntr_list_remove(cntr cl, citer begin, citer end) {
 	cntr_list* pcl = (cntr_list*)cl;
 
-	struct list_link* lb = (struct list_link*)(((citer_base*)begin)->connection);
-	struct list_link* le = (struct list_link*)(((citer_base*)end)->connection);
+	struct listlink* lb = (struct listlink*)(((citer_base*)begin)->connection);
+	struct listlink* le = (struct listlink*)(((citer_base*)end)->connection);
 	object_link* obj_link = NULL;
 
 	int count = 0;

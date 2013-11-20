@@ -137,7 +137,7 @@ struct bst_link* bst_replace(struct bst_link* cur, struct bst_link* par) {
 	struct bst_link* replacement = NULL;
 
 	dbg_assert(par == NULL || 
-			   par != NULL && (par->left == cur || par->right == cur));
+			  (par != NULL && (par->left == cur || par->right == cur)));
 
 	if (cur == NULL) return NULL;
 

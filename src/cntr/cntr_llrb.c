@@ -47,11 +47,11 @@ static cntr_llrb_vtable cntr_llrb_ops = {
 };
 
 struct object_link {
-	struct llrb_link  link;
+	struct llrblink  link;
 	void*             object;
 };
 
-static void* object_from_llrb_link(const struct llrb_link* link) {
+static void* object_from_llrb_link(const struct llrblink* link) {
 	struct object_link* obj_link = container_of(link, struct object_link, link);
 
 	return obj_link->object;
@@ -62,7 +62,7 @@ typedef struct __cntr_llrb {
 
 	int                         size;
 	unsigned int                flags;
-	struct llrb_link*           root;
+	struct llrblink*           root;
 	pf_compare_object           comp;
 	pf_preremove_cb             prerm;
 } cntr_llrb;
@@ -77,7 +77,7 @@ static void cntr_llrb_init(cntr_llrb* pb, pf_preremove_cb rm, pf_compare_object 
 }
 
 /* Is the below functions needed, create method without compare function, the only reason is 
- * that they are compare by the llrb_link's address, which is supported by the llrb_link, at 
+ * that they are compare by the llrblink's address, which is supported by the llrblink, at 
  * least we should give comment on this TODO */
 cntr cntr_create_as_llrb() {
 	cntr_llrb* pb = (cntr_llrb*)malloc(sizeof(cntr_llrb));
@@ -121,7 +121,7 @@ static void  cntr_llrb_destroy(cntr c) {
 	free(c);
 }
 
-static void llrb_clear_traverse(struct llrb_link* link, pf_preremove_cb __remove) {
+static void llrb_clear_traverse(struct llrblink* link, pf_preremove_cb __remove) {
 	struct object_link* obj_link;
 
 	if (link == NULL) return;
@@ -154,7 +154,7 @@ static int   cntr_llrb_size(cntr c) {
 
 static pf_compare_object static_comp_func = NULL;
 
-static int llrb_compare_cb(const struct llrb_link* l, const struct llrb_link* r) {
+static int llrb_compare_cb(const struct llrblink* l, const struct llrblink* r) {
 	void* lo = object_from_llrb_link(l);
 	void* ro = object_from_llrb_link(r);
 
@@ -195,7 +195,7 @@ static citer_base_vtable citer_llrb_operations = {
 
 void cntr_llrb_remove_proc(citer itr, void* param) {
 	cntr_llrb* pb = (cntr_llrb*)param;
-	struct llrb_link* link = (struct llrb_link*)((citer_base*)itr)->connection;
+	struct llrblink* link = (struct llrblink*)((citer_base*)itr)->connection;
 	struct object_link* obj_link = container_of(link, struct object_link, link);
 
 	/* first pre remove the object */
@@ -224,7 +224,7 @@ static bool  cntr_llrb_find(cntr c, void* object, citer itr) {
 	cntr_llrb* pb = (cntr_llrb*)c;
 	citer_base* ci = (citer_base*)itr;
 
-	struct llrb_link* fwd = pb->root;
+	struct llrblink* fwd = pb->root;
 
 	while (fwd != NULL) {
 		int comp_res = pb->comp(object, object_from_llrb_link(fwd));
@@ -245,7 +245,7 @@ static bool  cntr_llrb_find(cntr c, void* object, citer itr) {
 
 static void citer_llrb_to_prev(citer itr) {
 	citer_base* cur = (citer_base*)itr;
-	struct llrb_link* link = (struct llrb_link*)(cur->connection);
+	struct llrblink* link = (struct llrblink*)(cur->connection);
 
 	dbg_assert(link);
 	cur->connection = llrb_predesessor(link, false);
@@ -253,7 +253,7 @@ static void citer_llrb_to_prev(citer itr) {
 
 static void citer_llrb_to_next(citer itr) {
 	citer_base* cur = (citer_base*)itr;
-	struct llrb_link* link = (struct llrb_link*)(cur->connection);
+	struct llrblink* link = (struct llrblink*)(cur->connection);
 
 	dbg_assert(link);
 	cur->connection = llrb_successor(link, false);
@@ -261,7 +261,7 @@ static void citer_llrb_to_next(citer itr) {
 
 static void* citer_llrb_get_ref(citer itr) {
 	citer_base* cur = (citer_base*)itr;
-	struct llrb_link* link = (struct llrb_link*)(cur->connection);
+	struct llrblink* link = (struct llrblink*)(cur->connection);
 
 	dbg_assert(link);
 	return object_from_llrb_link(link);
@@ -269,7 +269,7 @@ static void* citer_llrb_get_ref(citer itr) {
 
 static void citer_llrb_set_ref(citer itr, void* n_ref) {
 	citer_base* cur = (citer_base*)itr;
-	struct llrb_link* link = (struct llrb_link*)(cur->connection);
+	struct llrblink* link = (struct llrblink*)(cur->connection);
 	struct object_link* obj_link = container_of(link, struct object_link, link);
 
 	dbg_assert(obj_link != NULL);
