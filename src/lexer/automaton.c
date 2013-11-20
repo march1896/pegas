@@ -112,7 +112,7 @@ atm* atm_clone(atm* old_atm) {
 
 	iterator itr = ilist_itr_create(old_atm->states, itr_begin);
 	for (; itr != ilist_itr_end(old_atm->states); itr_to_next(itr)) {
-		atm_state* state = (atm_state*)itr_getvar(itr);
+		atm_state* state = (atm_state*)itr_get_obj(itr);
 		atm_state* n_state = atm_state_create(new_atm);
 		struct pair map_ele = {state, n_state};
 		iset_insert(states_map, &map_ele);

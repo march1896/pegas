@@ -117,8 +117,10 @@ static iterator ollrb_itr_clone(const_iterator citr);
 static bool ollrb_itr_equals(const_iterator itr, const_iterator other);
 static int ollrb_itr_compare_to(const_iterator itr, const_iterator other);
 static hashcode ollrb_itr_hashcode(const_iterator itr);
-static unknown ollrb_itr_get_ref(const_iterator citr);
-static void ollrb_itr_set_ref(iterator citr, const_unknown n_ref);
+static unknown ollrb_itr_get_obj(const_iterator citr);
+static void ollrb_itr_set_obj(iterator citr, const_unknown n_ref);
+static const_unknown ollrb_itr_get_ref(const_iterator citr);
+static void ollrb_itr_swap_ref(iterator citr, iterator other);
 static void ollrb_itr_to_next(iterator citr);
 static void ollrb_itr_to_prev(iterator citr);
 
@@ -131,8 +133,10 @@ static struct iobject_vtable __ollrb_itr_iobject_vtable = {
 };
 
 static struct itr_bidirectional_vtable __ollrb_itr_vtable = {
+	ollrb_itr_get_obj,      /* __get_obj */
 	ollrb_itr_get_ref,      /* __get_ref */
-	ollrb_itr_set_ref,      /* __set_ref */
+	ollrb_itr_set_obj,      /* __set_obj */
+	ollrb_itr_swap_ref,     /* __swap_ref */
 	ollrb_itr_to_next,      /* __to_next */
 	ollrb_itr_to_prev       /* __to_prev */
 };
@@ -190,7 +194,7 @@ hashcode ollrb_itr_hashcode(const_iterator itr) {
 	return 0;
 }
 
-static unknown ollrb_itr_get_ref(const_iterator citr) {
+static unknown ollrb_itr_get_obj(const_iterator citr) {
 	const struct ollrb_itr* itr   = (const struct ollrb_itr*)citr;
 	const struct ollrb_node* node = NULL;
 	struct ollrb* container = itr->container;
@@ -203,10 +207,33 @@ static unknown ollrb_itr_get_ref(const_iterator citr) {
 	return container->content_traits.__clone(node->reference, (pf_alloc)__global_default_alloc, __global_default_heap);
 }
 
-static void ollrb_itr_set_ref(iterator citr, const_unknown n_ref) {
+static void ollrb_itr_set_obj(iterator citr, const_unknown n_ref) {
 	/* llrb does not permit to set ref, which would destroy the inner data structure. */
 	unused(citr);
 	unused(n_ref);
+
+	rt_error("ollrb iterator is not accessible");
+
+	return;
+}
+
+static const_unknown ollrb_itr_get_ref(const_iterator citr) {
+	const struct ollrb_itr* itr   = (const struct ollrb_itr*)citr;
+	const struct ollrb_node* node = NULL;
+	struct ollrb* container = itr->container;
+
+	dbg_assert(itr->__cast == ollrb_itr_cast);
+	dbg_assert(itr->current != NULL);
+
+	node = container_of(itr->current, struct ollrb_node, link);
+
+	return node->reference;
+}
+
+static void ollrb_itr_swap_ref(iterator citr, iterator other) {
+	/* llrb does not permit to set ref, which would destroy the inner data structure. */
+	unused(citr);
+	unused(other);
 
 	rt_error("ollrb iterator is not accessible");
 

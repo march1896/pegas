@@ -22,9 +22,11 @@
  * It assumes that the algorithm will traverse from begin, and finally walks to end.
  */
 
-/* iterator should be at least forward able */
+/* iterator should be at least forward able.
+ * the callback will get a reference managed by the container internally, modify it on your own risk. */
 void foreach     (const_iterator begin, const_iterator end, pf_ref_visit cb);
-/* iterator should be at least forward able */
+/* iterator should be at least forward able.
+ * the callback will get a reference managed by the container internally, modify it on your own risk. */
 void foreach_v   (const_iterator begin, const_iterator end, pf_ref_visit_v cb, void* param);
 
 /* bidirectional iterator sort */

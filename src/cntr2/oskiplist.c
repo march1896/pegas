@@ -108,8 +108,10 @@ static iterator oslist_itr_clone(const_iterator citr);
 static bool oslist_itr_equals(const_iterator a, const_iterator b);
 static int oslist_itr_compare_to(const_iterator itr, const_iterator other);
 static hashcode oslist_itr_hashcode(const_iterator itr);
-static unknown oslist_itr_get_ref(const_iterator citr);
-static void oslist_itr_set_ref(iterator citr, const_unknown n_ref);
+static unknown oslist_itr_get_obj(const_iterator citr);
+static void oslist_itr_set_obj(iterator citr, const_unknown n_ref);
+static const_unknown oslist_itr_get_ref(const_iterator citr);
+static void oslist_itr_swap_ref(iterator citr, iterator other);
 static void oslist_itr_to_next(iterator citr);
 static void oslist_itr_to_prev(iterator citr);
 
@@ -122,8 +124,10 @@ static struct iobject_vtable __oslist_itr_iobject_vtable = {
 };
 
 static struct itr_bidirectional_vtable __oslist_itr_vtable = {
+	oslist_itr_get_obj,      /* __get_obj */
 	oslist_itr_get_ref,      /* __get_ref */
-	oslist_itr_set_ref,      /* __set_ref */
+	oslist_itr_set_obj,      /* __set_obj */
+	oslist_itr_swap_ref,     /* __swap_ref */
 	oslist_itr_to_next,      /* __to_next */
 	oslist_itr_to_prev       /* __to_prev */
 };
@@ -177,7 +181,7 @@ static hashcode oslist_itr_hashcode(const_iterator itr) {
 	return 0;
 }
 
-static unknown oslist_itr_get_ref(const_iterator citr) {
+static unknown oslist_itr_get_obj(const_iterator citr) {
 	const struct oslist_itr* itr = (const struct oslist_itr*)citr;
 	const struct skiplink* link    = itr->current;
 	struct oslist* container = itr->container;
@@ -188,10 +192,31 @@ static unknown oslist_itr_get_ref(const_iterator citr) {
 	return container->content_traits.__clone(skip_link_getref(link), (pf_alloc)__global_default_alloc, __global_default_heap);
 }
 
-static void oslist_itr_set_ref(iterator citr, const_unknown n_ref) {
+static void oslist_itr_set_obj(iterator citr, const_unknown n_ref) {
 	/* skiplist does not permit to set ref, which would destroy the inner data structure. */
 	unused(citr);
 	unused(n_ref);
+
+	rt_error("oskiplist iterator is not accessible");
+
+	return;
+}
+
+static const_unknown oslist_itr_get_ref(const_iterator citr) {
+	const struct oslist_itr* itr = (const struct oslist_itr*)citr;
+	const struct skiplink* link    = itr->current;
+	struct oslist* container = itr->container;
+
+	dbg_assert(itr->__cast == oslist_itr_cast);
+	dbg_assert(itr->current != NULL);
+
+	return skip_link_getref(link);
+}
+
+static void oslist_itr_swap_ref(iterator citr, iterator other) {
+	/* skiplist does not permit to set ref, which would destroy the inner data structure. */
+	unused(citr);
+	unused(other);
 
 	rt_error("oskiplist iterator is not accessible");
 

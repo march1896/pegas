@@ -61,7 +61,7 @@ static void mset_test_basic_itr_operation(object mset) {
 
 		/* traverse the mset */
 		for (; !itr_equals(itr, end); itr_to_next(itr)) {
-			x = (int*)itr_getvar(itr);
+			x = (int*)itr_get_obj(itr);
 			dbg_assert(*x == ((current+1)/2));
 			hfree(x);
 			current ++;
@@ -69,12 +69,12 @@ static void mset_test_basic_itr_operation(object mset) {
 
 		/* test itr_assign */
 		imset_itr_assign(mset, itr, itr_begin);
-		x = (int*)itr_getvar(itr);
+		x = (int*)itr_get_obj(itr);
 		dbg_assert(*x == 1);
 		hfree(x);
 		imset_itr_assign(mset, itr, itr_end);
 		itr_to_prev(itr);
-		x = (int*)itr_getvar(itr);
+		x = (int*)itr_get_obj(itr);
 		dbg_assert(*x == 4);
 		hfree(x);
 

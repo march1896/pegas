@@ -115,8 +115,10 @@ static iterator osplay_itr_clone(const_iterator citr);
 static bool osplay_itr_equals(const_iterator a, const_iterator b);
 static int osplay_itr_compare_to(const_iterator itr, const_iterator other);
 static hashcode osplay_itr_hashcode(const_iterator itr);
-static unknown osplay_itr_get_ref(const_iterator citr);
-static void osplay_itr_set_ref(iterator citr, const_unknown n_ref);
+static unknown osplay_itr_get_obj(const_iterator citr);
+static void osplay_itr_set_obj(iterator citr, const_unknown n_ref);
+static const_unknown osplay_itr_get_ref(const_iterator citr);
+static void osplay_itr_swap_ref(iterator citr, iterator other);
 static void osplay_itr_to_next(iterator citr);
 static void osplay_itr_to_prev(iterator citr);
 
@@ -130,8 +132,10 @@ static struct iobject_vtable __osplay_itr_iobject_vtable = {
 
 
 static struct itr_bidirectional_vtable __osplay_itr_vtable = {
+	osplay_itr_get_obj,      /* __get_obj */
 	osplay_itr_get_ref,      /* __get_ref */
-	osplay_itr_set_ref,      /* __set_ref */
+	osplay_itr_set_obj,      /* __set_obj */
+	osplay_itr_swap_ref,     /* __swap_ref */
 	osplay_itr_to_next,      /* __to_next */
 	osplay_itr_to_prev       /* __to_prev */
 };
@@ -185,7 +189,7 @@ static hashcode osplay_itr_hashcode(const_iterator itr) {
 	return 0;
 }
 
-static unknown osplay_itr_get_ref(const_iterator citr) {
+static unknown osplay_itr_get_obj(const_iterator citr) {
 	const struct osplay_itr* itr   = (const struct osplay_itr*)citr;
 	const struct osplay_node* node = NULL;
 	struct osplay* container = itr->container;
@@ -199,10 +203,33 @@ static unknown osplay_itr_get_ref(const_iterator citr) {
 	return container->content_traits.__clone(node->reference, (pf_alloc)__global_default_alloc, __global_default_heap);
 }
 
-static void osplay_itr_set_ref(iterator citr, const_unknown n_ref) {
+static void osplay_itr_set_obj(iterator citr, const_unknown n_ref) {
 	/* splay does not permit to set ref, which would destroy the inner data structure. */
 	unused(citr);
 	unused(n_ref);
+
+	rt_error("osplay iterator is not accessible");
+
+	return;
+}
+
+static const_unknown osplay_itr_get_ref(const_iterator citr) {
+	const struct osplay_itr* itr   = (const struct osplay_itr*)citr;
+	const struct osplay_node* node = NULL;
+	struct osplay* container = itr->container;
+
+	dbg_assert(itr->__cast == osplay_itr_cast);
+	dbg_assert(itr->current != NULL);
+
+	node = container_of(itr->current, struct osplay_node, link);
+
+	return node->reference;
+}
+
+static void osplay_itr_swap_ref(iterator citr, iterator other) {
+	/* splay does not permit to set ref, which would destroy the inner data structure. */
+	unused(citr);
+	unused(other);
 
 	rt_error("osplay iterator is not accessible");
 

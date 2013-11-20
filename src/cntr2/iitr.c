@@ -1,17 +1,31 @@
 #include <iitr.h>
 
-inline unknown itr_getvar(const_iterator itr) {
+inline unknown itr_get_obj(const_iterator itr) {
+	_interface intf = __fast_cast(itr, itr_interface_iterator);
+	dbg_assert(intf == __cast((unknown)itr, ITR_REF_ID));
+
+	return ((struct itr_readable_vtable*)(intf->__vtable))->__get_obj(itr);
+}
+
+inline void itr_set_obj(iterator itr, const_unknown __ref) {
+	_interface intf = __fast_cast(itr, itr_interface_iterator);
+	dbg_assert(intf == __cast(itr, ITR_ACC_ID));
+
+	((struct itr_accessible_vtable*)(intf->__vtable))->__set_obj(itr, __ref);
+}
+
+inline const_unknown itr_get_ref(const_iterator itr) {
 	_interface intf = __fast_cast(itr, itr_interface_iterator);
 	dbg_assert(intf == __cast((unknown)itr, ITR_REF_ID));
 
 	return ((struct itr_readable_vtable*)(intf->__vtable))->__get_ref(itr);
 }
 
-inline void itr_setvar(iterator itr, const_unknown __ref) {
+inline void itr_swap_ref(iterator itr, iterator other) {
 	_interface intf = __fast_cast(itr, itr_interface_iterator);
 	dbg_assert(intf == __cast(itr, ITR_ACC_ID));
 
-	((struct itr_accessible_vtable*)(intf->__vtable))->__set_ref(itr, __ref);
+	((struct itr_accessible_vtable*)(intf->__vtable))->__swap_ref(itr, other);
 }
 
 inline void itr_to_next(iterator itr) {

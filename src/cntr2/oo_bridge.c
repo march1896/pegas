@@ -33,18 +33,11 @@ unknown_traits pointer_traits = {
 };
 
 static unknown int_clone(const_unknown ref_x, pf_alloc alc, void* heap) {
-//  	if (sizeof(int) <= sizeof(unknown)) {
-//  		return (unknown)(*(int*)ref_x);
-//  	}
- 	
 	int* new_int = (int*)alloc(alc, heap, sizeof(int));
 	*new_int = *(int*)ref_x;
 	return new_int;
 }
 static void int_destroy(const_unknown ref_x, pf_dealloc dlc, void* heap) {
-//  	if (sizeof(int) <= sizeof(unknown))
-//  		return; 
-
 	dealloc(dlc, heap, (void*)ref_x);
 }
 static int int_compare_to(const_unknown ref_x, const_unknown ref_y) {

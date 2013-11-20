@@ -34,7 +34,7 @@ static void queue_test_basic_itr_operation(iqueue queue) {
 
 		/* traverse the queue */
 		for (; !itr_equals(itr, end); itr_to_next(itr)) {
-			x = (int*)itr_getvar(itr);
+			x = (int*)itr_get_obj(itr);
 			dbg_assert(*x == current);
 			hfree(x);
 			current ++;
@@ -42,12 +42,12 @@ static void queue_test_basic_itr_operation(iqueue queue) {
 
 		/* test itr_assign */
 		iqueue_itr_assign(queue, itr, itr_begin);
-		x = (int*)itr_getvar(itr);
+		x = (int*)itr_get_obj(itr);
 		dbg_assert(*x == 1);
 		hfree(x);
 		iqueue_itr_assign(queue, itr, itr_end);
 		itr_to_prev(itr);
-		x = (int*)itr_getvar(itr);
+		x = (int*)itr_get_obj(itr);
 		dbg_assert(*x == 4);
 		hfree(x);
 
@@ -91,7 +91,7 @@ static void queue_test_basic_itr_operation(iqueue queue) {
 
 		/* traverse the queue */
 		for (; !itr_equals(itr, end); itr_to_next(itr)) {
-			int* x = (int*)itr_getvar(itr);
+			int* x = (int*)itr_get_obj(itr);
 			dbg_assert(*x == 1);
 			hfree(x);
 		}

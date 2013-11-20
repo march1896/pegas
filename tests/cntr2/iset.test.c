@@ -38,7 +38,7 @@ static void set_test_basic_itr_operation(object set) {
 
 		/* traverse the set */
 		for (; !itr_equals(itr, end); itr_to_next(itr)) {
-			x = (int*)itr_getvar(itr);
+			x = (int*)itr_get_obj(itr);
 			dbg_assert(*x == current);
 			hfree(x);
 			current ++;
@@ -46,12 +46,12 @@ static void set_test_basic_itr_operation(object set) {
 
 		/* test itr_assign */
 		iset_itr_assign(set, itr, itr_begin);
-		x = (int*)itr_getvar(itr);
+		x = (int*)itr_get_obj(itr);
 		dbg_assert(*x == 1);
 		hfree(x);
 		iset_itr_assign(set, itr, itr_end);
 		itr_to_prev(itr);
-		x = (int*)itr_getvar(itr);
+		x = (int*)itr_get_obj(itr);
 		dbg_assert(*x == 8);
 		hfree(x);
 
