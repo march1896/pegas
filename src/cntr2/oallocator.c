@@ -14,47 +14,47 @@
  *****************************************************************************************/
 
 inline void  allocator_join     (allocator o) {
-	_interface intf = __fast_cast(o, 0);
+	_interface* intf = __fast_cast(o, 0);
 	dbg_assert(intf == __cast(o, IALLOCATOR_ID));
 
 	((struct allocator_vtable*)intf->__vtable)->__join(o);
 }
 #ifdef _VERBOSE_ALLOC_DEALLOC_
 inline void* allocator_acquire(allocator o, int size, const char* file, int line) {
-	_interface intf = __fast_cast(o, 0);
+	_interface* intf = __fast_cast(o, 0);
 	dbg_assert(intf == __cast(o, IALLOCATOR_ID));
 
 	return ((struct allocator_vtable*)intf->__vtable)->__acquire(o, size, file, line);
 }
 inline bool  allocator_release(allocator o, void* buff, const char* file, int line) {
-	_interface intf = __fast_cast(o, 0);
+	_interface* intf = __fast_cast(o, 0);
 	dbg_assert(intf == __cast(o, IALLOCATOR_ID));
 
 	return ((struct allocator_vtable*)intf->__vtable)->__release(o, buff, file, line);
 }
 #else 
 inline void* allocator_acquire(allocator o, int size) {
-	_interface intf = __fast_cast(o, 0);
+	_interface* intf = __fast_cast(o, 0);
 	dbg_assert(intf == __cast(o, IALLOCATOR_ID));
 
 	return ((struct allocator_vtable*)intf->__vtable)->__acquire(o, size);
 }
 inline bool  allocator_release(allocator o, void* buff) {
-	_interface intf = __fast_cast(o, 0);
+	_interface* intf = __fast_cast(o, 0);
 	dbg_assert(intf == __cast(o, IALLOCATOR_ID));
 
 	return ((struct allocator_vtable*)intf->__vtable)->__release(o, buff);
 }
 #endif
 inline allocator allocator_get_parent(allocator o) {
-	_interface intf = __fast_cast(o, 0);
+	_interface* intf = __fast_cast(o, 0);
 	dbg_assert(intf == __cast(o, IALLOCATOR_ID));
 
 	return ((struct allocator_vtable*)intf->__vtable)->__get_parent(o);
 }
 
 inline void allocator_walk(allocator o, pf_process_block per_block_cb, void* param) {
-	_interface intf = __fast_cast(o, 0);
+	_interface* intf = __fast_cast(o, 0);
 	dbg_assert(intf == __cast(o, IALLOCATOR_ID));
 
 	((struct allocator_vtable*)intf->__vtable)->__heap_walk(o, per_block_cb, param);
@@ -128,15 +128,15 @@ struct allocator_vtable __allocator_sysd_vtable = {
 	allocator_sysd_walk
 };
 
-static unknown allocator_sysd_cast(unknown x, unique_id intf_id);
-static unknown allocator_sysd_cast(unknown x, unique_id intf_id) {
+static unknown* allocator_sysd_cast(unknown* x, unique_id intf_id);
+static unknown* allocator_sysd_cast(unknown* x, unique_id intf_id) {
 	struct allocator_sysd* o = (struct allocator_sysd*)x;
 
 	dbg_assert(__is_object(x));
 
 	switch (intf_id) {
 	case IALLOCATOR_ID:
-		return (unknown)&o->__iftable[e_heap];
+		return (unknown*)&o->__iftable[e_heap];
 	default:
 		return NULL;
 	}
@@ -234,15 +234,15 @@ struct allocator_vtable __allocator_llrb_vtable = {
 	allocator_llrb_walk
 };
 
-static unknown allocator_llrb_cast(unknown x, unique_id intf_id);
-static unknown allocator_llrb_cast(unknown x, unique_id intf_id) {
+static unknown* allocator_llrb_cast(unknown* x, unique_id intf_id);
+static unknown* allocator_llrb_cast(unknown* x, unique_id intf_id) {
 	struct allocator_llrb* o = (struct allocator_llrb*)x;
 
 	dbg_assert(__is_object(x));
 
 	switch (intf_id) {
 	case IALLOCATOR_ID:
-		return (unknown)&o->__iftable[e_heap];
+		return (unknown*)&o->__iftable[e_heap];
 	default:
 		return NULL;
 	}
@@ -362,15 +362,15 @@ struct allocator_vtable __allocator_buddy_vtable = {
 	allocator_buddy_walk
 };
 
-static unknown allocator_buddy_cast(unknown x, unique_id intf_id);
-static unknown allocator_buddy_cast(unknown x, unique_id intf_id) {
+static unknown* allocator_buddy_cast(unknown* x, unique_id intf_id);
+static unknown* allocator_buddy_cast(unknown* x, unique_id intf_id) {
 	struct allocator_buddy* o = (struct allocator_buddy*)x;
 
 	dbg_assert(__is_object(x));
 
 	switch (intf_id) {
 	case IALLOCATOR_ID:
-		return (unknown)&o->__iftable[e_heap];
+		return (unknown*)&o->__iftable[e_heap];
 	default:
 		return NULL;
 	}
@@ -491,15 +491,15 @@ struct allocator_vtable __allocator_spool_vtable = {
 	allocator_spool_walk
 };
 
-static unknown allocator_spool_cast(unknown x, unique_id intf_id);
-static unknown allocator_spool_cast(unknown x, unique_id intf_id) {
+static unknown* allocator_spool_cast(unknown* x, unique_id intf_id);
+static unknown* allocator_spool_cast(unknown* x, unique_id intf_id) {
 	struct allocator_spool* o = (struct allocator_spool*)x;
 
 	dbg_assert(__is_object(x));
 
 	switch (intf_id) {
 	case IALLOCATOR_ID:
-		return (unknown)&o->__iftable[e_heap];
+		return (unknown*)&o->__iftable[e_heap];
 	default:
 		return NULL;
 	}
@@ -604,15 +604,15 @@ struct allocator_vtable __allocator_mpool_vtable = {
 	allocator_mpool_walk
 };
 
-static unknown allocator_mpool_cast(unknown x, unique_id intf_id);
-static unknown allocator_mpool_cast(unknown x, unique_id intf_id) {
+static unknown* allocator_mpool_cast(unknown* x, unique_id intf_id);
+static unknown* allocator_mpool_cast(unknown* x, unique_id intf_id) {
 	struct allocator_mpool* o = (struct allocator_mpool*)x;
 
 	dbg_assert(__is_object(x));
 
 	switch (intf_id) {
 	case IALLOCATOR_ID:
-		return (unknown)&o->__iftable[e_heap];
+		return (unknown*)&o->__iftable[e_heap];
 	default:
 		return NULL;
 	}

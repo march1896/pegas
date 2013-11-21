@@ -82,12 +82,6 @@
     <ClCompile Include="..\..\src\util\skiplist.c">
       <Filter>Source Files\util</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\lexer\automaton.c">
-      <Filter>Source Files\lexer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lexer\nfa.c">
-      <Filter>Source Files\lexer</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\cntr2\imap.c">
       <Filter>Source Files\cntr2</Filter>
     </ClCompile>

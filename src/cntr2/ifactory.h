@@ -14,30 +14,30 @@
 
 /* if create without allocator, it will use the global_default_allocator
  * if the alc == NULL, the create_a will create with a multi-poll allocator for best efficiency */
-object cntr_create_olist(unknown_traits content_traits);
-object cntr_create_olist_a(unknown_traits content_traits, allocator alc);
+Object* cntr_create_olist(unknown_traits content_traits);
+Object* cntr_create_olist_a(unknown_traits content_traits, allocator alc);
 
-object cntr_create_ollrb(unknown_traits content_traits);
-object cntr_create_ollrb_a(unknown_traits content_traits, allocator alc);
+Object* cntr_create_ollrb(unknown_traits content_traits);
+Object* cntr_create_ollrb_a(unknown_traits content_traits, allocator alc);
 
-object cntr_create_osplay(unknown_traits content_traits);
-object cntr_create_osplay_a(unknown_traits content_traits, allocator alc);
+Object* cntr_create_osplay(unknown_traits content_traits);
+Object* cntr_create_osplay_a(unknown_traits content_traits, allocator alc);
 
-object cntr_create_oskiplist(unknown_traits content_traits);
-object cntr_create_oskiplist_a(unknown_traits content_traits, allocator alc);
+Object* cntr_create_oskiplist(unknown_traits content_traits);
+Object* cntr_create_oskiplist_a(unknown_traits content_traits, allocator alc);
 
 struct pair {
 	const void* key;
 	void*       value;
 };
 
-object cntr_create_ordmap(pf_ref_compare key_compare);
+Object* cntr_create_ordmap(pf_ref_compare key_compare);
 enum ordmap_driver {
 	ordmap_by_llrb,
 	ordmap_by_splay,
 	ordmap_by_skiplist,
 	ordmap_driver_count
 };
-object cntr_create_ordmap_v(pf_ref_compare key_compare, allocator alc, enum ordmap_driver driver_type);
+Object* cntr_create_ordmap_v(pf_ref_compare key_compare, allocator alc, enum ordmap_driver driver_type);
 
 #endif /* _INTERFACE_FACTORY_H_ */

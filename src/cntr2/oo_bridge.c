@@ -1,14 +1,14 @@
 #include <cntr2/oo_bridge.h>
 #include <memheap/heap_def.h>
 
-static unknown pointer_clone(const_unknown ref_x, pf_alloc alc, void* heap) {
+static unknown *pointer_clone(const unknown* ref_x, pf_alloc alc, void* heap) {
 	/* just return the reference that ref_x points to */
-	return (unknown)ref_x;
+	return (unknown*)ref_x;
 }
-static void pointer_destroy(const_unknown ref_x, pf_dealloc dlc, void* heap) {
+static void pointer_destroy(const unknown* ref_x, pf_dealloc dlc, void* heap) {
 	/* no need to destroy */
 }
-static compres pointer_compare_to(const_unknown ref_x, const_unknown ref_y) {
+static compres pointer_compare_to(const unknown* ref_x, const unknown* ref_y) {
 	/* just use the address to compare */
 	if (ref_x < ref_y) 
 		return -1;
@@ -16,11 +16,11 @@ static compres pointer_compare_to(const_unknown ref_x, const_unknown ref_y) {
 		return 1;
 	return 0;
 }
-static bool pointer_equals(const_unknown ref_x, const_unknown ref_y) {
+static bool pointer_equals(const unknown* ref_x, const unknown* ref_y) {
 	/* just use the address to compare */
 	return ref_x == ref_y;
 }
-static hashcode pointer_hashcode(const_unknown ref_x) {
+static hashcode pointer_hashcode(const unknown* ref_x) {
 	// TODO
 	return (hashcode)ref_x;
 }
@@ -32,15 +32,15 @@ unknown_traits pointer_traits = {
 	pointer_hashcode
 };
 
-static unknown int_clone(const_unknown ref_x, pf_alloc alc, void* heap) {
+static unknown *int_clone(const unknown* ref_x, pf_alloc alc, void* heap) {
 	int* new_int = (int*)alloc(alc, heap, sizeof(int));
 	*new_int = *(int*)ref_x;
-	return new_int;
+	return (unknown*)new_int;
 }
-static void int_destroy(const_unknown ref_x, pf_dealloc dlc, void* heap) {
+static void int_destroy(const unknown* ref_x, pf_dealloc dlc, void* heap) {
 	dealloc(dlc, heap, (void*)ref_x);
 }
-static compres int_compare_to(const_unknown ref_x, const_unknown ref_y) {
+static compres int_compare_to(const unknown* ref_x, const unknown* ref_y) {
 	int x = *(int*)ref_x;
 	int y = *(int*)ref_y;
 
@@ -50,12 +50,12 @@ static compres int_compare_to(const_unknown ref_x, const_unknown ref_y) {
 		return 1;
 	return 0;
 }
-static bool int_equals(const_unknown ref_x, const_unknown ref_y) {
+static bool int_equals(const unknown* ref_x, const unknown* ref_y) {
 	int x = *(int*)ref_x;
 	int y = *(int*)ref_y;
 	return x == y;
 }
-static hashcode int_hashcode(const_unknown ref_x) {
+static hashcode int_hashcode(const unknown* ref_x) {
 	// TODO
 	return (hashcode)(*(int*)ref_x);
 }

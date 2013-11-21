@@ -10,7 +10,7 @@ void foreach(const_iterator begin, const_iterator end, pf_ref_visit cb) {
 	dbg_assert(is_itrfwd(end));
 
 	while (!itr_equals(itr, end)) {
-		const_unknown __ref = itr_get_ref(itr);
+		const unknown* __ref = itr_get_ref(itr);
 		cb(__ref);
 		itr_to_next(itr);
 	}
@@ -27,7 +27,7 @@ void foreach_v(const_iterator begin, const_iterator end, pf_ref_visit_v cb, void
 	dbg_assert(is_itrfwd(end));
 
 	while (!itr_equals(itr, end)) {
-		const_unknown __ref = itr_get_ref(itr);
+		const unknown* __ref = itr_get_ref(itr);
 		cb(__ref, param);
 		itr_to_next(itr);
 	}

@@ -22,7 +22,7 @@ enum splay_interfaces {
 struct osplay_node {
 	struct splaylink             link;
 
-	unknown                       reference;
+	unknown*                     reference;
 };
 
 struct osplay_itr {
@@ -107,17 +107,17 @@ static struct imset_vtable __osplay_imset_vtable = {
 	splayset_itr_end           /* __itr_end */
 };
 
-static unknown osplay_itr_cast(unknown x, unique_id inf_id);
-static unknown osplay_cast(unknown x, unique_id intf_id);
+static unknown* osplay_itr_cast(unknown* x, unique_id inf_id);
+static unknown* osplay_cast(unknown* x, unique_id intf_id);
 
 static void osplay_itr_destroy(iterator citr);
 static iterator osplay_itr_clone(const_iterator citr);
 static bool osplay_itr_equals(const_iterator a, const_iterator b);
 static int osplay_itr_compare_to(const_iterator itr, const_iterator other);
 static hashcode osplay_itr_hashcode(const_iterator itr);
-static unknown osplay_itr_get_obj(const_iterator citr);
-static void osplay_itr_set_obj(iterator citr, const_unknown n_ref);
-static const_unknown osplay_itr_get_ref(const_iterator citr);
+static unknown* osplay_itr_get_obj(const_iterator citr);
+static void osplay_itr_set_obj(iterator citr, const unknown* n_ref);
+static const unknown* osplay_itr_get_ref(const_iterator citr);
 static void osplay_itr_swap_ref(iterator citr, iterator other);
 static void osplay_itr_to_next(iterator citr);
 static void osplay_itr_to_prev(iterator citr);
@@ -141,7 +141,7 @@ static struct itr_bidirectional_vtable __osplay_itr_vtable = {
 };
 
 
-static void osplay_itr_destroy(object citr) {
+static void osplay_itr_destroy(Object* citr) {
 	struct osplay_itr* itr = (struct osplay_itr*)citr;
 
 	dbg_assert(__is_object(citr));
@@ -172,8 +172,8 @@ static bool osplay_itr_equals(const_iterator a, const_iterator b) {
 	const struct osplay_itr* itr_a = (const struct osplay_itr*)a;
 	const struct osplay_itr* itr_b = (const struct osplay_itr*)b;
 
-	dbg_assert(__is_object((unknown)a));
-	dbg_assert(__is_object((unknown)b));
+	dbg_assert(__is_object((unknown*)a));
+	dbg_assert(__is_object((unknown*)b));
 	dbg_assert(itr_a->__cast == osplay_itr_cast);
 	dbg_assert(itr_b->__cast == osplay_itr_cast);
 
@@ -189,7 +189,7 @@ static hashcode osplay_itr_hashcode(const_iterator itr) {
 	return 0;
 }
 
-static unknown osplay_itr_get_obj(const_iterator citr) {
+static unknown* osplay_itr_get_obj(const_iterator citr) {
 	const struct osplay_itr* itr   = (const struct osplay_itr*)citr;
 	const struct osplay_node* node = NULL;
 	struct osplay* container = itr->container;
@@ -203,7 +203,7 @@ static unknown osplay_itr_get_obj(const_iterator citr) {
 	return container->content_traits.__clone(node->reference, (pf_alloc)__global_default_alloc, __global_default_heap);
 }
 
-static void osplay_itr_set_obj(iterator citr, const_unknown n_ref) {
+static void osplay_itr_set_obj(iterator citr, const unknown* n_ref) {
 	/* splay does not permit to set ref, which would destroy the inner data structure. */
 	unused(citr);
 	unused(n_ref);
@@ -213,7 +213,7 @@ static void osplay_itr_set_obj(iterator citr, const_unknown n_ref) {
 	return;
 }
 
-static const_unknown osplay_itr_get_ref(const_iterator citr) {
+static const unknown* osplay_itr_get_ref(const_iterator citr) {
 	const struct osplay_itr* itr   = (const struct osplay_itr*)citr;
 	const struct osplay_node* node = NULL;
 	struct osplay* container = itr->container;
@@ -236,7 +236,7 @@ static void osplay_itr_swap_ref(iterator citr, iterator other) {
 	return;
 }
 
-static void osplay_itr_to_next(object citr) {
+static void osplay_itr_to_next(Object* citr) {
 	struct osplay_itr* itr = (struct osplay_itr*)citr;
 
 	dbg_assert(itr->__cast == osplay_itr_cast);
@@ -245,7 +245,7 @@ static void osplay_itr_to_next(object citr) {
 	itr->current = splay_successor(itr->current, false);
 }
 
-static void osplay_itr_to_prev(object citr) {
+static void osplay_itr_to_prev(Object* citr) {
 	struct osplay_itr* itr = (struct osplay_itr*)citr;
 
 	dbg_assert(itr->__cast == osplay_itr_cast);
@@ -254,20 +254,20 @@ static void osplay_itr_to_prev(object citr) {
 	itr->current = splay_predesessor(itr->current, false);
 }
 
-static unknown osplay_cast(unknown x, unique_id intf_id) {
+static unknown* osplay_cast(unknown* x, unique_id intf_id) {
 	struct osplay* o = (struct osplay*)x;
 
 	dbg_assert(__is_object(x));
 
 	switch (intf_id) {
 	case IOBJECT_ID:
-		return (unknown)&o->__iftable[e_object];
+		return (unknown*)&o->__iftable[e_object];
 		break;
 	case ISET_ID:
-		return (unknown)&o->__iftable[e_set];
+		return (unknown*)&o->__iftable[e_set];
 		break;
 	case IMSET_ID:
-		return (unknown)&o->__iftable[e_mset];
+		return (unknown*)&o->__iftable[e_mset];
 		break;
 	default:
 		break;
@@ -276,18 +276,18 @@ static unknown osplay_cast(unknown x, unique_id intf_id) {
 	return NULL;
 }
 
-static unknown osplay_itr_cast(unknown x, unique_id inf_id) {
+static unknown* osplay_itr_cast(unknown* x, unique_id inf_id) {
 	struct osplay_itr* itr = (struct osplay_itr*)x;
 
 	dbg_assert(__is_object(itr));
 
 	switch (inf_id) {
 	case IOBJECT_ID:
-		return (unknown)&itr->__iftable[itr_interface_iobject];
+		return (unknown*)&itr->__iftable[itr_interface_iobject];
 	case ITR_REF_ID:
 	case ITR_FWD_ID:
 	case ITR_BID_ID:
-		return (unknown)&itr->__iftable[itr_interface_iterator];
+		return (unknown*)&itr->__iftable[itr_interface_iterator];
 	case ITR_ACC_ID:
 		return NULL;
 	case ITR_RAC_ID:
@@ -309,7 +309,7 @@ static compres osplay_splaylink_compare(const struct splaylink* a, const struct 
 }
 
 static void osplay_itr_com_init(struct osplay_itr* itr, struct osplay* list);
-static object splayset_create_internal(unknown_traits content_traits, allocator alc) {
+static Object* splayset_create_internal(unknown_traits content_traits, allocator alc) {
 	struct osplay* osplay = NULL;
 	bool managed_allocator = false;
 
@@ -348,22 +348,22 @@ static object splayset_create_internal(unknown_traits content_traits, allocator 
 	osplay_itr_com_init(&osplay->itr_begin, osplay);
 	osplay_itr_com_init(&osplay->itr_end, osplay);
 
-	return (object)osplay;
+	return (Object*)osplay;
 }
 
-object splayset_create(unknown_traits content_traits, allocator alc) {
+Object* splayset_create(unknown_traits content_traits, allocator alc) {
 	return splayset_create_internal(content_traits, alc);
 }
 
 /* from ifactory.h  */
-object cntr_create_osplay(unknown_traits content_traits) {
+Object* cntr_create_osplay(unknown_traits content_traits) {
 	return splayset_create_internal(content_traits, __global_default_allocator);
 }
-object cntr_create_osplay_a(unknown_traits content_traits, allocator alc) {
+Object* cntr_create_osplay_a(unknown_traits content_traits, allocator alc) {
 	return splayset_create_internal(content_traits, alc);
 }
 
-void splayset_destroy(object o) {
+void splayset_destroy(Object* o) {
 	struct osplay* osplay = (struct osplay*)o;
 	allocator alc = osplay->allocator;
 	bool join_alc = osplay->allocator_join_ondispose;
@@ -377,19 +377,19 @@ void splayset_destroy(object o) {
 	}
 }
 
-object splayset_clone(const_object o) {
+Object* splayset_clone(const Object* o) {
 	// TODO
 	return NULL;
 }
-bool splayset_equals(const_object o, const_object other) {
+bool splayset_equals(const Object* o, const Object* other) {
 	// TODO
 	return false;
 }
-int splayset_compare_to(const_object o, const_object other) {
+int splayset_compare_to(const Object* o, const Object* other) {
 	// TODO
 	return 1;
 }
-hashcode splayset_hashcode(const_object o) {
+hashcode splayset_hashcode(const Object* o) {
 	// TODO
 	return (hashcode)NULL;
 }
@@ -427,7 +427,7 @@ static void splaylink_dispose(struct splaylink* link, void* param) {
 	/* delete the node it self */
 	allocator_dealloc(osplay->allocator, node);
 }
-void splayset_clear(object o) {
+void splayset_clear(Object* o) {
 	struct osplay* osplay = (struct osplay*)o;
 
 	splay_traverse(osplay->root, splaylink_dispose, (void*)osplay);
@@ -437,13 +437,13 @@ void splayset_clear(object o) {
 	osplay->size = 0;
 }
 
-int splayset_size(const_object o) {
+int splayset_size(const Object* o) {
 	struct osplay* osplay = (struct osplay*)o;
 
 	return osplay->size;
 }
 
-bool splayset_empty(const_object o) {
+bool splayset_empty(const Object* o) {
 	struct osplay* osplay = (struct osplay*)o;
 	return osplay->size == 0;
 }
@@ -454,16 +454,16 @@ static void osplay_itr_com_init(struct osplay_itr* itr, struct osplay* list) {
 	itr->__cast   = osplay_itr_cast;
 
 	itr->__iftable[itr_interface_iobject].__offset = (address)itr_interface_iobject;
-	itr->__iftable[itr_interface_iobject].__vtable = (unknown)&__osplay_itr_iobject_vtable;
+	itr->__iftable[itr_interface_iobject].__vtable = (unknown*)&__osplay_itr_iobject_vtable;
 	itr->__iftable[itr_interface_iterator].__offset = (address)itr_interface_iterator;
-	itr->__iftable[itr_interface_iterator].__vtable = (unknown)&__osplay_itr_vtable;
+	itr->__iftable[itr_interface_iterator].__vtable = (unknown*)&__osplay_itr_vtable;
 
 	itr->allocator = list->allocator;
 	itr->container = list;
 	/* itr->__current = NULL; */
 }
 
-const_iterator splayset_itr_begin(const_object o) {
+const_iterator splayset_itr_begin(const Object* o) {
 	struct osplay* osplay = (struct osplay*)o;
 
 	osplay->itr_begin.current = splay_min(osplay->root);
@@ -471,7 +471,7 @@ const_iterator splayset_itr_begin(const_object o) {
 	return (iterator)&osplay->itr_begin;
 }
 
-const_iterator splayset_itr_end(const_object o) {
+const_iterator splayset_itr_end(const Object* o) {
 	struct osplay* osplay = (struct osplay*)o;
 
 	osplay->itr_end.current = &osplay->sentinel;
@@ -479,7 +479,7 @@ const_iterator splayset_itr_end(const_object o) {
 	return (iterator)&osplay->itr_end;
 }
 
-iterator splayset_itr_create(const_object o, itr_pos pos) {
+iterator splayset_itr_create(const Object* o, itr_pos pos) {
 	struct osplay* osplay = (struct osplay*)o;
 	struct osplay_itr* n_itr = (struct osplay_itr*)
 		allocator_alloc(osplay->allocator, sizeof(struct osplay_itr));
@@ -500,10 +500,10 @@ iterator splayset_itr_create(const_object o, itr_pos pos) {
 		dbg_assert(false);
 	}
 	
-	return (object)n_itr;
+	return (Object*)n_itr;
 }
 
-void splayset_itr_assign(const_object o, iterator itr, itr_pos pos) {
+void splayset_itr_assign(const Object* o, iterator itr, itr_pos pos) {
 	struct osplay* osplay = (struct osplay*)o;
 	struct osplay_itr* n_itr = (struct osplay_itr*)itr;
 
@@ -527,7 +527,7 @@ void splayset_itr_assign(const_object o, iterator itr, itr_pos pos) {
 
 struct direct_s {
 	pf_ref_compare  comp;
-	const_unknown   target;
+	const unknown*   target;
 	const struct splaylink* candidate; /* only useful for multiple instances */
 };
 
@@ -589,7 +589,7 @@ static int osplay_direct_upper(const struct splaylink* link, void* param) {
 	return 0;
 }
 
-void splayset_itr_find_s(const_object o, iterator itr, const_unknown __ref) {
+void splayset_itr_find_s(const Object* o, iterator itr, const unknown* __ref) {
 	struct osplay* osplay    = (struct osplay*)o;
 	struct osplay_itr* oitr  = (struct osplay_itr*)itr;
 	struct direct_s   dir    = { osplay->content_traits.__compare_to, __ref, NULL };
@@ -603,7 +603,7 @@ void splayset_itr_find_s(const_object o, iterator itr, const_unknown __ref) {
 
 	/* make sure the iterator type is right */
 	dbg_assert(itr->__iftable[itr_interface_iterator].__offset == (address)itr_interface_iterator);
-	dbg_assert(itr->__iftable[itr_interface_iterator].__vtable == (unknown)&__osplay_itr_vtable);
+	dbg_assert(itr->__iftable[itr_interface_iterator].__vtable == (unknown*)&__osplay_itr_vtable);
 
 	if (find_res != NULL) {
 		oitr->current = find_res;
@@ -613,7 +613,7 @@ void splayset_itr_find_s(const_object o, iterator itr, const_unknown __ref) {
 	}
 }
 
-void splayset_itr_find_lower_m(const_object o, iterator itr, const_unknown __ref) {
+void splayset_itr_find_lower_m(const Object* o, iterator itr, const unknown* __ref) {
 	struct osplay* osplay    = (struct osplay*)o;
 	struct osplay_itr* oitr  = (struct osplay_itr*)itr;
 	struct direct_s   dir    = { osplay->content_traits.__compare_to, __ref, NULL };
@@ -628,7 +628,7 @@ void splayset_itr_find_lower_m(const_object o, iterator itr, const_unknown __ref
 
 	/* make sure the iterator type is right */
 	dbg_assert(itr->__iftable[itr_interface_iterator].__offset == (address)itr_interface_iterator);
-	dbg_assert(itr->__iftable[itr_interface_iterator].__vtable == (unknown)&__osplay_itr_vtable);
+	dbg_assert(itr->__iftable[itr_interface_iterator].__vtable == (unknown*)&__osplay_itr_vtable);
 
 	if (link != NULL) {
 		oitr->current = link;
@@ -638,7 +638,7 @@ void splayset_itr_find_lower_m(const_object o, iterator itr, const_unknown __ref
 	}
 }
 
-void splayset_itr_find_upper_m(const_object o, iterator itr, const_unknown __ref) {
+void splayset_itr_find_upper_m(const Object* o, iterator itr, const unknown* __ref) {
 	struct osplay* osplay    = (struct osplay*)o;
 	struct osplay_itr* oitr  = (struct osplay_itr*)itr;
 	struct direct_s   dir    = { osplay->content_traits.__compare_to, __ref, NULL };
@@ -653,7 +653,7 @@ void splayset_itr_find_upper_m(const_object o, iterator itr, const_unknown __ref
 
 	/* make sure the iterator type is right */
 	dbg_assert(itr->__iftable[itr_interface_iterator].__offset == (address)itr_interface_iterator);
-	dbg_assert(itr->__iftable[itr_interface_iterator].__vtable == (unknown)&__osplay_itr_vtable);
+	dbg_assert(itr->__iftable[itr_interface_iterator].__vtable == (unknown*)&__osplay_itr_vtable);
 
 	if (link != NULL) { 
 		oitr->current = link;
@@ -663,14 +663,14 @@ void splayset_itr_find_upper_m(const_object o, iterator itr, const_unknown __ref
 	}
 }
 
-void splayset_insert_s(object o, const_unknown __ref) {
+void splayset_insert_s(Object* o, const unknown* __ref) {
 	struct osplay* osplay    = (struct osplay*)o;
 	struct osplay_node* node = (struct osplay_node*)
 		allocator_alloc(osplay->allocator, sizeof(struct osplay_node));
 	struct splaylink* duplicated = NULL;
 
 	/* just assign the reference, delay the clone operation if there is no duplicates */
-	node->reference = (unknown)__ref;
+	node->reference = (unknown*)__ref;
 
 	osplay_detach_sentinel(osplay);
 	osplay->root = splay_insert_sv(osplay->root, &node->link, osplay_splaylink_compare, osplay->content_traits.__compare_to, &duplicated);
@@ -687,7 +687,7 @@ void splayset_insert_s(object o, const_unknown __ref) {
 	}
 }
 
-void splayset_replace_s(object o, const_unknown __ref) {
+void splayset_replace_s(Object* o, const unknown* __ref) {
 	struct osplay* osplay    = (struct osplay*)o;
 	struct osplay_node* node = (struct osplay_node*)
 		allocator_alloc(osplay->allocator, sizeof(struct osplay_node));
@@ -701,7 +701,7 @@ void splayset_replace_s(object o, const_unknown __ref) {
 
 	if (duplicated != NULL) {
 		struct osplay_node* dup_node = container_of(duplicated, struct osplay_node, link);
-		unknown old_ref = dup_node->reference;
+		unknown* old_ref = dup_node->reference;
 
 		dbg_assert(osplay_splaylink_compare(&node->link, duplicated, osplay->content_traits.__compare_to) == 0);
 
@@ -716,7 +716,7 @@ void splayset_replace_s(object o, const_unknown __ref) {
 	}
 }
 
-void splayset_insert_m(object o, const_unknown __ref) {
+void splayset_insert_m(Object* o, const unknown* __ref) {
 	struct osplay* osplay     = (struct osplay*)o;
 	struct osplay_node* node = (struct osplay_node*)
 		allocator_alloc(osplay->allocator, sizeof(struct osplay_node));
@@ -731,7 +731,7 @@ void splayset_insert_m(object o, const_unknown __ref) {
 	return;
 }
 
-bool splayset_contains(const_object o, const_unknown __ref) {
+bool splayset_contains(const Object* o, const unknown* __ref) {
 	struct osplay* osplay   = (struct osplay*)o;
 	struct direct_s   dir   = { osplay->content_traits.__compare_to, __ref, NULL };
 	struct splaylink* link = NULL;
@@ -747,7 +747,7 @@ bool splayset_contains(const_object o, const_unknown __ref) {
 	return false;
 }
 
-int splayset_count_m(const_object o, const_unknown __ref) {
+int splayset_count_m(const Object* o, const unknown* __ref) {
 	struct osplay*     osplay   = (struct osplay*)o;
 	struct direct_s   dir       = { osplay->content_traits.__compare_to, __ref, NULL };
 	const struct splaylink* lb = NULL;
@@ -780,7 +780,7 @@ int splayset_count_m(const_object o, const_unknown __ref) {
 	return 0;
 }
 
-bool splayset_remove_s(object o, const_unknown __ref) {
+bool splayset_remove_s(Object* o, const unknown* __ref) {
 	struct osplay* osplay   = (struct osplay*)o;
 	struct direct_s   dir   = { osplay->content_traits.__compare_to, __ref, NULL };
 	struct splaylink* link = NULL;
@@ -808,7 +808,7 @@ bool splayset_remove_s(object o, const_unknown __ref) {
 	return false;
 }
 
-int splayset_remove_m(object o, const_unknown __ref) {
+int splayset_remove_m(Object* o, const unknown* __ref) {
 	struct osplay* osplay   = (struct osplay*)o;
 	struct direct_s   dir   = { osplay->content_traits.__compare_to, __ref, NULL };
 	struct splaylink* link = NULL;
@@ -841,7 +841,7 @@ int splayset_remove_m(object o, const_unknown __ref) {
 }
 
 
-void splayset_itr_remove(object o, iterator itr) {
+void splayset_itr_remove(Object* o, iterator itr) {
 	struct osplay* osplay    = (struct osplay*)o;
 	struct osplay_itr* oitr  = (struct osplay_itr*)itr;
 	struct osplay_node* node = container_of(oitr->current, struct osplay_node, link);

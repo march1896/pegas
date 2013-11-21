@@ -1,23 +1,23 @@
 #include <iobject.h>
 
 /* object knows how to clone itself, so alc and heap are useless */
-static unknown object_clone(const_unknown x, pf_alloc alc, void* heap) {
-	_interface _inf = (_interface)__cast(x, IOBJECT_ID);
+static unknown* object_clone(const unknown *x, pf_alloc alc, void* heap) {
+	_interface* _inf = (_interface*)__cast(x, IOBJECT_ID);
 	dbg_assert(_inf != NULL);
 
-	return ((struct iobject_vtable*)_inf->__vtable)->__clone((object)x);
+	return (unknown*)((struct iobject_vtable*)_inf->__vtable)->__clone((Object*)x);
 }
 /* object knows how to destroy itself, so dlc and heap are useless */
-static void object_destroy(const_unknown x, pf_dealloc alc, void* heap) {
-	_interface _inf = (_interface)__cast(x, IOBJECT_ID);
+static void object_destroy(const unknown *x, pf_dealloc alc, void* heap) {
+	_interface* _inf = (_interface*)__cast(x, IOBJECT_ID);
 	dbg_assert(_inf != NULL);
 
-	((struct iobject_vtable*)_inf->__vtable)->__destroy((object)x);
+	((struct iobject_vtable*)_inf->__vtable)->__destroy((Object*)x);
 }
 
-static int object_compare_to(const_unknown x, const_unknown y) {
-	_interface _inf_a = (_interface)__cast((unknown)x, IOBJECT_ID);
-	_interface _inf_b = (_interface)__cast((unknown)y, IOBJECT_ID);
+static int object_compare_to(const unknown *x, const unknown *y) {
+	_interface* _inf_a = (_interface*)__cast(x, IOBJECT_ID);
+	_interface* _inf_b = (_interface*)__cast(y, IOBJECT_ID);
 
 	/* first, two objects are both objects */
 	if (_inf_a == NULL || _inf_b == NULL)
@@ -31,11 +31,11 @@ static int object_compare_to(const_unknown x, const_unknown y) {
 	if (((struct iobject_vtable*)_inf_a->__vtable)->__compare_to == NULL)
 		rt_error("object_compare: object does not support compare");
 
-	return ((struct iobject_vtable*)_inf_a->__vtable)->__compare_to((object)x, (object)y);
+	return ((struct iobject_vtable*)_inf_a->__vtable)->__compare_to((Object*)x, (Object*)y);
 }
-static bool object_equals(const_unknown x, const_unknown y) {
-	_interface _inf_a = (_interface)__cast((unknown)x, IOBJECT_ID);
-	_interface _inf_b = (_interface)__cast((unknown)y, IOBJECT_ID);
+static bool object_equals(const unknown *x, const unknown *y) {
+	_interface* _inf_a = (_interface*)__cast(x, IOBJECT_ID);
+	_interface* _inf_b = (_interface*)__cast(y, IOBJECT_ID);
 
 	/* first, two objects are both objects */
 	if (_inf_a == NULL || _inf_b == NULL)
@@ -49,10 +49,10 @@ static bool object_equals(const_unknown x, const_unknown y) {
 	if (((struct iobject_vtable*)_inf_a->__vtable)->__equals == NULL)
 		rt_error("object_equals: object does not support equals");
 
-	return ((struct iobject_vtable*)_inf_a->__vtable)->__equals((object)x, (object)y);
+	return ((struct iobject_vtable*)_inf_a->__vtable)->__equals((Object*)x, (Object*)y);
 }
-static hashcode object_hashcode(const_unknown x) {
-	_interface _inf = (_interface)__cast(x, IOBJECT_ID);
+static hashcode object_hashcode(const unknown *x) {
+	_interface* _inf = (_interface*)__cast(x, IOBJECT_ID);
 	
 	if (_inf == NULL) 
 		rt_error("object_hashcode: reference is not object");
@@ -60,7 +60,7 @@ static hashcode object_hashcode(const_unknown x) {
 	if (((struct iobject_vtable*)_inf->__vtable)->__hashcode == NULL)
 		rt_error("object_hascode: does not have hash function");
 
-	return ((struct iobject_vtable*)_inf->__vtable)->__hashcode((object)x);
+	return ((struct iobject_vtable*)_inf->__vtable)->__hashcode((Object*)x);
 }
 
 unknown_traits object_traits = {
@@ -71,9 +71,9 @@ unknown_traits object_traits = {
 	object_hashcode
 };
 
-inline bool iobject_distinguishable(const_object obj_a, const_object obj_b) {
-	_interface _inf_a = (_interface)__cast((unknown)obj_a, IOBJECT_ID);
-	_interface _inf_b = (_interface)__cast((unknown)obj_b, IOBJECT_ID);
+inline bool iobject_distinguishable(const Object* obj_a, const Object* obj_b) {
+	_interface* _inf_a = (_interface*)__cast((unknown*)obj_a, IOBJECT_ID);
+	_interface* _inf_b = (_interface*)__cast((unknown*)obj_b, IOBJECT_ID);
 
 	/* first, two objects are both objects */
 	if (_inf_a == NULL || _inf_b == NULL)
@@ -89,9 +89,9 @@ inline bool iobject_distinguishable(const_object obj_a, const_object obj_b) {
 
 	return true;
 }
-inline bool iobject_comparable(const_object obj_a, const_object obj_b) {
-	_interface _inf_a = (_interface)__cast((unknown)obj_a, IOBJECT_ID);
-	_interface _inf_b = (_interface)__cast((unknown)obj_b, IOBJECT_ID);
+inline bool iobject_comparable(const Object* obj_a, const Object* obj_b) {
+	_interface* _inf_a = (_interface*)__cast((unknown*)obj_a, IOBJECT_ID);
+	_interface* _inf_b = (_interface*)__cast((unknown*)obj_b, IOBJECT_ID);
 
 	/* first, two objects are both objects */
 	if (_inf_a == NULL || _inf_b == NULL)
@@ -107,39 +107,39 @@ inline bool iobject_comparable(const_object obj_a, const_object obj_b) {
 
 	return true;
 }
-inline bool iobject_hashable(const_object obj) {
-	_interface _inf = (_interface)__cast((unknown)obj, IOBJECT_ID);
+inline bool iobject_hashable(const Object* obj) {
+	_interface* _inf = (_interface*)__cast((unknown*)obj, IOBJECT_ID);
 	dbg_assert(_inf != NULL);
 
 	return ((struct iobject_vtable*)_inf->__vtable)->__hashcode != NULL;
 }
 
-inline void iobject_destroy(object obj) {
-	_interface _inf = (_interface)__cast((unknown)obj, IOBJECT_ID);
+inline void iobject_destroy(Object* obj) {
+	_interface* _inf = (_interface*)__cast((unknown*)obj, IOBJECT_ID);
 	dbg_assert(_inf != NULL);
 
 	((struct iobject_vtable*)_inf->__vtable)->__destroy(obj);
 }
-inline object iobject_clone(const_object obj) {
-	_interface _inf = (_interface)__cast((unknown)obj, IOBJECT_ID);
+inline Object* iobject_clone(const Object* obj) {
+	_interface* _inf = (_interface*)__cast((unknown*)obj, IOBJECT_ID);
 	dbg_assert(_inf != NULL);
 
 	return ((struct iobject_vtable*)_inf->__vtable)->__clone(obj);
 }
-inline bool iobject_equals(const_object obj, const_object other) {
-	_interface _inf = (_interface)__cast((unknown)obj, IOBJECT_ID);
+inline bool iobject_equals(const Object* obj, const Object* other) {
+	_interface* _inf = (_interface*)__cast((unknown*)obj, IOBJECT_ID);
 	dbg_assert(_inf != NULL);
 
 	return ((struct iobject_vtable*)_inf->__vtable)->__equals(obj, other);
 }
-inline int iobject_compare_to(const_object obj, const_object other) {
-	_interface _inf = (_interface)__cast((unknown)obj, IOBJECT_ID);
+inline int iobject_compare_to(const Object* obj, const Object* other) {
+	_interface* _inf = (_interface*)__cast((unknown*)obj, IOBJECT_ID);
 	dbg_assert(_inf != NULL);
 
 	return ((struct iobject_vtable*)_inf->__vtable)->__compare_to(obj, other);
 }
-inline hashcode iobject_hashcode(const_object obj) {
-	_interface _inf = (_interface)__cast((unknown)obj, IOBJECT_ID);
+inline hashcode iobject_hashcode(const Object* obj) {
+	_interface* _inf = (_interface*)__cast((unknown*)obj, IOBJECT_ID);
 	dbg_assert(_inf != NULL);
 
 	return ((struct iobject_vtable*)_inf->__vtable)->__hashcode(obj);

@@ -34,22 +34,19 @@ static void stack_test_basic_itr_operation(istack stack) {
 
 		/* traverse the stack */
 		for (; !itr_equals(itr, end); itr_to_next(itr)) {
-			x = (int*)itr_get_obj(itr);
+			x = (int*)itr_get_ref(itr);
 			dbg_assert(*x == current);
-			hfree(x);
 			current ++;
 		}
 
 		/* test itr_assign */
 		istack_itr_assign(stack, itr, itr_begin);
-		x = (int*)itr_get_obj(itr);
+		x = (int*)itr_get_ref(itr);
 		dbg_assert(*x == 1);
-		hfree(x);
 		istack_itr_assign(stack, itr, itr_end);
 		itr_to_prev(itr);
-		x = (int*)itr_get_obj(itr);
+		x = (int*)itr_get_ref(itr);
 		dbg_assert(*x == 4);
-		hfree(x);
 
 		itr_destroy(itr);
 	}
@@ -91,9 +88,8 @@ static void stack_test_basic_itr_operation(istack stack) {
 
 		/* traverse the stack */
 		for (; !itr_equals(itr, end); itr_to_next(itr)) {
-			int* x = (int*)itr_get_obj(itr);
+			int* x = (int*)itr_get_ref(itr);
 			dbg_assert(*x == 1);
-			hfree(x);
 		}
 
 		itr_destroy(itr);

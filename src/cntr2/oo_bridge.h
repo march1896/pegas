@@ -13,11 +13,11 @@
 #include <memheap/heap_def.h>
 #include <cntr2/oo_model.h>
 
-typedef unknown  (*pf_ibridge_clone)(const_unknown x, pf_alloc alc, void* heap);
-typedef void     (*pf_ibridge_destroy)(const_unknown x, pf_dealloc alc, void* heap);
-typedef compres  (*pf_ibridge_compare)(const_unknown x, const_unknown y);
-typedef bool     (*pf_ibridge_equals)(const_unknown x, const_unknown y);
-typedef hashcode (*pf_ibridge_hashcode)(const_unknown x);
+typedef unknown* (*pf_ibridge_clone)(const unknown *x, pf_alloc alc, void* heap);
+typedef void     (*pf_ibridge_destroy)(const unknown *x, pf_dealloc alc, void* heap);
+typedef compres  (*pf_ibridge_compare)(const unknown *x, const unknown *y);
+typedef bool     (*pf_ibridge_equals)(const unknown *x, const unknown *y);
+typedef hashcode (*pf_ibridge_hashcode)(const unknown *x);
 
 typedef struct unknown_traits_t {
 	pf_ibridge_destroy  __destroy;
@@ -37,13 +37,13 @@ extern unknown_traits double_traits;
 extern unknown_traits char_traits;
 extern unknown_traits bool_traits;
 
-typedef void (*pf_ref_visit)(const_unknown __ref);
-typedef void (*pf_ref_visit_v)(const_unknown __ref, void* context);
+typedef void (*pf_ref_visit)(const unknown* __ref);
+typedef void (*pf_ref_visit_v)(const unknown* __ref, void* context);
 
-typedef void (*pf_ref_process)(unknown __ref);
-typedef void (*pf_ref_process_v)(unknown __ref, void* context);
+typedef void (*pf_ref_process)(unknown* __ref);
+typedef void (*pf_ref_process_v)(unknown* __ref, void* context);
 
-typedef compres (*pf_ref_compare)(const_unknown ref_a, const_unknown ref_b);
-typedef compres (*pf_ref_compare_v)(const_unknown ref_a, const_unknown ref_b, void* context); 
+typedef compres (*pf_ref_compare)(const unknown* ref_a, const unknown* ref_b);
+typedef compres (*pf_ref_compare_v)(const unknown* ref_a, const unknown* ref_b, void* context); 
 
 #endif /* _OBJECT_REDUCE_TO_REFERENCE_H_ */

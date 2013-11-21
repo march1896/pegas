@@ -6,7 +6,7 @@
 
 #include "memheap/heap_global.h"
 
-static void set_test_basic_itr_operation(object set) {
+static void set_test_basic_itr_operation(Object* set) {
 	int temp_int = 0;
 	iset_clear(set);
 	dbg_assert(iset_empty(set));
@@ -38,22 +38,19 @@ static void set_test_basic_itr_operation(object set) {
 
 		/* traverse the set */
 		for (; !itr_equals(itr, end); itr_to_next(itr)) {
-			x = (int*)itr_get_obj(itr);
+			x = (int*)itr_get_ref(itr);
 			dbg_assert(*x == current);
-			hfree(x);
 			current ++;
 		}
 
 		/* test itr_assign */
 		iset_itr_assign(set, itr, itr_begin);
-		x = (int*)itr_get_obj(itr);
+		x = (int*)itr_get_ref(itr);
 		dbg_assert(*x == 1);
-		hfree(x);
 		iset_itr_assign(set, itr, itr_end);
 		itr_to_prev(itr);
-		x = (int*)itr_get_obj(itr);
+		x = (int*)itr_get_ref(itr);
 		dbg_assert(*x == 8);
-		hfree(x);
 
 		/* test itr_find */
 		temp_int = 0;
@@ -110,7 +107,7 @@ static void set_test_basic_itr_operation(object set) {
 	return;
 }
 
-static void set_test_basic_operation(object set) {
+static void set_test_basic_operation(Object* set) {
 	int temp_int;
 	iset_clear(set);
 	dbg_assert(iset_empty(set));
@@ -332,7 +329,7 @@ static int __num_search;
 static int __data_diff_type; /* number of different values to store in the set */
 static int __data_max_count; /* max count of a single value */
 
-static object __set = NULL; /* to be tested */
+static Object* __set = NULL; /* to be tested */
 static intptr_t* data_count = NULL;
 
 static void __reset_data() {
@@ -403,15 +400,15 @@ static void set_bench_search_randomly() {
 }
 
 
-void set_test_basic(object set) {
+void set_test_basic(Object* set) {
 	set_test_basic_operation(set);
 	set_test_basic_itr_operation(set);
 }
 
-void set_test_memory(object set) {
+void set_test_memory(Object* set) {
 }
 
-void set_test_bench(object set) {
+void set_test_bench(Object* set) {
 	__set = set;
 	__data_diff_type = 100;
 	__data_max_count = 1;

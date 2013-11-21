@@ -219,8 +219,6 @@
     <ClCompile Include="..\..\src\cntr2\oo_bridge.c" />
     <ClCompile Include="..\..\src\cntr2\oskiplist.c" />
     <ClCompile Include="..\..\src\cntr2\osplay.c" />
-    <ClCompile Include="..\..\src\lexer\automaton.c" />
-    <ClCompile Include="..\..\src\lexer\nfa.c" />
     <ClCompile Include="..\..\src\memheap\block_common.c" />
     <ClCompile Include="..\..\src\memheap\block_link.c" />
     <ClCompile Include="..\..\src\memheap\heap_buddy.c" />

@@ -18,7 +18,7 @@ static void foreach_count(const void* __ref, void* param) {
 	counter->sum += *(int*)__ref;
 }
 
-static void mset_test_basic_itr_operation(object mset) {
+static void mset_test_basic_itr_operation(Object* mset) {
 	int temp_int;
 	imset_clear(mset);
 	dbg_assert(imset_empty(mset));
@@ -61,22 +61,19 @@ static void mset_test_basic_itr_operation(object mset) {
 
 		/* traverse the mset */
 		for (; !itr_equals(itr, end); itr_to_next(itr)) {
-			x = (int*)itr_get_obj(itr);
+			x = (int*)itr_get_ref(itr);
 			dbg_assert(*x == ((current+1)/2));
-			hfree(x);
 			current ++;
 		}
 
 		/* test itr_assign */
 		imset_itr_assign(mset, itr, itr_begin);
-		x = (int*)itr_get_obj(itr);
+		x = (int*)itr_get_ref(itr);
 		dbg_assert(*x == 1);
-		hfree(x);
 		imset_itr_assign(mset, itr, itr_end);
 		itr_to_prev(itr);
-		x = (int*)itr_get_obj(itr);
+		x = (int*)itr_get_ref(itr);
 		dbg_assert(*x == 4);
-		hfree(x);
 
 		/* test itr_find_lower, itr_find_upper */
 		/* find element not int the mset */
@@ -209,7 +206,7 @@ static void mset_test_basic_itr_operation(object mset) {
 	return;
 }
 
-static void mset_test_basic_operation(object mset) {
+static void mset_test_basic_operation(Object* mset) {
 	int temp_int = 0;
 	imset_clear(mset);
 	dbg_assert(imset_empty(mset));
@@ -345,7 +342,7 @@ static int __num_search;
 static int __data_diff_type; /* number of different values to store in the mset */
 static int __data_max_count; /* max count of a single value */
 
-static object __mset = NULL; /* to be tested */
+static Object* __mset = NULL; /* to be tested */
 static intptr_t* data_count = NULL;
 
 static void __reset_data() {
@@ -429,15 +426,15 @@ static void mset_bench_search_randomly() {
 	imset_clear(__mset);
 }
 
-void mset_test_basic(object mset) {
+void mset_test_basic(Object* mset) {
 	mset_test_basic_operation(mset);
 	mset_test_basic_itr_operation(mset);
 }
 
-void mset_test_memory(object mset) {
+void mset_test_memory(Object* mset) {
 }
 
-void mset_test_bench(object mset) {
+void mset_test_bench(Object* mset) {
 	__mset = mset;
 	__data_diff_type = 100;
 	__data_max_count = 10;

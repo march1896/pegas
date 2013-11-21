@@ -1,14 +1,14 @@
 #include <oo_model.h>
 
-inline object __object_from_interface(const_interface inf) {
-	const_interface inf0 = inf - (intptr_t)inf->__offset;
-	object obj = container_of(inf0, struct base_object, __iftable[0]);
+inline Object* __object_from_interface(const _interface* inf) {
+	const _interface* inf0 = inf - (intptr_t)inf->__offset;
+	Object* obj = container_of(inf0, struct base_object, __iftable[0]);
 
 	return obj;
 }
 
-inline bool __is_object(const_unknown x) {
-	const_object obj = (const_object)x;
+inline bool __is_object(const unknown* x) {
+	const Object* obj = (const Object*)x;
 	if (obj->__offset == x) {
 		//dbg_assert(obj->__cast(x, OBJECT_ME) == x);
 		return true;
@@ -17,13 +17,13 @@ inline bool __is_object(const_unknown x) {
 	return false;
 }
 
-inline bool __is_interface(const_unknown x) {
-	const_interface inf = (const_interface)x;
+inline bool __is_interface(const unknown *x) {
+	const _interface* inf = (const _interface*)x;
 	dbg_assert((intptr_t)(inf->__offset) <= __MAX_NUM_INTERFACE_PER_OBJECT);
 
 	{
-		object obj = __object_from_interface(inf);
-		if (__is_object(obj)) {
+		const Object* obj = __object_from_interface(inf);
+		if (__is_object((unknown*)obj)) {
 			return true;
 		}
 	}
@@ -31,13 +31,13 @@ inline bool __is_interface(const_unknown x) {
 	return false;
 }
 
-inline unknown __cast(const_unknown x, unique_id id) {
+inline unknown* __cast(const unknown* x, unique_id id) {
 	if (__is_object(x)) {
-		object obj = (object)x;
+		Object* obj = (Object*)x;
 		return obj->__cast(obj, id);
 	} 
 	else if (__is_interface(x)) {
-		object obj = (object)__object_from_interface((_interface)x);
+		Object* obj = (Object*)__object_from_interface((_interface*)x);
 		return obj->__cast(obj, id);
 	}
 	dbg_assert(false);
@@ -45,8 +45,8 @@ inline unknown __cast(const_unknown x, unique_id id) {
 	return NULL;
 }
 
-inline _interface __fast_cast(const_object obj, int ifoffset) {
+inline _interface* __fast_cast(const Object* obj, int ifoffset) {
 	dbg_assert(__is_object(obj));
-	return (_interface)&obj->__iftable[ifoffset];
+	return (_interface*)&obj->__iftable[ifoffset];
 }
 

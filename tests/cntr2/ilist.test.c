@@ -45,22 +45,19 @@ static void list_test_basic_itr_operation(ilist list) {
 
 		/* traverse the list */
 		for (; !itr_equals(itr, end); itr_to_next(itr)) {
-			x = (int*)itr_get_obj(itr);
+			x = (int*)itr_get_ref(itr);
 			dbg_assert(*x == current);
-			hfree(x);
 			current ++;
 		}
 
 		/* test itr_assign */
 		ilist_itr_assign(list, itr, itr_begin);
-		x = (int*)itr_get_obj(itr);
+		x = (int*)itr_get_ref(itr);
 		dbg_assert(*x == 1);
-		hfree(x);
 		ilist_itr_assign(list, itr, itr_end);
 		itr_to_prev(itr);
-		x = (int*)itr_get_obj(itr);
+		x = (int*)itr_get_ref(itr);
 		dbg_assert(*x == 8);
-		hfree(x);
 
 		/* test itr_find */
 		temp_int = 0;
@@ -123,9 +120,8 @@ static void list_test_basic_itr_operation(ilist list) {
 				!itr_equals(itr, end); 
 				current ++) {
 			if (current != 4) {
-				x = (int*)itr_get_obj(itr);
+				x = (int*)itr_get_ref(itr);
 				dbg_assert(*x == current);
-				hfree(x);
 				itr_to_next(itr);
 			}
 		}
@@ -141,9 +137,8 @@ static void list_test_basic_itr_operation(ilist list) {
 		for (current = 1, ilist_itr_assign(list, itr, itr_begin); 
 				!itr_equals(itr, end); 
 				itr_to_next(itr), current ++) {
-					x = (int*)itr_get_obj(itr);
+					x = (int*)itr_get_ref(itr);
 					dbg_assert(*x == current);
-					hfree(x);
 		}
 
 		itr_destroy(itr);
