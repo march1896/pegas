@@ -239,5 +239,8 @@
     <ClInclude Include="..\..\src\cntr2\iarray.h">
       <Filter>Source Files\cntr2</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\cntr2\oarray.h">
+      <Filter>Source Files\cntr2</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

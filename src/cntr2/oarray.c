@@ -1,7 +1,7 @@
 #include <string.h>
 
 #include "iobject.h"
-#include "ilist.h"
+#include "iarray.h"
 #include "iqueue.h"
 #include "istack.h"
 #include "iitr.h"
@@ -31,7 +31,7 @@ struct oarray_itr {
 	 * alloc the memory, but we should know how to delete this memory */
 	allocator                     allocator;
 
-	unknown                       current;
+	unknown*                      current;
 };
 
 struct oarray {
@@ -64,7 +64,7 @@ static struct iobject_vtable __array_iobject_vtable = {
 	oarray_hashcode,         /* __hashcode */
 };
 
-static struct iarray_vtable __array_ilist_vtable = {
+static struct iarray_vtable __array_iarray_vtable = {
 	oarray_clear,            /* __clear */
 	oarray_foreach,          /* __foreach */
 	oarray_size,             /* __size */
@@ -116,17 +116,17 @@ static struct istack_vtable __array_istack_vtable = {
 	oarray_itr_end           /* __itr_end */
 };
 
-static unknown oarray_itr_cast(unknown x, unique_id inf_id);
-static unknown oarray_cast(unknown x, unique_id intf_id);
+static unknown* oarray_itr_cast(unknown* x, unique_id inf_id);
+static unknown* oarray_cast(unknown* x, unique_id intf_id);
 
 static void oarray_itr_destroy(iterator citr);
 static iterator oarray_itr_clone(const_iterator citr);
 static bool oarray_itr_equals(const_iterator a, const_iterator b);
 static int oarray_itr_compare_to(const_iterator itr, const_iterator other);
 static hashcode oarray_itr_hashcode(const_iterator itr);
-static unknown oarray_itr_get_obj(const_iterator citr);
-static void oarray_itr_set_obj(iterator citr, const_unknown n_ref);
-static const_unknown oarray_itr_get_ref(const_iterator citr);
+static unknown* oarray_itr_get_obj(const_iterator citr);
+static void oarray_itr_set_obj(iterator citr, const unknown* n_ref);
+static const unknown* oarray_itr_get_ref(const_iterator citr);
 static void oarray_itr_swap_ref(iterator citr, iterator other);
 static void oarray_itr_to_next(iterator citr);
 static void oarray_itr_to_prev(iterator citr);
@@ -161,8 +161,8 @@ static bool oarray_itr_equals(const_iterator a, const_iterator b) {
 	const struct oarray_itr* itr_a = (const struct oarray_itr*)a;
 	const struct oarray_itr* itr_b = (const struct oarray_itr*)b;
 
-	dbg_assert(__is_object((unknown)a));
-	dbg_assert(__is_object((unknown)b));
+	dbg_assert(__is_object((unknown*)a));
+	dbg_assert(__is_object((unknown*)b));
 	dbg_assert(itr_a->__cast == oarray_itr_cast);
 	dbg_assert(itr_b->__cast == oarray_itr_cast);
 
@@ -180,65 +180,44 @@ static hashcode oarray_itr_hashcode(const_iterator itr) {
 	return 0;
 }
 
-static unknown oarray_itr_get_obj(const_iterator citr) {
-	const struct oarray_itr* itr   = (const struct oarray_itr*)citr;
-	const struct oarray_node* node = NULL;
-	struct oarray* container = itr->container;
-
-	dbg_assert(itr->__cast == oarray_itr_cast);
-	dbg_assert(itr->current != NULL);
-
-	node = container_of(itr->current, struct oarray_node, link);
-
-	/* return a internal reference as the iitr.h header said */
-	return container->content_traits.__clone(node->reference, (pf_alloc)__global_default_alloc, __global_default_heap);
+static unknown* oarray_itr_get_obj(const_iterator citr) {
+// 	const struct oarray_itr* itr   = (const struct oarray_itr*)citr;
+// 	const struct oarray_node* node = NULL;
+// 	struct oarray* container = itr->container;
+// 
+// 	dbg_assert(itr->__cast == oarray_itr_cast);
+// 	dbg_assert(itr->current != NULL);
+// 
+// 	node = container_of(itr->current, struct oarray_node, link);
+// 
+// 	/* return a internal reference as the iitr.h header said */
+// 	return container->content_traits.__clone(node->reference, (pf_alloc)__global_default_alloc, __global_default_heap);
 }
 
-static void oarray_itr_set_obj(iterator citr, const_unknown n_ref) {
-	struct oarray_itr* itr   = (struct oarray_itr*)citr;
-	struct oarray_node* node = NULL;
-	struct oarray* container = itr->container;
-
-	dbg_assert(itr->__cast == oarray_itr_cast);
-	dbg_assert(itr->current != NULL);
-
-	node = container_of(itr->current, struct oarray_node, link);
-	
-	/* first destroy the old reference */
-	container->content_traits.__destroy(node->reference, (pf_dealloc)allocator_release, container->allocator);
-
-	/* then clone the new reference */
-	node->reference = 
-		container->content_traits.__clone(n_ref, (pf_alloc)allocator_acquire, container->allocator);
+static void oarray_itr_set_obj(iterator citr, const unknown* n_ref) {
+// 	struct oarray_itr* itr   = (struct oarray_itr*)citr;
+// 	struct oarray_node* node = NULL;
+// 	struct oarray* container = itr->container;
+// 
+// 	dbg_assert(itr->__cast == oarray_itr_cast);
+// 	dbg_assert(itr->current != NULL);
+// 
+// 	node = container_of(itr->current, struct oarray_node, link);
+// 	
+// 	/* first destroy the old reference */
+// 	container->content_traits.__destroy(node->reference, (pf_dealloc)allocator_release, container->allocator);
+// 
+// 	/* then clone the new reference */
+// 	node->reference = 
+// 		container->content_traits.__clone(n_ref, (pf_alloc)allocator_acquire, container->allocator);
 }
 
-static const_unknown oarray_itr_get_ref(const_iterator citr) {
-	const struct oarray_itr* itr   = (const struct oarray_itr*)citr;
-	const struct oarray_node* node = NULL;
-	struct oarray* container = itr->container;
+static const unknown* oarray_itr_get_ref(const_iterator citr) {
 
-	dbg_assert(itr->__cast == oarray_itr_cast);
-	dbg_assert(itr->current != NULL);
-
-	node = container_of(itr->current, struct oarray_node, link);
-
-	return node->reference;
 }
 
 static void oarray_itr_swap_ref(iterator citr, iterator other) {
-	struct oarray_itr* itr_a = (struct oarray_itr*)citr;
-	struct oarray_itr* itr_b = (struct oarray_itr*)other;
-	struct oarray_node* node_a = container_of(itr_a->current, struct oarray_node, link);
-	struct oarray_node* node_b = container_of(itr_b->current, struct oarray_node, link);
-	unknown temp;
 
-	dbg_assert(itr_a->__cast == oarray_itr_cast);
-	dbg_assert(itr_b->__cast == oarray_itr_cast);
-	dbg_assert(itr_a->current != NULL && itr_b->current != NULL);
-
-	temp = node_a->reference;
-	node_a->reference = node_b->reference;
-	node_b->reference = temp;
 }
 
 static void oarray_itr_to_next(iterator citr) {
@@ -276,20 +255,20 @@ static struct itr_randomaccessible_vtable __array_itr_vtable = {
 	oarray_itr_to_prev       /* __to_prev */
 };
 
-static unknown oarray_cast(unknown x, unique_id intf_id) {
+static unknown* oarray_cast(unknown* x, unique_id intf_id) {
 	struct oarray* o = (struct oarray*)x;
 
 	dbg_assert(__is_object(x));
 
 	switch (intf_id) {
 	case IOBJECT_ID:
-		return (unknown)&o->__iftable[e_object];
+		return (unknown*)&o->__iftable[e_object];
 	case ILIST_ID:
-		return (unknown)&o->__iftable[e_array];
+		return (unknown*)&o->__iftable[e_array];
 	case IQUEUE_ID:
-		return (unknown)&o->__iftable[e_queue];
+		return (unknown*)&o->__iftable[e_queue];
 	case ISTACK_ID:
-		return (unknown)&o->__iftable[e_stack];
+		return (unknown*)&o->__iftable[e_stack];
 	default:
 		return NULL;
 	}
@@ -297,20 +276,20 @@ static unknown oarray_cast(unknown x, unique_id intf_id) {
 	return NULL;
 }
 
-static unknown oarray_itr_cast(unknown x, unique_id inf_id) {
+static unknown* oarray_itr_cast(unknown* x, unique_id inf_id) {
 	struct oarray_itr* itr = (struct oarray_itr*)x;
 
 	dbg_assert(__is_object(itr));
 
 	switch (inf_id) {
 	case IOBJECT_ID:
-		return (unknown)&itr->__iftable[itr_interface_iobject];
+		return (unknown*)&itr->__iftable[itr_interface_iobject];
 	case ITR_REF_ID:
 	case ITR_ACC_ID:
 	case ITR_FWD_ID:
 	case ITR_BID_ID:
 	case ITR_RAC_ID:
-		return (unknown)&itr->__iftable[itr_interface_iterator];
+		return (unknown*)&itr->__iftable[itr_interface_iterator];
 	default:
 		return NULL;
 	}
@@ -318,15 +297,15 @@ static unknown oarray_itr_cast(unknown x, unique_id inf_id) {
 	return NULL;
 }
 
-object cntr_create_array(unknown_traits content_traits) {
+Object* cntr_create_array(unknown_traits content_traits) {
 	return oarray_create(content_traits, __global_default_allocator);
 }
-object cntr_create_array_a(unknown_traits content_traits, allocator alc) {
+Object* cntr_create_array_a(unknown_traits content_traits, allocator alc) {
 	return oarray_create(content_traits, alc);
 }
 
 static void oarray_itr_com_init(struct oarray_itr* itr, struct oarray* list);
-object oarray_create(unknown_traits content_traits, allocator alc) {
+Object* oarray_create(unknown_traits content_traits, allocator alc) {
 	struct oarray* array = NULL;
 	bool managed_allocator = false;
 
@@ -358,7 +337,7 @@ object oarray_create(unknown_traits content_traits, allocator alc) {
 	oarray_itr_com_init(&array->itr_begin, array);
 	oarray_itr_com_init(&array->itr_end, array);
 
-	return (object)array;
+	return (Object*)array;
 }
 
 static void oarray_adjust_buffer(struct oarray *array) {
@@ -379,11 +358,9 @@ static void oarray_adjust_buffer(struct oarray *array) {
 		/* shrink the buffer to half of the size */
 		n_length = array->length / 2;
 	}
-
-	
 }
 
-void oarray_destroy(object o) {
+void oarray_destroy(Object* o) {
 	struct oarray* array = (struct oarray*)o;
 	allocator alc = array->allocator;
 	bool join_alc = array->allocator_join_ondispose;
@@ -395,16 +372,16 @@ void oarray_destroy(object o) {
 		allocator_join(alc);
 	}
 }
-object oarray_clone(const_object o) {
+Object* oarray_clone(const Object* o) {
 	return NULL;
 }
-bool oarray_equals(const_object o, const_object other) {
+bool oarray_equals(const Object* o, const Object* other) {
 	return false;
 }
-int oarray_compare_to(const_object o, const_object other) {
+int oarray_compare_to(const Object* o, const Object* other) {
 	return 0;
 }
-hashcode oarray_hashcode(const_object o) {
+hashcode oarray_hashcode(const Object* o) {
 	return 0;
 }
 
@@ -418,7 +395,7 @@ static void arraylink_dispose(struct listlink* link, void* context) {
 	/* delete the node it self */
 	allocator_dealloc(array->allocator, node);
 }
-void oarray_clear(object o) {
+void oarray_clear(Object* o) {
 	struct oarray* array = (struct oarray*)o;
 
 	list_foreach_v(&array->sentinel, arraylink_dispose, (void*)array);
@@ -438,26 +415,26 @@ static void arraylink_foreach_v(struct listlink* link, void* context) {
 	dbg_assert(pack->callback);
 	pack->callback(node->reference, pack->context);
 }
-void oarray_foreach(object o, pf_ref_process_v process, void* context) {
+void oarray_foreach(Object* o, pf_ref_process_v process, void* context) {
 	struct oarray* array = (struct oarray*)o;
 	struct array_foreach_pack pack = { process, context	};
 
 	list_foreach_v(&array->sentinel, arraylink_foreach_v, (void*)&pack);
 }
 
-int oarray_size(const_object o) {
+int oarray_size(const Object* o) {
 	const struct oarray* array = (const struct oarray*)o;
 
 	return array->size;
 }
 
-bool oarray_empty(const_object o) {
+bool oarray_empty(const Object* o) {
 	const struct oarray* array = (const struct oarray*)o;
 
 	return array->size == 0;
 }
 
-const_unknown oarray_front(const_object o) {
+const unknown* oarray_front(const Object* o) {
 	const struct oarray* array = (const struct oarray*)o;
 	struct oarray_node* n_node = NULL;
 
@@ -471,7 +448,7 @@ const_unknown oarray_front(const_object o) {
 	return n_node->reference;
 }
 
-const_unknown oarray_back(const_object o) {
+const unknown* oarray_back(const Object* o) {
 	const struct oarray* array = (const struct oarray*)o;
 	struct oarray_node* n_node = NULL;
 
@@ -485,10 +462,10 @@ const_unknown oarray_back(const_object o) {
 	return n_node->reference;
 }
 
-const_unknown oarray_at(const_object o) {
+const unknown* oarray_at(const Object* o, int index) {
 }
 
-void oarray_add_front(object o, const_unknown __ref) {
+void oarray_add_front(Object* o, const unknown* __ref) {
 	struct oarray* array = (struct oarray*)o;
 
 	struct oarray_node* n_node = (struct oarray_node*)
@@ -500,7 +477,7 @@ void oarray_add_front(object o, const_unknown __ref) {
 	array->size ++;
 }
 
-void oarray_add_back(object o, const_unknown __ref) {
+void oarray_add_back(Object* o, const unknown* __ref) {
 	struct oarray* array = (struct oarray*)o;
 
 	struct oarray_node* n_node = (struct oarray_node*)
@@ -512,13 +489,13 @@ void oarray_add_back(object o, const_unknown __ref) {
 	array->size ++;
 }
 
-void oarray_remove_front(object o) {
+void oarray_remove_front(Object* o) {
 	struct oarray* array = (struct oarray*)o;
 
 	if (array->size > 0) {
 		struct listlink* link    = array->sentinel.next;
 		struct oarray_node* node = container_of(link, struct oarray_node, link);
-		unknown object_ref   = node->reference;
+		unknown* object_ref   = node->reference;
 
 		dbg_assert(link != &array->sentinel);
 
@@ -538,13 +515,13 @@ void oarray_remove_front(object o) {
 	return;
 }
 
-void oarray_remove_back(object o) {
+void oarray_remove_back(Object* o) {
 	struct oarray* array = (struct oarray*)o;
 
 	if (array->size > 0) {
 		struct listlink* link    = array->sentinel.prev;
 		struct oarray_node* node = container_of(link, struct oarray_node, link);
-		unknown object_ref        = node->reference;
+		unknown* object_ref        = node->reference;
 
 		dbg_assert(link != &array->sentinel);
 
@@ -563,7 +540,7 @@ void oarray_remove_back(object o) {
 	return;
 }
 
-bool oarray_contains(const_object o, const_unknown __ref) {
+bool oarray_contains(const Object* o, const unknown* __ref) {
 	const struct oarray* array  = (const struct oarray*)o;
 	const struct listlink* link = array->sentinel.next;
 
@@ -580,7 +557,7 @@ bool oarray_contains(const_object o, const_unknown __ref) {
 	return false;
 }
 
-bool oarray_remove(object o, const_unknown __ref) {
+bool oarray_remove(Object* o, const unknown* __ref) {
 	struct oarray* array  = (struct oarray*)o;
 	struct listlink* link = array->sentinel.next;
 
@@ -596,7 +573,7 @@ bool oarray_remove(object o, const_unknown __ref) {
 
 	if (link != &array->sentinel) {
 		struct oarray_node* node = container_of(link, struct oarray_node, link);
-		unknown object_ref = node->reference;
+		unknown* object_ref = node->reference;
 
 		list_unlink(link);
 		allocator_dealloc(array->allocator, node);
@@ -615,16 +592,16 @@ static void oarray_itr_com_init(struct oarray_itr* itr, struct oarray* list) {
 	itr->__cast   = oarray_itr_cast;
 
 	itr->__iftable[itr_interface_iobject].__offset = (address)itr_interface_iobject;
-	itr->__iftable[itr_interface_iobject].__vtable = (unknown)&__array_itr_iobject_vtable;
+	itr->__iftable[itr_interface_iobject].__vtable = (void*)&__array_itr_iobject_vtable;
 	itr->__iftable[itr_interface_iterator].__offset = (address)itr_interface_iterator;
-	itr->__iftable[itr_interface_iterator].__vtable = (unknown)&__array_itr_vtable;
+	itr->__iftable[itr_interface_iterator].__vtable = (void*)&__array_itr_vtable;
 
 	itr->container = list;
 	itr->allocator = list->allocator;
 	/* itr->__current = NULL; */
 }
 
-const_iterator oarray_itr_begin(const_object o) {
+const_iterator oarray_itr_begin(const Object* o) {
 	struct oarray* array = (struct oarray*)o;
 
 	/* if the list is empty, we just return the sentinel node */
@@ -633,7 +610,7 @@ const_iterator oarray_itr_begin(const_object o) {
 	return (const_iterator)&array->itr_begin;
 }
 
-const_iterator oarray_itr_end(const_object o) {
+const_iterator oarray_itr_end(const Object* o) {
 	struct oarray* array = (struct oarray*)o;
 
 	array->itr_end.current = &array->sentinel;
@@ -641,7 +618,7 @@ const_iterator oarray_itr_end(const_object o) {
 	return (const_iterator)&array->itr_end;
 }
 
-iterator oarray_itr_create(const_object o, itr_pos pos) {
+iterator oarray_itr_create(const Object* o, itr_pos pos) {
 	struct oarray* array = (struct oarray*)o;
 	struct oarray_itr* n_itr = (struct oarray_itr*)
 		allocator_alloc(array->allocator, sizeof(struct oarray_itr));
@@ -664,7 +641,7 @@ iterator oarray_itr_create(const_object o, itr_pos pos) {
 	return (iterator)n_itr;
 }
 
-void oarray_itr_assign(const_object o, iterator __itr, itr_pos pos) {
+void oarray_itr_assign(const Object* o, iterator __itr, itr_pos pos) {
 	struct oarray* array = (struct oarray*)o;
 	struct oarray_itr* itr = (struct oarray_itr*)__itr;
 
@@ -690,14 +667,14 @@ void oarray_itr_assign(const_object o, iterator __itr, itr_pos pos) {
 	return;
 }
 
-void oarray_itr_find(const_object o, iterator itr, const_unknown __ref) {
+void oarray_itr_find(const Object* o, iterator itr, const unknown* __ref) {
 	struct oarray* array    = (struct oarray*)o;
 	struct oarray_itr* oitr = (struct oarray_itr*)itr;
 	struct listlink* link   = array->sentinel.next;
 
 	/* make sure the type information is right */
 	dbg_assert(itr->__iftable[itr_interface_iterator].__offset == (address)itr_interface_iterator);
-	dbg_assert(itr->__iftable[itr_interface_iterator].__vtable == (unknown)&__array_itr_vtable);
+	dbg_assert(itr->__iftable[itr_interface_iterator].__vtable == (void*)&__array_itr_vtable);
 
 	dbg_assert(oitr->container == array);
 
@@ -714,11 +691,11 @@ void oarray_itr_find(const_object o, iterator itr, const_unknown __ref) {
 	oitr->current = link;
 }
 
-void oarray_itr_remove(object o, iterator itr) {
+void oarray_itr_remove(Object* o, iterator itr) {
 	struct oarray* array     = (struct oarray*)o;
 	struct oarray_itr* oitr  = (struct oarray_itr*)itr;
 	struct oarray_node* node = container_of(oitr->current, struct oarray_node, link);
-	unknown obj_ref           = node->reference;
+	unknown* obj_ref         = node->reference;
 
 	dbg_assert(oitr->__cast == oarray_itr_cast);
 	dbg_assert(oitr->container == array);
@@ -737,7 +714,7 @@ void oarray_itr_remove(object o, iterator itr) {
 	return;
 }
 
-void oarray_insert_before(object o, iterator itr, const_unknown __ref) {
+void oarray_insert_before(Object* o, iterator itr, const unknown* __ref) {
 	struct oarray* array       = (struct oarray*)o;
 	struct oarray_itr* oitr    = (struct oarray_itr*)itr;
 	struct oarray_node* node   = container_of(oitr->current, struct oarray_node, link);
@@ -754,7 +731,7 @@ void oarray_insert_before(object o, iterator itr, const_unknown __ref) {
 	array->size ++;
 }
 
-void oarray_insert_after(object o, iterator itr, const_unknown __ref) {
+void oarray_insert_after(Object* o, iterator itr, const unknown* __ref) {
 	struct oarray* array       = (struct oarray*)o;
 	struct oarray_itr* oitr    = (struct oarray_itr*)itr;
 	struct oarray_node* node   = container_of(oitr->current, struct oarray_node, link);

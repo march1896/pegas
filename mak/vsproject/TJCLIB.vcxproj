@@ -250,6 +250,7 @@
     <ClInclude Include="..\..\src\cntr2\iset.h" />
     <ClInclude Include="..\..\src\cntr2\istack.h" />
     <ClInclude Include="..\..\src\cntr2\oallocator.h" />
+    <ClInclude Include="..\..\src\cntr2\oarray.h" />
     <ClInclude Include="..\..\src\cntr2\olist.h" />
     <ClInclude Include="..\..\src\cntr2\ollrb.h" />
     <ClInclude Include="..\..\src\cntr2\oo_model.h" />

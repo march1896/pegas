@@ -67,6 +67,8 @@ extern inline bool __is_interface(const unknown *x);
  * from object to interface, from interface to object, 
  * from interface to interface(not common in c++), from object to object(which will return NULL since we 
  * have only one layer of inherit, that is object inherit from interfaces.
+ *
+ * TODO: maybe we should change the type to _interface* (*)(const Object*, unique_id).
  */
 extern inline unknown* __cast(const unknown* x, unique_id id);
 

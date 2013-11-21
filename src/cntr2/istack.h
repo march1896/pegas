@@ -9,7 +9,7 @@ extern inline       void     istack_clear       (Object* obj);
 extern inline       void     istack_foreach     (Object* obj, pf_ref_process_v process, void* context);
 extern inline       int      istack_size        (const Object* obj);
 extern inline       bool     istack_empty       (const Object* obj);
-extern inline const unknown*  istack_top         (const Object* obj);
+extern inline const unknown* istack_top         (const Object* obj);
 extern inline       void     istack_push        (Object* obj, const unknown* __ref);
 extern inline       void     istack_pop         (Object* obj);
 
@@ -24,7 +24,7 @@ typedef       void     (*pf_istack_clear)       (Object* c);
 typedef       void     (*pf_istack_foreach)     (Object* c, pf_ref_process_v process, void* context);
 typedef       int      (*pf_istack_size)        (const Object* c);
 typedef       bool     (*pf_istack_empty)       (const Object* c);
-typedef const unknown*  (*pf_istack_top)         (const Object* c);
+typedef const unknown* (*pf_istack_top)         (const Object* c);
 typedef       void     (*pf_istack_push)        (Object* c, const unknown* object);
 typedef       void     (*pf_istack_pop)         (Object* c);
 

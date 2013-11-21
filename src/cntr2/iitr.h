@@ -17,9 +17,9 @@ enum iterator_position {
 #define itr_equals  iobject_equals
 
 /* itr_getvar return the reference to object on the global heap, you must destroy it on global default heap. */
-extern inline unknown*      itr_get_obj  (const_iterator itr);
+extern inline unknown*       itr_get_obj  (const_iterator itr);
 /* the object managed by the object will be destroyed, and a copy of __ref will replace its place */
-extern inline void          itr_set_obj  (iterator itr, const unknown* __ref);
+extern inline void           itr_set_obj  (iterator itr, const unknown* __ref);
 /* itr_get_ref return the object managed by the container internally, you can not modify it */
 extern inline const unknown* itr_get_ref  (const_iterator itr);
 /* TODO: there seems a relationship between readable and accessible, that is swap able, in which case, 
@@ -27,23 +27,23 @@ extern inline const unknown* itr_get_ref  (const_iterator itr);
 /* we would have a itr_set_ref, which set the ref managed by the container internally, but this will 
  * definitely cause memory leak, so we support another way of set_ref, called swap_ref, this api will
  * serve most case when we want to reorder the container */
-extern inline void          itr_swap_ref (iterator itr, iterator other);
-extern inline void          itr_to_prev  (iterator itr);
-extern inline void          itr_to_next  (iterator itr);
-extern inline void          itr_advance  (iterator itr, int length);
-extern inline int           itr_distance (const_iterator from, const_iterator to);
+extern inline void           itr_swap_ref (iterator itr, iterator other);
+extern inline void           itr_to_prev  (iterator itr);
+extern inline void           itr_to_next  (iterator itr);
+extern inline void           itr_advance  (iterator itr, int length);
+extern inline int            itr_distance (const_iterator from, const_iterator to);
 
 /* below is only useful for the container implementer */
 /* the virtual functions that each container should implement */
-typedef bool          (*pf_itr_equals)   (const_iterator itr_a, const_iterator itr_b);
-typedef unknown*      (*pf_itr_get_obj)  (const_iterator citr);
-typedef void          (*pf_itr_set_obj)  (iterator citr, const unknown* __ref);
+typedef bool           (*pf_itr_equals)   (const_iterator itr_a, const_iterator itr_b);
+typedef unknown*       (*pf_itr_get_obj)  (const_iterator citr);
+typedef void           (*pf_itr_set_obj)  (iterator citr, const unknown* __ref);
 typedef const unknown* (*pf_itr_get_ref)  (const_iterator citr);
-typedef void          (*pf_itr_swap_ref) (iterator citr, iterator other);
-typedef void          (*pf_itr_to_prev)  (iterator citr);
-typedef void          (*pf_itr_to_next)  (iterator citr);
-typedef void          (*pf_itr_advance)  (iterator citr, int length);
-typedef int           (*pf_itr_distance) (const_iterator citr_from, const_iterator citr_to);
+typedef void           (*pf_itr_swap_ref) (iterator citr, iterator other);
+typedef void           (*pf_itr_to_prev)  (iterator citr);
+typedef void           (*pf_itr_to_next)  (iterator citr);
+typedef void           (*pf_itr_advance)  (iterator citr, int length);
+typedef int            (*pf_itr_distance) (const_iterator citr_from, const_iterator citr_to);
 
 #define is_itrref(itr) (__cast(itr, ITR_REF_ID) != NULL)
 #define is_itracc(itr) (__cast(itr, ITR_ACC_ID) != NULL)

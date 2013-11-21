@@ -15,9 +15,9 @@ extern inline       void     iarray_remove_back     (Object* obj);
 extern inline       bool     iarray_contains        (const Object* obj, const unknown* __ref);
 extern inline       bool     iarray_remove          (Object* obj, const unknown* __ref);
 /* the return value is a reference managed by the iarray internally, modify it on your own risk */
-extern inline const unknown*  iarray_front           (const Object* obj);
-extern inline const unknown*  iarray_back            (const Object* obj);
-extern inline const unknown*  iarray_at              (const Object* obj, int index);
+extern inline const unknown* iarray_front           (const Object* obj);
+extern inline const unknown* iarray_back            (const Object* obj);
+extern inline const unknown* iarray_at              (const Object* obj, int index);
 
 /* return the begin iterator of the container, this iterator is constant, 
  * you could only use it for comparison, dereferencing.
@@ -45,10 +45,9 @@ typedef       void     (*pf_iarray_clear)        (Object* obj);
 typedef       void     (*pf_iarray_foreach)      (Object* obj, pf_ref_process_v process, void* context);
 typedef       int      (*pf_iarray_size)         (const Object* obj);
 typedef       bool     (*pf_iarray_empty)        (const Object* obj);
-typedef const unknown*  (*pf_iarray_front)        (const Object* obj);
-typedef const unknown*  (*pf_iarray_back)         (const Object* obj);
-typedef const unknown*  (*pf_iarray_front)        (const Object* obj);
-typedef const unknown*  (*pf_iarray_at)           (const Object* obj, int index);
+typedef const unknown* (*pf_iarray_front)        (const Object* obj);
+typedef const unknown* (*pf_iarray_back)         (const Object* obj);
+typedef const unknown* (*pf_iarray_at)           (const Object* obj, int index);
 typedef       void     (*pf_iarray_add_front)    (Object* obj, const unknown* n_ref);
 typedef       void     (*pf_iarray_add_back)     (Object* obj, const unknown* n_ref);
 typedef       void     (*pf_iarray_remove_front) (Object* obj);
