@@ -10,6 +10,7 @@ typedef const void*  const_unknown;
 typedef void*        address;
 typedef unsigned int unique_id;
 typedef unsigned int hashcode;
+typedef int          compres;
 
 typedef unknown (*pf_cast)(unknown obj, unique_id type_id);
 

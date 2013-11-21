@@ -23,6 +23,7 @@
 #define IMSET_ID   0X0A0B0C05
 #define IMAP_ID    0X0A0B0C06
 #define IMMAP_ID   0X0A0B0C07
+#define IARRAY_ID  0X0A0B0C08
 
 #include <oo_model.h>
 

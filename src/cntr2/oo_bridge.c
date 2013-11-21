@@ -8,7 +8,7 @@ static unknown pointer_clone(const_unknown ref_x, pf_alloc alc, void* heap) {
 static void pointer_destroy(const_unknown ref_x, pf_dealloc dlc, void* heap) {
 	/* no need to destroy */
 }
-static int pointer_compare_to(const_unknown ref_x, const_unknown ref_y) {
+static compres pointer_compare_to(const_unknown ref_x, const_unknown ref_y) {
 	/* just use the address to compare */
 	if (ref_x < ref_y) 
 		return -1;
@@ -40,7 +40,7 @@ static unknown int_clone(const_unknown ref_x, pf_alloc alc, void* heap) {
 static void int_destroy(const_unknown ref_x, pf_dealloc dlc, void* heap) {
 	dealloc(dlc, heap, (void*)ref_x);
 }
-static int int_compare_to(const_unknown ref_x, const_unknown ref_y) {
+static compres int_compare_to(const_unknown ref_x, const_unknown ref_y) {
 	int x = *(int*)ref_x;
 	int y = *(int*)ref_y;
 

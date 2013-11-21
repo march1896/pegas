@@ -7,11 +7,11 @@
 extern inline       void     ilist_clear           (object obj);
 extern inline       void     ilist_foreach         (object obj, pf_ref_process_v process, void* context);
 extern inline       int      ilist_size            (const_object obj);
-extern inline       void     ilist_add_front       (object obj, const_unknown __ref);
 extern inline       bool     ilist_empty           (const_object obj);
 /* the return value is a reference managed by the ilist internally, modify it on your own risk */
 extern inline const_unknown  ilist_front           (const_object obj);
 extern inline const_unknown  ilist_back            (const_object obj);
+extern inline       void     ilist_add_front       (object obj, const_unknown __ref);
 extern inline       void     ilist_add_back        (object obj, const_unknown __ref);
 extern inline       void     ilist_remove_front    (object obj);
 extern inline       void     ilist_remove_back     (object obj);

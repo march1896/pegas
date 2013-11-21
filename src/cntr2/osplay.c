@@ -299,7 +299,7 @@ static unknown osplay_itr_cast(unknown x, unique_id inf_id) {
 	return NULL;
 }
 
-static int osplay_splaylink_compare(const struct splaylink* a, const struct splaylink* b, void* param) {
+static compres osplay_splaylink_compare(const struct splaylink* a, const struct splaylink* b, void* param) {
 	pf_ref_compare ref_comp = (pf_ref_compare)param;
 
 	struct osplay_node* node_a = container_of(a, struct osplay_node, link);
