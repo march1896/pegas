@@ -44,9 +44,10 @@ struct oarray {
 	unknown_traits                content_traits;
 
 	void*                         buffer;
-	int                           length;
+	int                           buffer_length;
 	int                           idx_start;
 	int                           idx_end;
+	int                           threshhold; /* minimum buffer length */
 
 	/* methods to manage the inner memory use by the container */
 	allocator                     allocator;
@@ -304,6 +305,7 @@ Object* cntr_create_array_a(unknown_traits content_traits, allocator alc) {
 	return oarray_create(content_traits, alc);
 }
 
+static void oarray_adjust_buffer(struct oarray *array);
 static void oarray_itr_com_init(struct oarray_itr* itr, struct oarray* list);
 Object* oarray_create(unknown_traits content_traits, allocator alc) {
 	struct oarray* array = NULL;
@@ -330,6 +332,13 @@ Object* oarray_create(unknown_traits content_traits, allocator alc) {
 
 	array->size = 0;
 	array->content_traits = content_traits;
+	array->buffer = NULL;
+	array->buffer_length = 0;
+	array->idx_start = 0;
+	array->idx_end = 0;
+	array->threshhold = 16;
+
+	oarray_adjust_buffer(array);
 
 	array->allocator = alc;
 	array->allocator_join_ondispose = managed_allocator;
@@ -341,23 +350,60 @@ Object* oarray_create(unknown_traits content_traits, allocator alc) {
 }
 
 static void oarray_adjust_buffer(struct oarray *array) {
-	int count = 0;
 	int n_length = -1;
-	if (array->idx_start == array->idx_end) {
-		count = array->size;
-	} else if (array->idx_start < array->idx_end) {
-		count = array->idx_end - array->idx_start;
-	} else {
-		count = array->length - (array->idx_start - array->idx_end);
+	void* n_buffer = NULL;
+	int threshhold = array->threshhold;
+
+	if (array->buffer == NULL) {
+		/* initialization */
+		array->buffer = allocator_alloc(array->allocator, threshhold);
+		array->buffer_length = threshhold;
+		array->idx_start = 0;
+		array->idx_end = 0;
+		return;
 	}
 
-	if (count == array->size) {
-		/* expand the buffer to doulbe size */
-		n_length = 2 * count;
-	} else if (count < array->length / 4) {
-		/* shrink the buffer to half of the size */
-		n_length = array->length / 2;
+	if (array->idx_start <= array->idx_end) {
+		dbg_assert(array->size == array->idx_end - array->idx_start);
+	} else {
+		dbg_assert(array->size == array->buffer_length - (array->idx_start - array->idx_end));
 	}
+
+	if (array->size == array->buffer_length) {
+		/* expand the buffer to doulbe size */
+		n_length = 2 * array->size;
+	} else if (array->size < array->buffer_length / 4) {
+		/* shrink the buffer to half of the size */
+		n_length = array->buffer_length / 2;
+
+		n_length = n_length < threshhold ? threshhold : n_length;
+	} else {
+		/* no need to change the buffer size */
+		return;
+	}
+	dbg_assert(array->size == array->buffer_length || array->size <= array->buffer_length / 4);
+	dbg_assert(array->size <= n_length/2);
+
+	if (n_length == array->buffer_length) {
+		/* in case we touch the minimum threshhold */
+		return;
+	}
+
+	n_buffer = allocator_alloc(array->allocator, n_length);
+	if (array->idx_start <= array->idx_end) {
+		memcpy(n_buffer, array->buffer + array->idx_start, sizeof(void*) * array->size);
+	} else {
+		int tail_len = array->buffer_length - array->idx_end;
+		int head_len = array->idx_start;
+		memcpy(n_buffer, array->buffer + array->idx_start, sizeof(void*) * tail_len);
+		memcpy(n_buffer + tail_len, array->buffer, sizeof(void*) * head_len);
+	}
+
+	allocator_dealloc(array->allocator, array->buffer);
+	array->buffer = n_buffer;
+	array->buffer_length = n_length;
+	array->idx_start = 0;
+	array->idx_end = array->size;
 }
 
 void oarray_destroy(Object* o) {
@@ -366,6 +412,8 @@ void oarray_destroy(Object* o) {
 	bool join_alc = array->allocator_join_ondispose;
 
 	oarray_clear(o);
+
+	allocator_dealloc(array->allocator, array->buffer);
 	allocator_dealloc(array->allocator, array);
 
 	if (join_alc) {
@@ -385,41 +433,31 @@ hashcode oarray_hashcode(const Object* o) {
 	return 0;
 }
 
-static void arraylink_dispose(struct listlink* link, void* context) {
-	struct oarray_node* node = container_of(link, struct oarray_node, link);
-	struct oarray* array = (struct oarray*)context;
-
-	/* first destroy the reference */
-	array->content_traits.__destroy(node->reference, (pf_dealloc)allocator_release, array->allocator);
-
-	/* delete the node it self */
-	allocator_dealloc(array->allocator, node);
-}
 void oarray_clear(Object* o) {
 	struct oarray* array = (struct oarray*)o;
+	int i = 0;
 
-	list_foreach_v(&array->sentinel, arraylink_dispose, (void*)array);
+	for (i = 0; i < array->size; i ++) {
+		int index = (array->idx_start + i) % array->buffer_length;
 
-	list_init(&array->sentinel);
+		array->content_traits.__destroy(array->buffer[index], (pf_dealloc)allocator_release, array->allocator);
+	}
+
 	array->size = 0;
+	array->idx_end = array->idx_start;
+
+	oarray_adjust_buffer(array);
 }
 
-struct array_foreach_pack {
-	pf_ref_process_v callback;
-	void*            context;
-};
-static void arraylink_foreach_v(struct listlink* link, void* context) {
-	struct oarray_node* node = container_of(link, struct oarray_node, link);
-	struct array_foreach_pack* pack = (struct array_foreach_pack*)context;
-
-	dbg_assert(pack->callback);
-	pack->callback(node->reference, pack->context);
-}
 void oarray_foreach(Object* o, pf_ref_process_v process, void* context) {
 	struct oarray* array = (struct oarray*)o;
-	struct array_foreach_pack pack = { process, context	};
+	int i = 0;
 
-	list_foreach_v(&array->sentinel, arraylink_foreach_v, (void*)&pack);
+	for (i = 0; i < array->size; i ++) {
+		int index = (array->idx_start + i) % array->buffer_length;
+
+		process(array->buffer[index], context);;
+	}
 }
 
 int oarray_size(const Object* o) {
@@ -436,47 +474,60 @@ bool oarray_empty(const Object* o) {
 
 const unknown* oarray_front(const Object* o) {
 	const struct oarray* array = (const struct oarray*)o;
-	struct oarray_node* n_node = NULL;
 
 	if (array->size == 0) {
 		return NULL;
 	}
 
-	n_node = container_of(array->sentinel.next, struct oarray_node, link);
-
-	//return array->content_traits.__clone(n_node->reference, __global_default_alloc, __global_default_heap);
-	return n_node->reference;
+	return array->buffer[array->idx_start];
 }
 
 const unknown* oarray_back(const Object* o) {
 	const struct oarray* array = (const struct oarray*)o;
-	struct oarray_node* n_node = NULL;
 
 	if (array->size == 0) {
 		return NULL;
 	}
 
-	n_node = container_of(array->sentinel.prev, struct oarray_node, link);
-
-	//return array->content_traits.__clone(n_node->reference, __global_default_alloc, __global_default_heap);
-	return n_node->reference;
+	return array->buffer[array->idx_end];
 }
 
 const unknown* oarray_at(const Object* o, int index) {
+	const struct oarray* array = (const struct oarray*)o;
+
+	if (index >= 0) {
+		if (index >= array->size) 
+			return NULL;
+
+		index = (array->idx_start + index) % array->buffer_length;
+	}
+	if (index < 0) {
+		if (index < -array->size)
+			return NULL;
+
+		index = (array->idx_end + index + 1);
+		if (index < 0)
+			index += array->buffer_length;
+		dbg_assert(index >= 0 && index < array->buffer_length);
+	}
+
+
+	return array->buffer[index];
 }
 
 void oarray_add_front(Object* o, const unknown* __ref) {
 	struct oarray* array = (struct oarray*)o;
+	array->idx_start --;
+	if (array->idx_start < 0) 
+		array->idx_start += array->buffer_length;
 
-	struct oarray_node* n_node = (struct oarray_node*)
-		allocator_alloc(array->allocator, sizeof(struct oarray_node));
-
-	n_node->reference = array->content_traits.__clone(__ref, (pf_alloc)allocator_acquire, array->allocator);
-
-	list_insert_front(&array->sentinel, &n_node->link);
+	array->buffer[array->idx_start] = array->content_traits.__clone(__ref, (pf_alloc)allocator_acquire, array->allocator);
 	array->size ++;
+
+	oarray_adjust_buffer(array);
 }
 
+/* TODO: working from here */
 void oarray_add_back(Object* o, const unknown* __ref) {
 	struct oarray* array = (struct oarray*)o;
 
