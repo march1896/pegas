@@ -18,13 +18,13 @@ static void __correctness_test() {
 	}
 	
 	{
-		iqueue queue = cntr_create_oarray(int_traits);
+		iqueue queue = cntr_create_oarray(&int_traits);
 		queue_test_basic(queue);
 		iobject_destroy(queue);
 	}	
 
 	{
-		istack stack = cntr_create_oarray(int_traits);
+		istack stack = cntr_create_oarray(&int_traits);
 		stack_test_basic(stack);
 		iobject_destroy(stack);
 	}	

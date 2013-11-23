@@ -5,9 +5,9 @@
 #include <cntr2/oallocator.h>
 
 /* if alc is NULL, create_v will create an osplay with multi-pool allocator to gain best efficiency */
-Object*          splayset_create          (unknown_traits content_traits, allocator alc);
+Object*         splayset_create          (unknown_traits* content_traits, allocator alc);
 void            splayset_destroy         (Object* o);
-Object*          splayset_clone           (const Object* o);
+Object*         splayset_clone           (const Object* o);
 bool            splayset_equals          (const Object* o, const Object* other);
 int             splayset_compare_to      (const Object* o, const Object* other);
 hashcode        splayset_hashcode        (const Object* o);

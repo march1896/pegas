@@ -360,16 +360,16 @@ static unknown* oarray_itr_cast(unknown* x, unique_id inf_id) {
 	return NULL;
 }
 
-Object* cntr_create_oarray(unknown_traits content_traits) {
+Object* cntr_create_oarray(unknown_traits* content_traits) {
 	return oarray_create(content_traits, __global_default_allocator);
 }
-Object* cntr_create_oarray_a(unknown_traits content_traits, allocator alc) {
+Object* cntr_create_oarray_a(unknown_traits* content_traits, allocator alc) {
 	return oarray_create(content_traits, alc);
 }
 
 static void oarray_adjust_buffer(struct oarray *a);
 static void oarray_itr_com_init(struct oarray_itr* itr, struct oarray* list);
-Object* oarray_create(unknown_traits content_traits, allocator alc) {
+Object* oarray_create(unknown_traits* traits, allocator alc) {
 	struct oarray* a = NULL;
 	bool managed_allocator = false;
 
@@ -393,7 +393,13 @@ Object* oarray_create(unknown_traits content_traits, allocator alc) {
 	a->__iftable[e_stack].__vtable  = &__array_istack_vtable;
 
 	a->size = 0;
-	a->content_traits = content_traits;
+
+	a->content_traits.__destroy    = traits->__destroy;
+	a->content_traits.__clone      = traits->__clone;
+	a->content_traits.__compare_to = traits->__compare_to;
+	a->content_traits.__equals     = traits->__equals;
+	a->content_traits.__hashcode   = traits->__hashcode;
+
 	a->buffer = NULL;
 	a->buffer_length = 0;
 	a->idx_start = 0;

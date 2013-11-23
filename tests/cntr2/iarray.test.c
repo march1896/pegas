@@ -277,32 +277,32 @@ static void array_test_basic_operation(Object* a, address td_repo[], unknown_tra
 }
 
 void array_test_basic() {
-	Object* a = cntr_create_oarray(int_traits);
+	Object* a = cntr_create_oarray(&int_traits);
 	array_test_basic_operation(a, int_repo, &int_traits);
 	array_test_basic_itr_operation(a, int_repo, &int_traits);
 	iobject_destroy(a);
 
-	a = cntr_create_oarray(longint_traits);
+	a = cntr_create_oarray(&longint_traits);
 	array_test_basic_operation(a, longint_repo, &longint_traits);
 	array_test_basic_itr_operation(a, longint_repo, &longint_traits);
 	iobject_destroy(a);
 
-	a = cntr_create_oarray(float_traits);
+	a = cntr_create_oarray(&float_traits);
 	array_test_basic_operation(a, float_repo, &float_traits);
 	array_test_basic_itr_operation(a, float_repo, &float_traits);
 	iobject_destroy(a);
 
-	a = cntr_create_oarray(double_traits);
+	a = cntr_create_oarray(&double_traits);
 	array_test_basic_operation(a, double_repo, &double_traits);
 	array_test_basic_itr_operation(a, double_repo, &double_traits);
 	iobject_destroy(a);
 
-	a = cntr_create_oarray(char_traits);
+	a = cntr_create_oarray(&char_traits);
 	array_test_basic_operation(a, char_repo, &char_traits);
 	array_test_basic_itr_operation(a, char_repo, &char_traits);
 	iobject_destroy(a);
 
-	a = cntr_create_oarray(string_traits);
+	a = cntr_create_oarray(&string_traits);
 	array_test_basic_operation(a, string_repo, &string_traits);
 	array_test_basic_itr_operation(a, string_repo, &string_traits);
 	iobject_destroy(a);

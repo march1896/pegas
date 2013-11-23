@@ -331,15 +331,15 @@ static unknown* o_dlist_itr_cast(unknown* x, unique_id inf_id) {
 	return NULL;
 }
 
-Object* cntr_create_olist(unknown_traits content_traits) {
+Object* cntr_create_olist(unknown_traits* content_traits) {
 	return olist_create(content_traits, __global_default_allocator);
 }
-Object* cntr_create_olist_a(unknown_traits content_traits, allocator alc) {
+Object* cntr_create_olist_a(unknown_traits* content_traits, allocator alc) {
 	return olist_create(content_traits, alc);
 }
 
 static void o_dlist_itr_com_init(struct o_dlist_itr* itr, struct o_dlist* list);
-Object* olist_create(unknown_traits content_traits, allocator alc) {
+Object* olist_create(unknown_traits* traits, allocator alc) {
 	struct o_dlist* olist = NULL;
 	bool managed_allocator = false;
 
@@ -365,7 +365,11 @@ Object* olist_create(unknown_traits content_traits, allocator alc) {
 	list_init(&olist->sentinel);
 	olist->size    = 0;
 
-	olist->content_traits = content_traits;
+	olist->content_traits.__destroy    = traits->__destroy;
+	olist->content_traits.__clone      = traits->__clone;
+	olist->content_traits.__compare_to = traits->__compare_to;
+	olist->content_traits.__equals     = traits->__equals;
+	olist->content_traits.__hashcode   = traits->__hashcode;
 
 	olist->allocator = alc;
 	olist->allocator_join_ondispose = managed_allocator;

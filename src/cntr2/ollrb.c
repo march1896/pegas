@@ -314,7 +314,7 @@ static compres ollrb_llrblink_compare(const struct llrblink* a, const struct llr
 }
 
 static void ollrb_itr_com_init(struct ollrb_itr* itr, struct ollrb* list);
-static Object* ollrb_create_internal(unknown_traits content_traits, allocator alc) {
+static Object* ollrb_create_internal(unknown_traits* traits, allocator alc) {
 	struct ollrb* ollrb = NULL;
 	bool managed_allocator = false;
 
@@ -336,8 +336,12 @@ static Object* ollrb_create_internal(unknown_traits content_traits, allocator al
 	ollrb->__iftable[e_mset].__vtable = &__ollrb_imset_vtable;
 
 	ollrb->size            = 0;
-	dbg_assert(content_traits.__compare_to != NULL);
-	ollrb->content_traits  = content_traits;
+	dbg_assert(traits->__compare_to != NULL);
+	ollrb->content_traits.__destroy    = traits->__destroy;
+	ollrb->content_traits.__clone      = traits->__clone;
+	ollrb->content_traits.__compare_to = traits->__compare_to;
+	ollrb->content_traits.__equals     = traits->__equals;
+	ollrb->content_traits.__hashcode   = traits->__hashcode;
 
 	ollrb->root            = NULL;
 	ollrb->sentinel.left   = NULL;
@@ -356,15 +360,15 @@ static Object* ollrb_create_internal(unknown_traits content_traits, allocator al
 	return (Object*)ollrb;
 }
 
-Object* ollrb_create(unknown_traits content_traits, allocator alc) {
+Object* ollrb_create(unknown_traits* content_traits, allocator alc) {
 	return ollrb_create_internal(content_traits, alc);
 }
 
 /* from ifactory.h  */
-Object* cntr_create_ollrb(unknown_traits content_traits) {
+Object* cntr_create_ollrb(unknown_traits* content_traits) {
 	return ollrb_create_internal(content_traits, __global_default_allocator);
 }
-Object* cntr_create_ollrb_a(unknown_traits content_traits, allocator alc) {
+Object* cntr_create_ollrb_a(unknown_traits* content_traits, allocator alc) {
 	return ollrb_create_internal(content_traits, alc);
 }
 

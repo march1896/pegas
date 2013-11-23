@@ -5,7 +5,7 @@
 #include <cntr2/oallocator.h>
 
 /* create an object list which holds instance of objects, the container will manage the life time of the objects. */
-Object*        olist_create          (unknown_traits content_traits, allocator alc);
+Object*        olist_create          (unknown_traits* content_traits, allocator alc);
 
 void           olist_destroy         (      Object* o);
 Object*        olist_clone           (const Object* o);

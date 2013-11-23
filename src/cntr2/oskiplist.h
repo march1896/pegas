@@ -5,10 +5,10 @@
 #include <cntr2/oallocator.h>
 
 /* if alc is NULL, create_v will create an osplay with multi-pool allocator to gain best efficiency */
-Object*   oslist_create          (unknown_traits content_traits, allocator alc);
+Object*  oslist_create          (unknown_traits* content_traits, allocator alc);
 
 void     oslist_destroy         (Object* o);
-Object*   oslist_clone           (const Object* o);
+Object*  oslist_clone           (const Object* o);
 bool     oslist_equals          (const Object* o, const Object* other);
 int      oslist_compare_to      (const Object* o, const Object* other);
 hashcode oslist_hashcode        (const Object* o);

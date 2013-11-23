@@ -5,7 +5,7 @@
 #include <cntr2/oallocator.h>
 
 /* create an Object* list which holds instance of Object*s, the container will manage the life time of the Object*s. */
-Object*        oarray_create          (unknown_traits content_traits, allocator alc);
+Object*        oarray_create          (unknown_traits* content_traits, allocator alc);
 
 void           oarray_destroy         (      Object* cntr);
 Object*        oarray_clone           (const Object* cntr);

@@ -5,10 +5,10 @@
 #include <cntr2/oallocator.h>
 
 /* if alc is NULL, create will create an osplay with multi-pool allocator to gain best efficiency */
-Object*   ollrb_create          (unknown_traits content_traits, allocator alc);
+Object*  ollrb_create          (unknown_traits* content_traits, allocator alc);
 
 void     ollrb_destroy         (Object* o);
-Object*   ollrb_clone           (const Object* o);
+Object*  ollrb_clone           (const Object* o);
 bool     ollrb_equals          (const Object* o, const Object* other);
 int      ollrb_compare_to      (const Object* o, const Object* other);
 hashcode ollrb_hashcode        (const Object* o);

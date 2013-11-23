@@ -287,7 +287,7 @@ static unknown* oslist_itr_cast(unknown* x, unique_id inf_id) {
 }
 
 static void oslist_itr_com_init(struct oslist_itr* itr, struct oslist* list);
-Object* oslist_create_internal(unknown_traits content_traits, allocator alc) {
+Object* oslist_create_internal(unknown_traits* traits, allocator alc) {
 	struct oslist* oskiplist = NULL;
 	bool managed_allocator = false;
 
@@ -310,11 +310,15 @@ Object* oslist_create_internal(unknown_traits content_traits, allocator alc) {
 
 	oskiplist->size      = 0;
 
-	dbg_assert(content_traits.__compare_to != NULL);
-	oskiplist->content_traits = content_traits;
+	dbg_assert(traits->__compare_to != NULL);
+	oskiplist->content_traits.__destroy    = traits->__destroy;
+	oskiplist->content_traits.__clone      = traits->__clone;
+	oskiplist->content_traits.__compare_to = traits->__compare_to;
+	oskiplist->content_traits.__equals     = traits->__equals;
+	oskiplist->content_traits.__hashcode   = traits->__hashcode;
 
 	oskiplist->driver_skiplist = 
-		skiplist_create_a((pf_skiplist_compare)content_traits.__compare_to, (pf_alloc)allocator_acquire, (pf_dealloc)allocator_release, alc);
+		skiplist_create_a((pf_skiplist_compare)traits->__compare_to, (pf_alloc)allocator_acquire, (pf_dealloc)allocator_release, alc);
 
 	oskiplist->allocator = alc;
 	oskiplist->allocator_join_ondispose = managed_allocator;
@@ -326,14 +330,14 @@ Object* oslist_create_internal(unknown_traits content_traits, allocator alc) {
 	return (Object*)oskiplist;
 }
 
-Object* oslist_create(unknown_traits content_traits, allocator alc) {
+Object* oslist_create(unknown_traits* content_traits, allocator alc) {
 	return oslist_create_internal(content_traits, alc);
 }
 
-Object* cntr_create_oskiplist(unknown_traits content_traits) {
+Object* cntr_create_oskiplist(unknown_traits* content_traits) {
 	return oslist_create_internal(content_traits, __global_default_allocator);
 }
-Object* cntr_create_oskiplist_a(unknown_traits content_traits, allocator alc) {
+Object* cntr_create_oskiplist_a(unknown_traits* content_traits, allocator alc) {
 	return oslist_create_internal(content_traits, alc);
 }
 

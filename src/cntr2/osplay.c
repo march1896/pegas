@@ -309,7 +309,7 @@ static compres osplay_splaylink_compare(const struct splaylink* a, const struct 
 }
 
 static void osplay_itr_com_init(struct osplay_itr* itr, struct osplay* list);
-static Object* splayset_create_internal(unknown_traits content_traits, allocator alc) {
+static Object* splayset_create_internal(unknown_traits* traits, allocator alc) {
 	struct osplay* osplay = NULL;
 	bool managed_allocator = false;
 
@@ -333,8 +333,12 @@ static Object* splayset_create_internal(unknown_traits content_traits, allocator
 	osplay->size      = 0;
 
 	// make sure the content is comparable.
-	dbg_assert(content_traits.__compare_to != NULL);
-	osplay->content_traits = content_traits;
+	dbg_assert(traits->__compare_to != NULL);
+	osplay->content_traits.__destroy    = traits->__destroy;
+	osplay->content_traits.__clone      = traits->__clone;
+	osplay->content_traits.__compare_to = traits->__compare_to;
+	osplay->content_traits.__equals     = traits->__equals;
+	osplay->content_traits.__hashcode   = traits->__hashcode;
 
 	osplay->root      = NULL;
 	osplay->sentinel.left   = NULL;
@@ -351,15 +355,15 @@ static Object* splayset_create_internal(unknown_traits content_traits, allocator
 	return (Object*)osplay;
 }
 
-Object* splayset_create(unknown_traits content_traits, allocator alc) {
+Object* splayset_create(unknown_traits* content_traits, allocator alc) {
 	return splayset_create_internal(content_traits, alc);
 }
 
 /* from ifactory.h  */
-Object* cntr_create_osplay(unknown_traits content_traits) {
+Object* cntr_create_osplay(unknown_traits* content_traits) {
 	return splayset_create_internal(content_traits, __global_default_allocator);
 }
-Object* cntr_create_osplay_a(unknown_traits content_traits, allocator alc) {
+Object* cntr_create_osplay_a(unknown_traits* content_traits, allocator alc) {
 	return splayset_create_internal(content_traits, alc);
 }
 
