@@ -246,6 +246,7 @@ static void o_dlist_itr_swap_ref(iterator citr, iterator other) {
 	dbg_assert(itr_a->__cast == o_dlist_itr_cast);
 	dbg_assert(itr_b->__cast == o_dlist_itr_cast);
 	dbg_assert(itr_a->current != NULL && itr_b->current != NULL);
+	dbg_assert(itr_a->container == itr_b->container);
 
 	temp = node_a->reference;
 	node_a->reference = node_b->reference;

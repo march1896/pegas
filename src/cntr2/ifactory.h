@@ -14,6 +14,9 @@
 
 /* if create without allocator, it will use the global_default_allocator
  * if the alc == NULL, the create_a will create with a multi-poll allocator for best efficiency */
+Object* cntr_create_oarray(unknown_traits content_traits);
+Object* cntr_create_oarray_a(unknown_traits content_traits, allocator alc);
+
 Object* cntr_create_olist(unknown_traits content_traits);
 Object* cntr_create_olist_a(unknown_traits content_traits, allocator alc);
 

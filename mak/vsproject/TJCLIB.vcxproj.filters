@@ -100,6 +100,9 @@
     <ClCompile Include="..\..\src\cntr2\iarray.c">
       <Filter>Source Files\cntr2</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\cntr2\oarray.c">
+      <Filter>Source Files\cntr2</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

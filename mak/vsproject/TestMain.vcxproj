@@ -280,6 +280,7 @@
     <ClCompile Include="..\..\tests\cntr2\iset.test.c" />
     <ClCompile Include="..\..\tests\cntr2\istack.test.c" />
     <ClCompile Include="..\..\tests\cntr2\oallocator.test.c" />
+    <ClCompile Include="..\..\tests\cntr2\oarray.test.c" />
     <ClCompile Include="..\..\tests\cntr2\olist.test.c" />
     <ClCompile Include="..\..\tests\cntr2\ollrb.test.c" />
     <ClCompile Include="..\..\tests\cntr2\oskiplist.test.c" />

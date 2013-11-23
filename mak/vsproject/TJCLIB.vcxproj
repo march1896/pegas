@@ -213,6 +213,7 @@
     <ClCompile Include="..\..\src\cntr2\iset.c" />
     <ClCompile Include="..\..\src\cntr2\istack.c" />
     <ClCompile Include="..\..\src\cntr2\oallocator.c" />
+    <ClCompile Include="..\..\src\cntr2\oarray.c" />
     <ClCompile Include="..\..\src\cntr2\olist.c" />
     <ClCompile Include="..\..\src\cntr2\ollrb.c" />
     <ClCompile Include="..\..\src\cntr2\oo_model.c" />
