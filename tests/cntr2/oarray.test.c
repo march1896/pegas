@@ -8,17 +8,13 @@
 #include "cntr2/ifactory.h"
 
 #include "test_util.h"
-//#include "cntr2/iarray.test.h"
+#include "cntr2/iarray.test.h"
 #include "cntr2/iqueue.test.h"
 #include "cntr2/istack.test.h"
 
 static void __correctness_test() {
 	{
-		/*
-		Object* a = cntr_create_oarray(int_traits);
-		array_test_basic(a);
-		iobject_destroy(a);
-		*/
+		array_test_basic();
 	}
 	
 	{

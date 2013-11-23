@@ -73,6 +73,12 @@
     <ClCompile Include="..\..\tests\cntr2\oarray.test.c">
       <Filter>Source Files\cntr2</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tests\cntr2\iarray.test.c">
+      <Filter>Source Files\cntr2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\cntr2\ele.data.c">
+      <Filter>Source Files\cntr2</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
@@ -112,6 +118,12 @@
     </ClInclude>
     <ClInclude Include="..\..\tests\util\tree_link.util.h">
       <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\cntr2\iarray.test.h">
+      <Filter>Source Files\cntr2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\cntr2\ele.data.h">
+      <Filter>Source Files\cntr2</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

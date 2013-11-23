@@ -397,7 +397,7 @@ Object* oarray_create(unknown_traits content_traits, allocator alc) {
 	a->buffer = NULL;
 	a->buffer_length = 0;
 	a->idx_start = 0;
-	a->threshhold = 16;
+	a->threshhold = 4;
 
 	a->allocator = alc;
 	a->allocator_join_ondispose = managed_allocator;
@@ -426,7 +426,7 @@ static void oarray_adjust_buffer(struct oarray *a) {
 	}
 
 	if (a->size >= a->buffer_length) {
-		/* expand the buffer to doulbe size */
+		/* expand the buffer to double size */
 		dbg_assert(a->size == a->buffer_length);
 		n_length = 2 * a->size;
 	} else if (a->size < a->buffer_length / 4) {
@@ -641,13 +641,12 @@ static void oarray_remove_at(struct oarray* a, int index) {
 		a->idx_start = (a->idx_start + 1) % a->buffer_length;
 	}
 	else {
-		/* shift the content from idx_start to index */
-		while (index > 0) {
+		/* shift the content from index to end*/
+		while (index + 1 < a->size) {
 			a->buffer[(idx + blen) % blen] = a->buffer[(idx+1+blen) % blen];
 			idx ++;
-			index --;
+			index ++;
 		}
-		a->idx_start = (a->idx_start - 1 + a->buffer_length) % a->buffer_length;
 	}
 }
 
@@ -757,7 +756,7 @@ void oarray_itr_assign(const Object* o, iterator __itr, itr_pos pos) {
 void oarray_itr_find(const Object* o, iterator itr, const unknown* __ref) {
 	struct oarray* a    = (struct oarray*)o;
 	struct oarray_itr* oitr = (struct oarray_itr*)itr;
-	int i = 0, index = 0;
+	int i = 0;
 
 	/* make sure the type information is right */
 	dbg_assert(itr->__iftable[itr_interface_iterator].__offset == (address)itr_interface_iterator);
@@ -771,7 +770,7 @@ void oarray_itr_find(const Object* o, iterator itr, const unknown* __ref) {
 		}
 	}
 
-	oitr->current = index;
+	oitr->current = i;
 }
 
 void oarray_itr_remove(Object* o, iterator itr) {
@@ -784,7 +783,6 @@ void oarray_itr_remove(Object* o, iterator itr) {
 	dbg_assert(oitr->current != -1);
 	dbg_assert(index >= 0 && index < a->size);
 
-	a->content_traits.__destroy(*BUFFER_AT(a, index), (pf_dealloc)allocator_release, a->allocator);
 	oarray_remove_at(a, index);
 
 	a->size --;

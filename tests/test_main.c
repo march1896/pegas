@@ -7,9 +7,10 @@ extern void heap_all_test();
 extern void cntr2_all_test();
 /*extern void cntr_all_test();*/
 
+#include <stdio.h>
 int main() {
-	unsigned int iseed = (unsigned int)time(NULL);
-	srand (iseed);
+ 	unsigned int iseed = (unsigned int)time(NULL);
+ 	srand (iseed);
 
 #if defined(_DEBUG) || defined(DEBUG) 
 	g_use_file = true;

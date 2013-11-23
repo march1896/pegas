@@ -274,6 +274,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\tests\cntr2\all.test.c" />
+    <ClCompile Include="..\..\tests\cntr2\ele.data.c" />
+    <ClCompile Include="..\..\tests\cntr2\iarray.test.c" />
     <ClCompile Include="..\..\tests\cntr2\ilist.test.c" />
     <ClCompile Include="..\..\tests\cntr2\imset.test.c" />
     <ClCompile Include="..\..\tests\cntr2\iqueue.test.c" />
@@ -304,6 +306,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\tests\cntr2\ele.data.h" />
+    <ClInclude Include="..\..\tests\cntr2\iarray.test.h" />
     <ClInclude Include="..\..\tests\cntr2\ilist.test.h" />
     <ClInclude Include="..\..\tests\cntr2\imset.test.h" />
     <ClInclude Include="..\..\tests\cntr2\iqueue.test.h" />

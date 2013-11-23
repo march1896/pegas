@@ -30,12 +30,12 @@ typedef struct unknown_traits_t {
 typedef long long longint;
 extern unknown_traits pointer_traits;
 extern unknown_traits int_traits;
-extern unknown_traits long_traits;
-extern unknown_traits longlong_traits;
+extern unknown_traits longint_traits;
 extern unknown_traits float_traits;
 extern unknown_traits double_traits;
 extern unknown_traits char_traits;
 extern unknown_traits bool_traits;
+extern unknown_traits string_traits;
 
 typedef void (*pf_ref_visit)(const unknown* __ref);
 typedef void (*pf_ref_visit_v)(const unknown* __ref, void* context);
