@@ -12,7 +12,7 @@
  * td_type* td_repo = td_int_repo;
  */
 
-#define TD_NUM 10000
+#define TD_NUM 100000
 #define TD_STRING_MAX_LENGTH 30
 extern address int_repo[TD_NUM];
 extern address longint_repo[TD_NUM];

@@ -11,6 +11,7 @@ extern void cntr2_all_test();
 int main() {
  	unsigned int iseed = (unsigned int)time(NULL);
  	srand (iseed);
+	//printf("%d\n", iseed);
 
 #if defined(_DEBUG) || defined(DEBUG) 
 	g_use_file = true;

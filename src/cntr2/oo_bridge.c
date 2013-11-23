@@ -219,8 +219,8 @@ static void string_destroy(const unknown* ref_x, pf_dealloc dlc, void* heap) {
 	dealloc(dlc, heap, (void*)ref_x);
 }
 static compres string_compare_to(const unknown* ref_x, const unknown* ref_y) {
-	char* x = *(char**)ref_x;
-	char* y = *(char**)ref_y;
+	char* x = (char*)ref_x;
+	char* y = (char*)ref_y;
 
 	int res = strcmp(x, y);
 
