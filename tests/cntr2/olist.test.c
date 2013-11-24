@@ -13,7 +13,7 @@
 #include "cntr2/iqueue.test.h"
 #include "cntr2/istack.test.h"
 
-static void __correctness_test() {
+static void olist_correctness_test() {
 	Object* a = NULL;
 	{
 		log_inc_tab(true);
@@ -88,13 +88,15 @@ static void __correctness_test() {
 	}	
 }
 
-static void __performance_test() {
+static void olist_performance_test() {
+	/*
 	log_printline("add find remove performance test start");
 	log_printline("add find remove performance test end");
+	*/
 }
 
 void cntr2_odlist_test() {
-	test_run_single("cntr cntr_base correctness", __correctness_test);
+	test_run_single("cntr cntr_base correctness", olist_correctness_test);
 
-	test_run_bench("cntr cntr_base performance", __performance_test);
+	test_run_bench("cntr cntr_base performance", olist_performance_test);
 }

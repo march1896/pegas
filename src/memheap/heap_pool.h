@@ -32,6 +32,7 @@ struct heap_spool {
 #define _HEAP_POOL_DEBUG_CHECK_
 
 /* multiple pool store multiple different sized blocks */
+/* TODO: change to splay link based */
 struct heap_mpool {
 	void*            __parent;
 	pf_alloc         __alloc;

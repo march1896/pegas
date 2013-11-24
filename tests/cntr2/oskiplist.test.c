@@ -8,7 +8,7 @@
 #include "cntr2/iset.test.h"
 #include "cntr2/imset.test.h"
 
-static void __as_set_basic_test() {
+static void oskiplist_as_set_basic_test() {
 	Object* a = cntr_create_oskiplist(&int_traits);
 	test_run_single_v("int", (pf_test_case_v)set_test_basic, a, &int_test_desc);
 	iobject_destroy(a);
@@ -34,7 +34,7 @@ static void __as_set_basic_test() {
 	iobject_destroy(a);
 }
 
-static void __as_mset_basic_test() {
+static void oskiplist_as_mset_basic_test() {
 	Object* a = cntr_create_oskiplist(&int_traits);
 	test_run_single_v("int", (pf_test_case_v)mset_test_basic, a, &int_test_desc);
 	iobject_destroy(a);
@@ -60,7 +60,7 @@ static void __as_mset_basic_test() {
 	iobject_destroy(a);
 }
 
-static void __as_set_bench_test() {
+static void oskiplist_as_set_bench_test() {
 	Object* a = cntr_create_oskiplist_a(&int_traits, NULL);
 	test_run_bench_v("int", (pf_test_case_v)set_test_bench, a, &int_test_desc);
 	iobject_destroy(a);
@@ -74,7 +74,7 @@ static void __as_set_bench_test() {
 	iobject_destroy(a);
 }
 
-static void __as_mset_bench_test() {
+static void oskiplist_as_mset_bench_test() {
 	Object* a = cntr_create_oskiplist_a(&int_traits, NULL);
 	test_run_bench_v("int", (pf_test_case_v)mset_test_bench, a, &int_test_desc);
 	iobject_destroy(a);
@@ -88,18 +88,18 @@ static void __as_mset_bench_test() {
 	iobject_destroy(a);
 }
 
-static void __correctness_test() {
-	test_run_single("oskiplist as set basic test", __as_set_basic_test);
-	test_run_single("oskiplist as mset basic test", __as_mset_basic_test);
+static void oskiplist_correctness_test() {
+	test_run_single("oskiplist as set basic test", oskiplist_as_set_basic_test);
+	test_run_single("oskiplist as mset basic test", oskiplist_as_mset_basic_test);
 }
 
-static void __performance_test() {
-	test_run_single("oskiplist as set bench test", __as_set_bench_test);
-	test_run_single("oskiplist as mset bench test", __as_mset_bench_test);
+static void oskiplist_performance_test() {
+	test_run_single("oskiplist as set bench test", oskiplist_as_set_bench_test);
+	test_run_single("oskiplist as mset bench test", oskiplist_as_mset_bench_test);
 }
 
 void cntr2_oskiplist_test() {
-	test_run_single("cntr_skiplist correctness", __correctness_test);
+	test_run_single("cntr_skiplist correctness", oskiplist_correctness_test);
 
-	test_run_bench("cntr_skiplist performance", __performance_test);
+	test_run_bench("cntr_skiplist performance", oskiplist_performance_test);
 }

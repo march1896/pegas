@@ -128,6 +128,7 @@ static void array_test_basic_itr_operation(Object* a, struct test_data_desc* td_
 	return;
 }
 
+/* TODO: iarray_at is not tested yet */
 static void array_test_basic_operation(Object* a, struct test_data_desc* td_desc) {
 	address *test_data_addr   = td_desc->data_repo;
 	unknown_traits *td_traits = td_desc->data_traits;

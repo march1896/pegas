@@ -7,7 +7,7 @@
 #include "cntr2/iset.test.h"
 #include "cntr2/imset.test.h"
 
-static void __as_set_basic_test() {
+static void osplay_as_set_basic_test() {
 	Object* a = cntr_create_osplay(&int_traits);
 	test_run_single_v("int", (pf_test_case_v)set_test_basic, a, &int_test_desc);
 	iobject_destroy(a);
@@ -33,7 +33,7 @@ static void __as_set_basic_test() {
 	iobject_destroy(a);
 }
 
-static void __as_mset_basic_test() {
+static void osplay_as_mset_basic_test() {
 	Object* a = cntr_create_osplay(&int_traits);
 	test_run_single_v("int", (pf_test_case_v)mset_test_basic, a, &int_test_desc);
 	iobject_destroy(a);
@@ -59,7 +59,7 @@ static void __as_mset_basic_test() {
 	iobject_destroy(a);
 }
 
-static void __as_set_bench_test() {
+static void osplay_as_set_bench_test() {
 	Object* a = cntr_create_osplay_a(&int_traits, NULL);
 	test_run_bench_v("int", (pf_test_case_v)set_test_bench, a, &int_test_desc);
 	iobject_destroy(a);
@@ -73,7 +73,7 @@ static void __as_set_bench_test() {
 	iobject_destroy(a);
 }
 
-static void __as_mset_bench_test() {
+static void osplay_as_mset_bench_test() {
 	Object* a = cntr_create_osplay_a(&int_traits, NULL);
 	test_run_bench_v("int", (pf_test_case_v)mset_test_bench, a, &int_test_desc);
 	iobject_destroy(a);
@@ -87,18 +87,18 @@ static void __as_mset_bench_test() {
 	iobject_destroy(a);
 }
 
-static void __correctness_test() {
-	test_run_single("osplay as set basic test", __as_set_basic_test);
-	test_run_single("osplay as mset basic test", __as_mset_basic_test);
+static void osplay_correctness_test() {
+	test_run_single("osplay as set basic test", osplay_as_set_basic_test);
+	test_run_single("osplay as mset basic test", osplay_as_mset_basic_test);
 }
 
-static void __performance_test() {
-	test_run_single("osplay as set bench test", __as_set_bench_test);
-	test_run_single("osplay as mset bench test", __as_mset_bench_test);
+static void osplay_performance_test() {
+	test_run_single("osplay as set bench test", osplay_as_set_bench_test);
+	test_run_single("osplay as mset bench test", osplay_as_mset_bench_test);
 }
 
 void cntr2_osplay_test() {
-	test_run_single("cntr_splay correctness", __correctness_test);
+	test_run_single("cntr_splay correctness", osplay_correctness_test);
 
-	test_run_bench("cntr_splay performance", __performance_test);
+	test_run_bench("cntr_splay performance", osplay_performance_test);
 }
