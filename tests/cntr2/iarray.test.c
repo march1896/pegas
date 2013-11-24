@@ -159,6 +159,22 @@ static void array_test_basic_operation(Object* a, struct test_data_desc* td_desc
 		dbg_assert(iarray_contains(a, test_data_addr[0]) == false);
 	}
 
+	{
+		int idx = 0;
+		for (idx = 0; idx < 8; idx ++) {
+			dbg_assert(td_traits->__equals(iarray_at(a, idx), test_data_addr[idx + 1]));
+		}
+		for (idx = -1; idx >= -8; idx --) {
+			dbg_assert(td_traits->__equals(iarray_at(a, idx), test_data_addr[idx + 9]));
+		}
+		for (idx = 8; idx < 16; idx ++) {
+			dbg_assert(td_traits->__equals(iarray_at(a, idx), test_data_addr[idx - 8 + 1]));
+		}
+		for (idx = -9; idx >= -16; idx --) {
+			dbg_assert(td_traits->__equals(iarray_at(a, idx), test_data_addr[idx + 17]));
+		}
+	}
+
 	/* test remove, delete the even ones */
 	dbg_assert(iarray_size(a) == 8);
 	{

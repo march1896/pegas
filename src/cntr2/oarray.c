@@ -185,8 +185,9 @@ static hashcode oarray_itr_hashcode(const_iterator itr) {
 }
 
 
-#define INDEX(buf_len, start, index) (((start) + (index) + (buf_len)) % (buf_len))
+#define INDEX(buf_len, start, index) (((start) + (index)) % (buf_len))
 static inline unknown** BUFFER_AT(struct oarray* a, int index) {
+	dbg_assert(index >= 0 && index < a->size);
 	return &a->buffer[INDEX(a->buffer_length, a->idx_start, index)];
 }
 
@@ -555,6 +556,8 @@ const unknown* oarray_back(const Object* o) {
 
 const unknown* oarray_at(const Object* o, int index) {
 	struct oarray* a = (struct oarray*)o;
+
+	index = ((index % a->size) + a->size) % a->size;
 
 	return *BUFFER_AT(a, index);
 }
