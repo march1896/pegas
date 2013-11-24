@@ -10,6 +10,6 @@
 #define max(x, y) (x>y)?(x):(y)
 #endif
 
-#include <bit_math.h>
+#include <util/bit_math.h>
 
 #endif /* _WHAT_A_MATH_H_ */

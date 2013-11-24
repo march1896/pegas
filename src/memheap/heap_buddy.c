@@ -1,6 +1,6 @@
-#include <heap_buddy.h>
+#include <memheap/heap_buddy.h>
 
-#include <block_link.h>
+#include <memheap/block_link.h>
 
 #include <util/list_link.h>
 #include <util/math.h>

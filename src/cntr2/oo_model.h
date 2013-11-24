@@ -1,7 +1,7 @@
 #ifndef _OO_MODEL_H_
 #define _OO_MODEL_H_
 
-#include <cominc.h>
+#include <util/cominc.h>
 /*
  * For more detail about the oo model, please see oo_model.doc.h
  */
@@ -80,6 +80,6 @@ extern inline _interface* __fast_cast(const Object* x, int ifoffset);
 /*
  * include the raw-pointer-object common processing functions.
  */
-#include <oo_bridge.h>
+#include <cntr2/oo_bridge.h>
 
 #endif /* _OO_MODEL_H_ */

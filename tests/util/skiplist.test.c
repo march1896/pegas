@@ -1,5 +1,5 @@
-#include <skiplist.h>
-#include <heap_global.h>
+#include <util/skiplist.h>
+#include <memheap/heap_global.h>
 
 #include "test_util.h"
 

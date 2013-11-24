@@ -1,6 +1,6 @@
-#include <ialgo.h>
-#include <iitr.h>
-#include <ifactory.h>
+#include <cntr2/ialgo.h>
+#include <cntr2/iitr.h>
+#include <cntr2/ifactory.h>
 #include <memheap/heap_global.h>
 
 void foreach(const_iterator begin, const_iterator end, pf_ref_visit cb) {

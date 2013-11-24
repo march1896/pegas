@@ -1,4 +1,4 @@
-#include <splay_link.h>
+#include <util/splay_link.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "test_util.h"

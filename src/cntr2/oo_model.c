@@ -1,4 +1,4 @@
-#include <oo_model.h>
+#include <cntr2/oo_model.h>
 
 inline Object* __object_from_interface(const _interface* inf) {
 	const _interface* inf0 = inf - (intptr_t)inf->__offset;

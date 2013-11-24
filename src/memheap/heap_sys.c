@@ -1,5 +1,5 @@
-#include <cominc.h>
-#include <heap_def.h>
+#include <util/cominc.h>
+#include <memheap/heap_def.h>
 
 #include <stdlib.h>
 

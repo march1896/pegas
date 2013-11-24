@@ -1,8 +1,8 @@
 #ifndef _INTERFACE_BASE_OBJECT_H_
 #define _INTERFACE_BASE_OBJECT_H_
 
-#include <oo_model.h>
-#include <idef.h>
+#include <cntr2/oo_model.h>
+#include <cntr2/idef.h>
 
 extern inline void     iobject_destroy        (Object* obj);
 extern inline Object*  iobject_clone          (const Object* obj);

@@ -1,5 +1,5 @@
-#include <iarray.h>
-#include <iitr.h>
+#include <cntr2/iarray.h>
+#include <cntr2/iitr.h>
 
 inline void iarray_clear(Object* obj) {
 	_interface* _inf = (_interface*)__cast(obj, IARRAY_ID);

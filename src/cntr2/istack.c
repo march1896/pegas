@@ -1,5 +1,5 @@
-#include <istack.h>
-#include <iitr.h>
+#include <cntr2/istack.h>
+#include <cntr2/iitr.h>
 
 inline void istack_clear(Object* obj) {
 	_interface* _inf = (_interface*)__cast(obj, ISTACK_ID);

@@ -1,8 +1,8 @@
 #ifndef _INTERFACE_ALGORITHM_H_
 #define _INTERFACE_ALGORITHM_H_
 
-#include <oo_model.h>
-#include <idef.h>
+#include <cntr2/oo_model.h>
+#include <cntr2/idef.h>
 
 /* 
  * the problem of open interval VS closed interval.

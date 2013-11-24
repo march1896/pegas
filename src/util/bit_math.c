@@ -1,5 +1,5 @@
-#include <cominc.h>
-#include <bit_math.h>
+#include <util/cominc.h>
+#include <util/bit_math.h>
 
 inline int mlog2(int x) {
 	int bit = 0;

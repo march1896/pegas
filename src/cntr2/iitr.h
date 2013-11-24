@@ -2,9 +2,9 @@
 #define _INTERFACE_ITR_H_
 
 /* the interface functions which support, used by clients */
-#include <oo_model.h>
-#include <idef.h>
-#include <iobject.h>
+#include <cntr2/oo_model.h>
+#include <cntr2/idef.h>
+#include <cntr2/iobject.h>
 
 enum iterator_position {
 	itr_begin,

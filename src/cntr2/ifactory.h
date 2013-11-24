@@ -1,8 +1,8 @@
 #ifndef _INTERFACE_FACTORY_H_
 #define _INTERFACE_FACTORY_H_
 
-#include <oo_model.h>
-#include <idef.h>
+#include <cntr2/oo_model.h>
+#include <cntr2/idef.h>
 
 // #define as_list(obj)  (_interface)__cast((obj), ILIST_ID)
 // #define as_queue(obj) (_interface)__cast((obj), IQUEUE_ID)

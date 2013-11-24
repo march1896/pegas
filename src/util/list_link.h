@@ -1,7 +1,7 @@
 #ifndef _LIST_DOUBLE_LINK_H_
 #define _LIST_DOUBLE_LINK_H_
 
-#include <cominc.h>
+#include <util/cominc.h>
 
 struct listlink {
 	struct listlink *prev;

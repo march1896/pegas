@@ -1,5 +1,5 @@
-#include <imap.h>
-#include <iitr.h>
+#include <cntr2/imap.h>
+#include <cntr2/iitr.h>
 
 /*******************************************************************************
  * imap implementation start 

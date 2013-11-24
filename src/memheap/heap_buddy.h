@@ -1,8 +1,8 @@
 #ifndef _HEAP_BUDDY_H_
 #define _HEAP_BUDDY_H_
 
-#include <heap_def.h>
-#include <block_common.h>
+#include <memheap/heap_def.h>
+#include <memheap/block_common.h>
 
 #include <util/list_link.h>
 

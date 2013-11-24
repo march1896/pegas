@@ -1,4 +1,4 @@
-#include <block_common.h>
+#include <memheap/block_common.h>
 
 inline bool block_com_valid(struct block_c* pbc) {
 	block_com_debug_check(pbc);

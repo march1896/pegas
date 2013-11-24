@@ -1,5 +1,5 @@
-#include <iqueue.h>
-#include <iitr.h>
+#include <cntr2/iqueue.h>
+#include <cntr2/iitr.h>
 
 inline void iqueue_clear(Object* obj) {
 	_interface* _inf = (_interface*)__cast(obj, IQUEUE_ID);

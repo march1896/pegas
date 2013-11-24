@@ -1,7 +1,7 @@
 #ifndef _SKIP_LINK_H_
 #define _SKIP_LINK_H_
 
-#include <cominc.h>
+#include <util/cominc.h>
 #include <memheap/heap_def.h>
 
 extern inline const struct skiplink* skip_link_next(const struct skiplink* cur);

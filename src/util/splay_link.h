@@ -1,7 +1,7 @@
 #ifndef _SPLAY_LINK_H_
 #define _SPLAY_LINK_H_
 
-#include <cominc.h>
+#include <util/cominc.h>
 
 struct splaylink {
 	struct splaylink*  left;

@@ -1,7 +1,7 @@
 #ifndef _LEXER_NONDETERMINISTIC_STATE_MACHINE_H_
 #define _LEXER_NONDETERMINISTIC_STATE_MACHINE_H_
 
-#include <cominc.h>
+#include <util/cominc.h>
 
 typedef struct automaton nfa;
 

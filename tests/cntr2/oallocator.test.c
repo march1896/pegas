@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "oallocator.h"
+#include "cntr2/oallocator.h"
 #include "memheap/heap_walk.h"
 
 #include "test_util.h"

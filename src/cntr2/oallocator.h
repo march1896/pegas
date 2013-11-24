@@ -1,8 +1,8 @@
 #ifndef _OBJECT_ALLOCATOR_H_
 #define _OBJECT_ALLOCATOR_H_
 
-#include <idef.h>
-#include <heap_def.h>
+#include <cntr2/idef.h>
+#include <memheap/heap_def.h>
 
 /* 
  * the allocator object, allocator is not typical object, it does not have most of the 

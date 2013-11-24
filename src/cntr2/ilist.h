@@ -1,8 +1,8 @@
 #ifndef _INTERFACE_LIST_H_
 #define _INTERFACE_LIST_H_
 
-#include <oo_model.h>
-#include <idef.h>
+#include <cntr2/oo_model.h>
+#include <cntr2/idef.h>
 
 extern inline       void     ilist_clear           (Object* obj);
 extern inline       void     ilist_foreach         (Object* obj, pf_ref_process_v process, void* context);

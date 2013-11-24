@@ -1,5 +1,5 @@
-#include <iset.h>
-#include <iitr.h>
+#include <cntr2/iset.h>
+#include <cntr2/iitr.h>
 
 /*******************************************************************************
  * iset implementation start 

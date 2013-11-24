@@ -1,6 +1,6 @@
-#include <list_link.h>
-#include <skiplist.h>
-#include <heap_global.h>
+#include <util/list_link.h>
+#include <util/skiplist.h>
+#include <memheap/heap_global.h>
 
 struct skiplink {
 	/* because the skip link is vary sized, so the skip link could not be allocated with 

@@ -1,7 +1,7 @@
-#include <cominc.h>
-#include <bst_link.h>
+#include <util/cominc.h>
+#include <util/bst_link.h>
 
-#include "util/math.h"
+#include <util/math.h>
 
 inline struct bst_link* bst_min(struct bst_link* root) {
 	if (root == NULL) {

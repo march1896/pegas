@@ -1,4 +1,4 @@
-#include <iobject.h>
+#include <cntr2/iobject.h>
 
 /* object knows how to clone itself, so alc and heap are useless */
 static unknown* object_clone(const unknown *x, pf_alloc alc, void* heap) {

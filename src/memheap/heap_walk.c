@@ -1,5 +1,5 @@
-#include <heap_def.h>
-#include <heap_walk.h>
+#include <memheap/heap_def.h>
+#include <memheap/heap_walk.h>
 
 #include <util/math.h>
 

@@ -1,7 +1,7 @@
 #ifndef _LLRB_LINK_H_
 #define _LLRB_LINK_H_
 
-#include <cominc.h>
+#include <util/cominc.h>
 
 /**
  * @brief LLRB 2-3 tree, a direct copy from Sedgewick's paper, 

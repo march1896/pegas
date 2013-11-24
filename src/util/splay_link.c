@@ -1,4 +1,4 @@
-#include <splay_link.h>
+#include <util/splay_link.h>
 
 static inline struct splaylink *__splay_rotate_left(struct splaylink* n) {
 	struct splaylink* r = n->right;

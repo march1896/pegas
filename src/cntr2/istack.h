@@ -2,8 +2,8 @@
 #define _INTERFACE_STACK_H_
 
 /* the interface functions which support, used by clients */
-#include <oo_model.h>
-#include <idef.h>
+#include <cntr2/oo_model.h>
+#include <cntr2/idef.h>
 
 extern inline       void     istack_clear       (Object* obj);
 extern inline       void     istack_foreach     (Object* obj, pf_ref_process_v process, void* context);

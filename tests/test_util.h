@@ -1,6 +1,6 @@
 #ifndef _TEST_UTILITIES_H_
 #define _TEST_UTILITIES_H_
-#include <cominc.h>
+#include <util/cominc.h>
 #include <stdint.h>
 
 typedef void (*pf_test_case)();

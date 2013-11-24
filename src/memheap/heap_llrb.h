@@ -1,12 +1,12 @@
 #ifndef _HEAP_LLRB_H_
 #define _HEAP_LLRB_H_
 
-#include <heap_def.h>
+#include <memheap/heap_def.h>
 
 #include <util/llrb_link.h>
 #include <util/list_link.h>
 
-#include <block_common.h>
+#include <memheap/block_common.h>
 /*
  * This module implements a heap by using llrb as the free list container
  */

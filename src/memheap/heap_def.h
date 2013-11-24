@@ -1,7 +1,7 @@
 #ifndef _HEAP_DEF_H_
 #define _HEAP_DEF_H_
 
-#include <cominc.h>
+#include <util/cominc.h>
 
 //#ifdef _DEBUG
 #define _MEM_DEBUG_
