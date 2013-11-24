@@ -45,9 +45,6 @@ struct oslist {
 	int                           size;
 
 	unknown_traits                content_traits;
-	pf_ref_compare                ref_comp;
-	pf_ref_compare_v              ref_comp_v;
-	void*                         comp_context;
 
 	/* methods to manage the inner memory use by the container */
 	allocator                     allocator;

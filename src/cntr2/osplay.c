@@ -300,7 +300,7 @@ static unknown* osplay_itr_cast(unknown* x, unique_id inf_id) {
 }
 
 static compres osplay_splaylink_compare(const struct splaylink* a, const struct splaylink* b, void* param) {
-	pf_ref_compare ref_comp = (pf_ref_compare)param;
+	pf_ibridge_compare ref_comp = (pf_ibridge_compare)param;
 
 	struct osplay_node* node_a = container_of(a, struct osplay_node, link);
 	struct osplay_node* node_b = container_of(b, struct osplay_node, link);
@@ -530,7 +530,7 @@ void splayset_itr_assign(const Object* o, iterator itr, itr_pos pos) {
 }
 
 struct direct_s {
-	pf_ref_compare  comp;
+	pf_ibridge_compare  comp;
 	const unknown*   target;
 	const struct splaylink* candidate; /* only useful for multiple instances */
 };

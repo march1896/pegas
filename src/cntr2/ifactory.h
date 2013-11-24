@@ -34,13 +34,13 @@ struct pair {
 	void*       value;
 };
 
-Object* cntr_create_ordmap(pf_ref_compare key_compare);
+Object* cntr_create_ordmap(unknown_traits* key_traits, unknown_traits* value_traits);
 enum ordmap_driver {
 	ordmap_by_llrb,
 	ordmap_by_splay,
 	ordmap_by_skiplist,
 	ordmap_driver_count
 };
-Object* cntr_create_ordmap_v(pf_ref_compare key_compare, allocator alc, enum ordmap_driver driver_type);
+Object* cntr_create_ordmap_v(unknown_traits* key_traits, unknown_traits* value_traits, allocator alc, enum ordmap_driver driver_type);
 
 #endif /* _INTERFACE_FACTORY_H_ */

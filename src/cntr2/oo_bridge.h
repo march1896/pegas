@@ -37,13 +37,10 @@ extern unknown_traits char_traits;
 extern unknown_traits bool_traits;
 extern unknown_traits string_traits;
 
-typedef void (*pf_ref_visit)(const unknown* __ref);
-typedef void (*pf_ref_visit_v)(const unknown* __ref, void* context);
+typedef void (*pf_ref_visit)(const unknown *x);
+typedef void (*pf_ref_visit_v)(const unknown *x, void* context);
 
-typedef void (*pf_ref_process)(unknown* __ref);
-typedef void (*pf_ref_process_v)(unknown* __ref, void* context);
-
-typedef compres (*pf_ref_compare)(const unknown* ref_a, const unknown* ref_b);
-typedef compres (*pf_ref_compare_v)(const unknown* ref_a, const unknown* ref_b, void* context); 
+typedef void (*pf_ref_process)(unknown *x);
+typedef void (*pf_ref_process_v)(unknown *x, void* context);
 
 #endif /* _OBJECT_REDUCE_TO_REFERENCE_H_ */

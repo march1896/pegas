@@ -426,7 +426,7 @@ void olist_clear(Object* o) {
 
 struct olistlink_foreach_pack {
 	pf_ref_process_v callback;
-	void*              context;
+	void*            context;
 };
 static void olistlink_foreach_v(struct listlink* link, void* context) {
 	struct o_dlist_node* node = container_of(link, struct o_dlist_node, link);

@@ -305,7 +305,7 @@ static unknown* ollrb_itr_cast(unknown* x, unique_id inf_id) {
 
 /* the llrb compare context is a pf_ref_compare function pointer */
 static compres ollrb_llrblink_compare(const struct llrblink* a, const struct llrblink* b, void* param) {
-	pf_ref_compare ref_comp = (pf_ref_compare)param;
+	pf_ibridge_compare ref_comp = (pf_ibridge_compare)param;
 
 	struct ollrb_node* node_a = container_of(a, struct ollrb_node, link);
 	struct ollrb_node* node_b = container_of(b, struct ollrb_node, link);
@@ -531,7 +531,7 @@ void ollrb_itr_assign(const Object* o, iterator itr, itr_pos pos) {
 }
 
 struct direct_s {
-	pf_ref_compare   comp;
+	pf_ibridge_compare   comp;
 	const unknown*    target;
 	const struct llrblink* candidate; /* only useful for multiple instances */
 };

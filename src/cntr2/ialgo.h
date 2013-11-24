@@ -30,9 +30,9 @@ void foreach     (const_iterator begin, const_iterator end, pf_ref_visit cb);
 void foreach_v   (const_iterator begin, const_iterator end, pf_ref_visit_v cb, void* param);
 
 /* bidirectional iterator sort */
-void sort_b      (const_iterator begin, const_iterator end, pf_ref_compare comp);
+void sort_b      (const_iterator begin, const_iterator end, pf_ibridge_compare comp);
 /* random accessible iterator sort */
-void sort_r      (const_iterator begin, const_iterator end, pf_ref_compare comp);
+void sort_r      (const_iterator begin, const_iterator end, pf_ibridge_compare comp);
 
 /* iterator should be bidirectional */
 void reverse_b   (const_iterator begin, const_iterator end);

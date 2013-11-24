@@ -36,13 +36,16 @@ void foreach_v(const_iterator begin, const_iterator end, pf_ref_visit_v cb, void
 	return;
 }
 
-void sort_b(const_iterator begin, const_iterator end, pf_ref_compare comp) {
+void sort_b(const_iterator begin, const_iterator end, pf_ibridge_compare comp) {
 	dbg_assert(is_itrbid(begin));
 	dbg_assert(is_itrbid(end));
+	return;
 }
-void sort_r(const_iterator begin, const_iterator end, pf_ref_compare comp) {
+void sort_r(const_iterator begin, const_iterator end, pf_ibridge_compare comp) {
 	dbg_assert(is_itrrac(begin));
 	dbg_assert(is_itrrac(end));
+
+	return;
 }
 
 void reverse_b(const_iterator __begin, const_iterator __end) {
