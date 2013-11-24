@@ -3,6 +3,6 @@
 
 #include "cntr2/oo_model.h"
 
-void stack_test_basic(Object* a, address test_data_addr[], unknown_traits *td_traits);
+void stack_test_basic(Object* a, struct test_data_desc* td_desc);
 
 #endif /* _CNTR2_ISTACK_TEST_H_ */

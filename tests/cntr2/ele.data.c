@@ -1,4 +1,5 @@
 #include "memheap/heap_global.h"
+#include "cntr2/oo_model.h"
 
 #include "ele.data.h"
 
@@ -8,6 +9,13 @@ address float_repo[TD_NUM];
 address double_repo[TD_NUM];
 address char_repo[TD_NUM];
 address string_repo[TD_NUM];
+
+struct test_data_desc int_test_desc     = { int_repo, &int_traits };
+struct test_data_desc longint_test_desc = { longint_repo, &longint_traits };
+struct test_data_desc float_test_desc   = { float_repo, &float_traits };
+struct test_data_desc double_test_desc  = { double_repo, &double_traits };
+struct test_data_desc char_test_desc    = { char_repo, &char_traits };
+struct test_data_desc string_test_desc  = { string_repo, &string_traits };
 
 static int     *int_td_repo;
 static longint *longint_td_repo;
@@ -96,6 +104,7 @@ void td_repo_init() {
 	}
 
 	qsort(string_td_repo, TD_NUM ,sizeof(char*), cmpstr);
+	qsort(string_td_repo_bak, TD_NUM ,sizeof(char*), cmpstr);
 
 	for (i = 0; i < TD_NUM; i ++) {
 		int_repo[i]     = &int_td_repo[i];
@@ -112,6 +121,16 @@ void td_repo_deinit() {
 		return;
 
 	td_repo_initialized = false;
+
+	/* check the data is destroyed */
+	for (i = 0; i < TD_NUM; i ++) {
+		dbg_assert(int_traits.__equals(&int_td_repo[i], &int_td_repo_bak[i]));
+		dbg_assert(longint_traits.__equals(&longint_td_repo[i], &longint_td_repo_bak[i]));
+		dbg_assert(float_traits.__equals(&float_td_repo[i], &float_td_repo_bak[i]));
+		dbg_assert(double_traits.__equals(&double_td_repo[i], &double_td_repo_bak[i]));
+		dbg_assert(char_traits.__equals(&char_td_repo[i], &char_td_repo_bak[i]));
+		dbg_assert(string_traits.__equals(string_td_repo[i], string_td_repo_bak[i]));
+	}
 
 	hfree(int_td_repo);
 	hfree(longint_td_repo);

@@ -7,7 +7,9 @@
 #include "ele.data.h"
 #include "memheap/heap_global.h"
 
-static void array_test_basic_itr_operation(Object* a, address test_data_addr[], unknown_traits *td_traits) {
+static void array_test_basic_itr_operation(Object* a, struct test_data_desc* td_desc) {
+	address *test_data_addr   = td_desc->data_repo;
+	unknown_traits *td_traits = td_desc->data_traits;
 	iarray_clear(a);
 	dbg_assert(iarray_empty(a));
 
@@ -126,7 +128,9 @@ static void array_test_basic_itr_operation(Object* a, address test_data_addr[], 
 	return;
 }
 
-static void array_test_basic_operation(Object* a, address test_data_addr[], unknown_traits *td_traits) {
+static void array_test_basic_operation(Object* a, struct test_data_desc* td_desc) {
+	address *test_data_addr   = td_desc->data_repo;
+	unknown_traits *td_traits = td_desc->data_traits;
 	iarray_clear(a);
 	dbg_assert(iarray_empty(a));
 
@@ -275,9 +279,9 @@ static void array_test_basic_operation(Object* a, address test_data_addr[], unkn
 	}
 }
 
-void array_test_basic(Object* a, address test_data_addr[], unknown_traits *td_traits) {
-	array_test_basic_operation(a, test_data_addr, td_traits);
-	array_test_basic_itr_operation(a, test_data_addr, td_traits);
+void array_test_basic(Object* a, struct test_data_desc* td_desc) {
+	array_test_basic_operation(a, td_desc);
+	array_test_basic_itr_operation(a, td_desc);
 }
 
 void array_test_memory(Object* a) {

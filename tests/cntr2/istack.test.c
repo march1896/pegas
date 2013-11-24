@@ -3,10 +3,13 @@
 
 #include "istack.test.h"
 #include "test_util.h"
+#include "ele.data.h"
 
 #include "memheap/heap_global.h"
 
-static void stack_test_basic_itr_operation(Object* stack, address test_data_addr[], unknown_traits *td_traits) {
+static void stack_test_basic_itr_operation(Object* stack, struct test_data_desc* td_desc) {
+	address *test_data_addr   = td_desc->data_repo;
+	unknown_traits *td_traits = td_desc->data_traits;
 	istack_clear(stack);
 	dbg_assert(istack_size(stack) == 0);
 
@@ -74,7 +77,9 @@ static void stack_test_basic_itr_operation(Object* stack, address test_data_addr
 	return;
 }
 
-static void stack_test_basic_operation(Object* stack, address test_data_addr[], unknown_traits *td_traits) {
+static void stack_test_basic_operation(Object* stack, struct test_data_desc* td_desc) {
+	address *test_data_addr   = td_desc->data_repo;
+	unknown_traits *td_traits = td_desc->data_traits;
 	istack_clear(stack);
 	dbg_assert(istack_size(stack) == 0);
 	dbg_assert(istack_empty(stack));
@@ -192,9 +197,9 @@ static void stack_test_basic_operation(Object* stack, address test_data_addr[], 
 	}
 }
 
-void stack_test_basic(Object* a, address test_data_addr[], unknown_traits *td_traits) {
-	stack_test_basic_operation(a, test_data_addr, td_traits);
-	stack_test_basic_itr_operation(a, test_data_addr, td_traits);
+void stack_test_basic(Object* a, struct test_data_desc* td_desc) {
+	stack_test_basic_operation(a, td_desc);
+	stack_test_basic_itr_operation(a, td_desc);
 }
 
 void stack_test_memory(istack stack) {

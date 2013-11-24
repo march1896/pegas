@@ -105,6 +105,34 @@ void test_run_single(const char* test_name, pf_test_case test_func) {
 	log_inc_tab(false);
 }
 
+void test_run_single_v(const char* test_name, pf_test_case_v test_func_v, void* target, void* context) {
+	clock_t start_c, end_c;
+	start_c = clock();
+
+	if (test_name == NULL) {
+		test_name = "unknown test";
+	}
+
+	log_inc_tab(true);
+
+	if (g_log_header) {
+		log_printline("[%s begins]", test_name);
+	}
+
+	test_func_v(target, context);
+
+	end_c = clock();
+
+	if (g_log_footer) {
+		if (g_log_time) 
+			log_printline("[%s ends, total time use %f]", test_name, (float)(end_c - start_c)/CLOCKS_PER_SEC);
+		else 
+			log_printline("[%s ends]", test_name);
+	}
+
+	log_inc_tab(false);
+}
+
 void test_run_bench(const char* test_name, pf_test_case test_func) {
 	bool old_log_time = g_log_time;
 
@@ -114,11 +142,26 @@ void test_run_bench(const char* test_name, pf_test_case test_func) {
 #ifdef DEBUG
 	return;
 #endif
-
 	g_log_time = true;
 	test_run_single(test_name, test_func);
 	g_log_time = old_log_time;
 }
+
+void test_run_bench_v(const char* test_name, pf_test_case_v test_func, void* target, void* context) {
+	bool old_log_time = g_log_time;
+
+#ifdef _DEBUG
+	return;
+#endif
+#ifdef DEBUG
+	return;
+#endif
+	g_log_time = true;
+	test_run_single_v(test_name, test_func, target, context);
+	g_log_time = old_log_time;
+}
+void test_run_feature_v(const char* test_name, pf_test_case_v test_func, void* target, void* context);
+
 
 void test_run_feature(const char* test_name, pf_test_case test_func) {
 	test_run_single(test_name, test_func);

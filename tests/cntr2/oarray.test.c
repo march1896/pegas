@@ -14,66 +14,77 @@
 #include "cntr2/istack.test.h"
 
 static void __correctness_test() {
+	Object* a = NULL;
 	{
-		Object* a = cntr_create_oarray(&int_traits);
-		array_test_basic(a, int_repo, &int_traits);
+		log_inc_tab(true);
+		log_printline("[as array]");
+		a = cntr_create_oarray(&int_traits);
+		//array_test_basic(a, &int_test_desc);
+		test_run_single_v("int", (pf_test_case_v)array_test_basic, a, &int_test_desc);
 		iobject_destroy(a);
 
 		a = cntr_create_oarray(&longint_traits);
-		array_test_basic(a, longint_repo, &longint_traits);
+		test_run_single_v("longint", (pf_test_case_v)array_test_basic, a, &longint_test_desc);
 		iobject_destroy(a);
 
 		a = cntr_create_oarray(&float_traits);
-		array_test_basic(a, float_repo, &float_traits);
+		test_run_single_v("float", (pf_test_case_v)array_test_basic, a, &float_test_desc);
 		iobject_destroy(a);
 
 		a = cntr_create_oarray(&double_traits);
-		array_test_basic(a, double_repo, &double_traits);
+		test_run_single_v("double", (pf_test_case_v)array_test_basic, a, &double_test_desc);
 		iobject_destroy(a);
 
 		a = cntr_create_oarray(&char_traits);
-		array_test_basic(a, char_repo, &char_traits);
+		test_run_single_v("char", (pf_test_case_v)array_test_basic, a, &char_test_desc);
 		iobject_destroy(a);
 
 		a = cntr_create_oarray(&string_traits);
-		array_test_basic(a, string_repo, &string_traits);
+		test_run_single_v("string", (pf_test_case_v)array_test_basic, a, &string_test_desc);
 		iobject_destroy(a);
+		log_inc_tab(false);
 	}
 	
 	{
-		Object* a = cntr_create_oarray(&int_traits);
-		queue_test_basic(a, int_repo, &int_traits);
+		log_inc_tab(true);
+		log_printline("[as queue]");
+		a = cntr_create_oarray(&int_traits);
+		test_run_single_v("int", (pf_test_case_v)queue_test_basic, a, &int_test_desc);
 		iobject_destroy(a);
 
 		a = cntr_create_oarray(&double_traits);
-		queue_test_basic(a, double_repo, &double_traits);
+		test_run_single_v("double", (pf_test_case_v)queue_test_basic, a, &double_test_desc);
 		iobject_destroy(a);
 
 		a = cntr_create_oarray(&char_traits);
-		queue_test_basic(a, char_repo, &char_traits);
+		test_run_single_v("char", (pf_test_case_v)queue_test_basic, a, &char_test_desc);
 		iobject_destroy(a);
 
 		a = cntr_create_oarray(&string_traits);
-		queue_test_basic(a, string_repo, &string_traits);
+		test_run_single_v("string", (pf_test_case_v)queue_test_basic, a, &string_test_desc);
 		iobject_destroy(a);
+		log_inc_tab(false);
 	}	
 
 	{		
-		Object* a = cntr_create_oarray(&int_traits);
-		stack_test_basic(a, int_repo, &int_traits);
+		log_inc_tab(true);
+		log_printline("[as stack]");
+		a = cntr_create_oarray(&int_traits);
+		test_run_single_v("int", (pf_test_case_v)stack_test_basic, a, &int_test_desc);
 		iobject_destroy(a);
 
 		a = cntr_create_oarray(&double_traits);
-		stack_test_basic(a, double_repo, &double_traits);
+		test_run_single_v("double", (pf_test_case_v)stack_test_basic, a, &double_test_desc);
 		iobject_destroy(a);
 
 		a = cntr_create_oarray(&char_traits);
-		stack_test_basic(a, char_repo, &char_traits);
+		test_run_single_v("char", (pf_test_case_v)stack_test_basic, a, &char_test_desc);
 		iobject_destroy(a);
 
 		a = cntr_create_oarray(&string_traits);
-		stack_test_basic(a, string_repo, &string_traits);
+		test_run_single_v("string", (pf_test_case_v)stack_test_basic, a, &string_test_desc);
 		iobject_destroy(a);
+		log_inc_tab(false);
 	}	
 }
 

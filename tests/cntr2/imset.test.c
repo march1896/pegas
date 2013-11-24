@@ -4,6 +4,7 @@
 
 #include "imset.test.h"
 #include "test_util.h"
+#include "ele.data.h"
 
 #include "memheap/heap_global.h"
 
@@ -18,7 +19,9 @@ static void foreach_count(const void* __ref, void* param) {
 	counter->sum += *(int*)__ref;
 }
 
-static void mset_test_basic_itr_operation(Object* mset, address test_data_addr[], unknown_traits *td_traits) {
+static void mset_test_basic_itr_operation(Object* mset, struct test_data_desc* td_desc) {
+	address *test_data_addr   = td_desc->data_repo;
+	unknown_traits *td_traits = td_desc->data_traits;
 	imset_clear(mset);
 	dbg_assert(imset_empty(mset));
 
@@ -173,7 +176,9 @@ static void mset_test_basic_itr_operation(Object* mset, address test_data_addr[]
 	return;
 }
 
-static void mset_test_basic_operation(Object* mset, address test_data_addr[], unknown_traits *td_traits) {
+static void mset_test_basic_operation(Object* mset, struct test_data_desc* td_desc) {
+	address *test_data_addr   = td_desc->data_repo;
+	unknown_traits *td_traits = td_desc->data_traits;
 	imset_clear(mset);
 	dbg_assert(imset_empty(mset));
 
@@ -353,15 +358,17 @@ static void mset_bench_search_randomly() {
 	imset_clear(__mset);
 }
 
-void mset_test_basic(Object* mset, address test_data_addr[], unknown_traits *td_traits) {
-	mset_test_basic_operation(mset, test_data_addr, td_traits);
-	mset_test_basic_itr_operation(mset, test_data_addr, td_traits);
+void mset_test_basic(Object* mset, struct test_data_desc* td_desc) {
+	mset_test_basic_operation(mset, td_desc);
+	mset_test_basic_itr_operation(mset, td_desc);
 }
 
 void mset_test_memory(Object* mset) {
 }
 
-void mset_test_bench(Object* mset, address test_data_addr[], unknown_traits *td_traits) {
+void mset_test_bench(Object* mset, struct test_data_desc* td_desc) {
+	address *test_data_addr   = td_desc->data_repo;
+	unknown_traits *td_traits = td_desc->data_traits;
 	__mset = mset;
 	__data_diff_type = 100;
 	__data_max_count = 10;

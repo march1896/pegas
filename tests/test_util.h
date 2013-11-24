@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 typedef void (*pf_test_case)();
+typedef void (*pf_test_case_v)(void* target, void* context);
 
 void log_inc_tab(bool forward);
 void log_printf(const char* format, ...);
@@ -13,6 +14,10 @@ void log_printline(const char* format, ...);
 void test_run_single(const char* test_name, pf_test_case test_func);
 void test_run_bench(const char* test_name, pf_test_case test_func);
 void test_run_feature(const char* test_name, pf_test_case test_func);
+
+void test_run_single_v(const char* test_name, pf_test_case_v test_func, void* target, void* context);
+void test_run_bench_v(const char* test_name, pf_test_case_v test_func, void* target, void* context);
+void test_run_feature_v(const char* test_name, pf_test_case_v test_func, void* target, void* context);
 
 void test_log_use_file(const char* file_name);
 void test_log_use_header(bool use_or_not);

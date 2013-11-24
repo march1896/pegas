@@ -3,10 +3,13 @@
 
 #include "iqueue.test.h"
 #include "test_util.h"
+#include "ele.data.h"
 
 #include "memheap/heap_global.h"
 
-static void queue_test_basic_itr_operation(Object* queue, address test_data_addr[], unknown_traits *td_traits) {
+static void queue_test_basic_itr_operation(Object* queue, struct test_data_desc* td_desc) {
+	address *test_data_addr   = td_desc->data_repo;
+	unknown_traits *td_traits = td_desc->data_traits;
 	iqueue_clear(queue);
 	dbg_assert(iqueue_size(queue) == 0);
 
@@ -75,7 +78,9 @@ static void queue_test_basic_itr_operation(Object* queue, address test_data_addr
 	return;
 }
 
-static void queue_test_basic_operation(Object* queue, address test_data_addr[], unknown_traits *td_traits) {
+static void queue_test_basic_operation(Object* queue, struct test_data_desc* td_desc) {
+	address *test_data_addr   = td_desc->data_repo;
+	unknown_traits *td_traits = td_desc->data_traits;
 	iqueue_clear(queue);
 	dbg_assert(iqueue_size(queue) == 0);
 	dbg_assert(iqueue_empty(queue));
@@ -205,9 +210,9 @@ static void queue_test_basic_operation(Object* queue, address test_data_addr[], 
 	}
 }
 
-void queue_test_basic(Object* a, address test_data_addr[], unknown_traits *td_traits) {
-	queue_test_basic_operation(a, test_data_addr, td_traits);
-	queue_test_basic_itr_operation(a, test_data_addr, td_traits);
+void queue_test_basic(Object* a, struct test_data_desc* td_desc) {
+	queue_test_basic_operation(a, td_desc);
+	queue_test_basic_itr_operation(a, td_desc);
 }
 
 void queue_test_memory(iqueue queue) {

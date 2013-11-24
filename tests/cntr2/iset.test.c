@@ -3,10 +3,13 @@
 
 #include "iset.test.h"
 #include "test_util.h"
+#include "ele.data.h"
 
 #include "memheap/heap_global.h"
 
-static void set_test_basic_itr_operation(Object* set, address test_data_addr[], unknown_traits *td_traits) {
+static void set_test_basic_itr_operation(Object* set, struct test_data_desc* td_desc) {
+	address *test_data_addr   = td_desc->data_repo;
+	unknown_traits *td_traits = td_desc->data_traits;
 	iset_clear(set);
 	dbg_assert(iset_empty(set));
 
@@ -94,7 +97,10 @@ static void set_test_basic_itr_operation(Object* set, address test_data_addr[], 
 	return;
 }
 
-static void set_test_basic_operation(Object* set, address test_data_addr[], unknown_traits *td_traits) {
+static void set_test_basic_operation(Object* set, struct test_data_desc* td_desc) {
+	address *test_data_addr   = td_desc->data_repo;
+	unknown_traits *td_traits = td_desc->data_traits;
+
 	iset_clear(set);
 	dbg_assert(iset_empty(set));
 
@@ -345,15 +351,15 @@ static void set_bench_search_randomly() {
 	iset_clear(__set);
 }
 
-void set_test_basic(Object* set, address test_data_addr[], unknown_traits *td_traits) {
-	set_test_basic_operation(set, test_data_addr, td_traits);
-	set_test_basic_itr_operation(set, test_data_addr, td_traits);
+void set_test_basic(Object* set, struct test_data_desc* td_desc) {
+	set_test_basic_operation(set, td_desc);
+	set_test_basic_itr_operation(set, td_desc);
 }
 
 void set_test_memory(Object* set) {
 }
 
-void set_test_bench(Object* set, address test_data_addr[], unknown_traits *td_traits) {
+void set_test_bench(Object* set, struct test_data_desc* td_desc) {
 	__set = set;
 	__data_diff_type = 100;
 	__data_max_count = 1;
@@ -361,7 +367,7 @@ void set_test_bench(Object* set, address test_data_addr[], unknown_traits *td_tr
 	__num_search     = 100;
 	iset_clear(__set);
 	log_printline("[data type: %d, single data max dup: %d]", __data_diff_type, __data_max_count);
-	s_test_data_addr = test_data_addr;
+	s_test_data_addr = td_desc->data_repo;
 	
 	__create_data();
 	test_run_single("randomly modify test", set_bench_modify_randomly);

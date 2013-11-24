@@ -7,7 +7,9 @@
 #include "ele.data.h"
 #include "memheap/heap_global.h"
 
-static void list_test_basic_itr_operation(Object* a, address test_data_addr[], unknown_traits *td_traits) {
+static void list_test_basic_itr_operation(Object* a, struct test_data_desc* td_desc) {
+	address *test_data_addr   = td_desc->data_repo;
+	unknown_traits *td_traits = td_desc->data_traits;
 	ilist_clear(a);
 	dbg_assert(ilist_empty(a));
 
@@ -126,7 +128,9 @@ static void list_test_basic_itr_operation(Object* a, address test_data_addr[], u
 	return;
 }
 
-static void list_test_basic_operation(Object* a, address test_data_addr[], unknown_traits *td_traits) {
+static void list_test_basic_operation(Object* a, struct test_data_desc* td_desc) {
+	address *test_data_addr   = td_desc->data_repo;
+	unknown_traits *td_traits = td_desc->data_traits;
 	ilist_clear(a);
 	dbg_assert(ilist_empty(a));
 
@@ -276,9 +280,9 @@ static void list_test_basic_operation(Object* a, address test_data_addr[], unkno
 	}
 }
 
-void list_test_basic(Object* a, address test_data_addr[], unknown_traits *td_traits) {
-	list_test_basic_operation(a, test_data_addr, td_traits);
-	list_test_basic_itr_operation(a, test_data_addr, td_traits);
+void list_test_basic(Object* a, struct test_data_desc* td_desc) {
+	list_test_basic_operation(a, td_desc);
+	list_test_basic_itr_operation(a, td_desc);
 }
 
 void list_test_memory(Object* a) {

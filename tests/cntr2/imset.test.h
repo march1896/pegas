@@ -3,7 +3,7 @@
 
 #include "cntr2/oo_model.h"
 
-void mset_test_basic(Object* mset, address test_data_addr[], unknown_traits *td_traits);
-void mset_test_bench(Object* mset, address test_data_addr[], unknown_traits *td_traits);
+void mset_test_basic(Object* mset, struct test_data_desc* td_desc);
+void mset_test_bench(Object* mset, struct test_data_desc* td_desc);
 
 #endif /* _CNTR2_IMSET_TEST_H_ */
