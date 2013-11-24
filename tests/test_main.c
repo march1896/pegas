@@ -13,12 +13,12 @@ int main() {
  	srand (iseed);
 	//printf("%d\n", iseed);
 
-#if defined(_DEBUG) || defined(DEBUG) 
+#if !defined(_DEBUG) && !defined(DEBUG) 
 	g_use_file = true;
 #endif
 
-	//test_run_single("util all test", util_all_test);
-	//test_run_single("heap all test", heap_all_test);
+	test_run_single("util all test", util_all_test);
+	test_run_single("heap all test", heap_all_test);
 
 	test_run_single("cntr2 all test", cntr2_all_test);
 
