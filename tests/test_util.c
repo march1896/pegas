@@ -39,15 +39,17 @@ void log_inc_tab(bool inc) {
 }
 
 void log_printf(const char* format, ...) {
-	va_list arglist;
-	va_start( arglist, format );
+	va_list arglist, arglist2;
+	va_start(arglist, format);
+    va_copy(arglist2, arglist);
 	vprintf(format, arglist);
+    va_end(arglist);
 	if (g_use_file) {
 		FILE * pFile = fopen(g_log_file, "a");
-		vfprintf(pFile, format, arglist);
+		vfprintf(pFile, format, arglist2);
 		fclose(pFile);
+        va_end(arglist2);
 	}
-	va_end( arglist );
 }
 
 void log_printtab() {
@@ -61,20 +63,25 @@ void log_printtab() {
 
 void log_printline(const char* format, ...)
 {
-	va_list arglist;
+	va_list arglist, arglist2;
 
-	va_start( arglist, format );
+	va_start(arglist, format);
+    va_copy(arglist2, arglist);
+    
 	printf("%s", g_table_buff);
 	vprintf(format, arglist);
 	printf("\n");
+    va_end(arglist);
+    
 	if (g_use_file) {
 		FILE * pFile = fopen(g_log_file, "a");
 		fprintf(pFile, "%s", g_table_buff);
-		vfprintf(pFile, format, arglist);
+		vfprintf(pFile, format, arglist2);
 		fprintf(pFile, "\n");
 		fclose(pFile);
+        va_end(arglist2);
 	}
-	va_end( arglist );
+	
 }
 
 void test_run_single(const char* test_name, pf_test_case test_func) {
