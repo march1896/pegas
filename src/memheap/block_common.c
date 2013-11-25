@@ -92,11 +92,11 @@ inline struct block_c* block_com_next_adj(struct block_c* pbc) {
 }
 
 inline void block_com_set_next_adj(struct block_c* pbc, struct block_c* next_adj) {
-	unsigned int size = (char*)next_adj - (char*)pbc;
+	intptr_t size = (char*)next_adj - (char*)pbc;
 
 	block_com_debug_check(pbc);
-
-	block_com_set_size(pbc, size);
+    dbg_assert(size > 0);
+	block_com_set_size(pbc, (unsigned int)size);
 
 	dbg_assert(block_com_next_adj(pbc) == next_adj);
 }

@@ -101,34 +101,6 @@ static pf_heap_op_order heap_op_callbacks[] = {
 	f_heap_op_random,
 };
 
-static void generate_init_current() {
-	switch (g_page_size) {
-		case ht_data_small:
-			g_pagesize_min = SMALL_PAGE_MIN;
-			g_pagesize_max = SMALL_PAGE_MAX;
-			break;
-		case ht_data_middle:
-			g_pagesize_min = MIDDLE_PAGE_MIN;
-			g_pagesize_max = MIDDLE_PAGE_MAX;
-			break;
-		case ht_data_large:
-			g_pagesize_min = LARGE_PAGE_MIN;
-			g_pagesize_max = LARGE_PAGE_MAX;
-			break;
-		case ht_data_huge:
-			g_pagesize_min = HUGE_PAGE_MIN;
-			g_pagesize_max = HUGE_PAGE_MAX;
-			break;
-		case ht_data_random:
-			g_pagesize_min = RANDOM_PAGE_MIN;
-			g_pagesize_max = RANDOM_PAGE_MAX;
-			break;
-		default:
-			break;
-	}
-	return;
-}
-
 static int generate_in_range(int minimum, int maximum) {
 	if (minimum >= maximum) return minimum;
 

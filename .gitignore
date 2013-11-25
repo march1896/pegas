@@ -251,3 +251,6 @@ mak/vsproject/TestMain.dir/RelWithDebInfo/link.7412-cvtres.read.1.tlog
 mak/vsproject/TestMain.dir/RelWithDebInfo/link.7412-cvtres.write.1.tlog
 mak/vsproject/TestMain.dir/RelWithDebInfo/link.7412-rc.read.1.tlog
 mak/vsproject/TestMain.dir/RelWithDebInfo/link.7412-rc.write.1.tlog
+mak/xcode/pegas/DerivedData/pegas/FindHistory.xcfind
+mak/xcode/pegas/DerivedData/pegas/Logs/
+mak/xcode/pegas/DerivedData/pegas/TextIndex/

@@ -112,8 +112,6 @@ static void queue_test_basic_operation(Object* queue, struct test_data_desc* td_
 
 	/* test intersect push and pop */
 	{
-		intptr_t element = 0;
-
 		dbg_assert(iqueue_empty(queue));
 
 		iqueue_push(queue, test_data_addr[1]);
@@ -179,9 +177,7 @@ static void queue_test_basic_operation(Object* queue, struct test_data_desc* td_
 
 	/* test unique element */
 	{
-		intptr_t element = 0;
 		iqueue_clear(queue);
-
 
 		iqueue_push(queue, test_data_addr[1]);
 		iqueue_push(queue, test_data_addr[1]);

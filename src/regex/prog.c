@@ -345,7 +345,7 @@ void dfa_find_in_text( const p_dfa dfa, int greedy, int is_bol, const char* text
 	if ( pnl == NULL ) return;
 
 	/* push front and push back '\n' to enable match ^ $ */
-	len = strlen( text );
+	len = (int)strlen( text );
 
 	//printf( "after emendation for ^ and $: %s\n", text );
 
@@ -375,7 +375,7 @@ void dfa_find_in_text( const p_dfa dfa, int greedy, int is_bol, const char* text
 
 			if ( pel == NULL ) {
 				/* edge not found */
-				if ( is_bol && i == 0 && bol || i == len - 1 && eol ) {
+				if ( (is_bol && i == 0 && bol) || (i == len - 1 && eol) ) {
 				}
 				else {
 					break;

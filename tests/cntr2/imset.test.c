@@ -8,16 +8,6 @@
 
 #include <memheap/heap_global.h>
 
-struct counter_t {
-	int count; /* count of element */
-	int sum;   /* sum of all element */
-};
-static void foreach_count(const void* __ref, void* param) {
-	struct counter_t* counter = (struct counter_t*)param;
-
-	counter->count ++;
-	counter->sum += *(int*)__ref;
-}
 
 static void mset_test_basic_itr_operation(Object* mset, struct test_data_desc* td_desc) {
 	address *test_data_addr   = td_desc->data_repo;

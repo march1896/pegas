@@ -11,8 +11,6 @@ void*      __global_sysd_heap  = NULL;
 pf_alloc   __global_sysd_alloc = (pf_alloc)heap_sysd_alloc;
 pf_dealloc __global_sysd_dealloc = (pf_dealloc)heap_sysd_dealloc;
 
-static int __system_global_heap_magic;
-
 struct heap_llrb __global_static_heap_llrb = {
 	NULL,                /* parent */
 	heap_sysd_alloc,     /* alloc  */
