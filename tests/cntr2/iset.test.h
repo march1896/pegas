@@ -3,6 +3,7 @@
 
 #include "cntr2/oo_model.h"
 
+struct test_data_desc;
 void set_test_basic(Object* set, struct test_data_desc* td_desc);
 void set_test_bench(Object* set, struct test_data_desc* td_desc);
 

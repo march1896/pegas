@@ -37,6 +37,7 @@ static bool td_repo_initialized = false;
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <limits.h>
 int cmpstr(void const *a, void const *b) {
 	char const *aa = *(char const **)a;
 	char const *bb = *(char const **)b;
