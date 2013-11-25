@@ -2,16 +2,16 @@
 #include <string.h>
 
 #include "cntr2/iobject.h"
-#include "cntr2/ilist.h"
+#include <cntr2/ilist.h>
 #include "cntr2/iqueue.h"
 #include "cntr2/istack.h"
-#include "cntr2/ifactory.h"
+#include <cntr2/ifactory.h>
 
 #include "ele.data.h"
 #include "test_util.h"
-#include "cntr2/ilist.test.h"
-#include "cntr2/iqueue.test.h"
-#include "cntr2/istack.test.h"
+#include "ilist.test.h"
+#include "iqueue.test.h"
+#include "istack.test.h"
 
 static void olist_correctness_test() {
 	Object* a = NULL;

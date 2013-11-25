@@ -114,7 +114,7 @@ static allocator allocator_sysd_get_parent(allocator alo) {
 }
 
 static void allocator_sysd_walk(allocator alo, pf_process_block per_block_cb, void* param) {
-	struct allocator_sysd* me = (struct allocator_sysd*)alo;
+	//struct allocator_sysd* me = (struct allocator_sysd*)alo;
 
 	/* do nothing, the system heap does not contain walk method */
 	//return heap_sysd_walk(me->__driver, per_block_cb, param);

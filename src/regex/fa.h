@@ -3,7 +3,7 @@
 
 #define _ENABLE_PRINT_
 
-#include <cominc.h>
+#include <util/cominc.h>
 #include <memheap/heap_global.h>
 
 #define t_alloc malloc

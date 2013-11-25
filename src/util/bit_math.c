@@ -24,7 +24,7 @@ inline int mlog2(int x) {
 	}
 
 	if (x & 0x2) {
-		x = x >> 1;
+		//x = x >> 1;
 		bit += 1;
 	}
 

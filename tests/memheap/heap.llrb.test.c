@@ -3,9 +3,9 @@
 #include <memheap/heap_global.h>
 #include <memheap/heap_walk.h>
 
-#include <memheap/heap_util.test.h>
+#include "heap_util.test.h"
 
-#include <test_util.h>
+#include "../test_util.h"
 
 void heap_llrb_correct_test() {
 	struct heap_llrb* testheap = heap_llrb_spawn(

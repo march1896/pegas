@@ -210,7 +210,7 @@ unknown_traits char_traits = {
 #include <string.h>
 static unknown *string_clone(const unknown* ref_x, pf_alloc alc, void* heap) {
 	char* old_str = (char*)ref_x;
-	int str_len = strlen(old_str);
+	int str_len = (int)strlen(old_str);
 	char* new_str = (char*)alloc(alc, heap, sizeof(char) * (str_len + 1));
 	strcpy(new_str, old_str);
 	return (unknown*)new_str;

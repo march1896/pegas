@@ -1,4 +1,4 @@
-#include "memheap/heap_global.h"
+#include <memheap/heap_global.h>
 #include "cntr2/oo_model.h"
 
 #include "ele.data.h"
@@ -96,7 +96,7 @@ void td_repo_init() {
 			char buff[50];
 			int str_len;
 			sprintf(buff, "str_%d", i);
-			str_len = strlen(buff);
+			str_len = (int)strlen(buff);
 			string_td_repo[i] = (char*)halloc((str_len + 1) * sizeof(char*));
 			string_td_repo_bak[i] = (char*)halloc((str_len + 1) * sizeof(char*));
 			strcpy(string_td_repo[i], buff);

@@ -202,7 +202,7 @@ static void oslist_itr_set_obj(iterator citr, const unknown* n_ref) {
 static const unknown* oslist_itr_get_ref(const_iterator citr) {
 	const struct oslist_itr* itr = (const struct oslist_itr*)citr;
 	const struct skiplink* link    = itr->current;
-	struct oslist* container = itr->container;
+	//struct oslist* container = itr->container;
 
 	dbg_assert(itr->__cast == oslist_itr_cast);
 	dbg_assert(itr->current != NULL);
@@ -512,7 +512,6 @@ void oslist_replace_s(Object* o, const unknown* __ref) {
 	struct oslist* oskiplist  = (struct oslist*)o;
 	const unknown* managed_ref = 
 		oskiplist->content_traits.__clone(__ref, (pf_alloc)allocator_acquire, oskiplist->allocator);
-	bool res = false;
 	const unknown* replaced_ref = NULL;
 
 	replaced_ref = skiplist_replace_s(oskiplist->driver_skiplist, managed_ref);

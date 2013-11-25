@@ -85,7 +85,6 @@ static void skiplist_basic_test() {
 	}
 	/* test insert_s */
 	{
-		bool dup = false;
 		dbg_assert(skiplist_replace_s(list, (void*)(intptr_t)2) == NULL);
 		dbg_assert(skiplist_replace_s(list, (void*)(intptr_t)1) == NULL);
 		dbg_assert(skiplist_replace_s(list, (void*)(intptr_t)4) == NULL);

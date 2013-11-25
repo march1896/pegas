@@ -220,7 +220,7 @@ static void ollrb_itr_set_obj(iterator citr, const unknown* n_ref) {
 static const unknown* ollrb_itr_get_ref(const_iterator citr) {
 	const struct ollrb_itr* itr   = (const struct ollrb_itr*)citr;
 	const struct ollrb_node* node = NULL;
-	struct ollrb* container = itr->container;
+	//struct ollrb* container = itr->container;
 
 	dbg_assert(itr->__cast == ollrb_itr_cast);
 	dbg_assert(itr->current != NULL);
@@ -670,7 +670,6 @@ void ollrb_insert_s(Object* o, const unknown* __ref) {
 
 	if (duplicated != NULL) {
 		/* we can not insert the now reference */
-		struct ollrb_node* dup_node = container_of(duplicated, struct ollrb_node, link);
 		dbg_assert(ollrb_llrblink_compare(&node->link, duplicated, ollrb->content_traits.__compare_to) == 0);
 
 		allocator_dealloc(ollrb->allocator, node);

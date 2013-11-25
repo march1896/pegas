@@ -4,8 +4,8 @@
 
 #include "ele.data.h"
 #include "test_util.h"
-#include "cntr2/iset.test.h"
-#include "cntr2/imset.test.h"
+#include "iset.test.h"
+#include "imset.test.h"
 
 static void osplay_as_set_basic_test() {
 	Object* a = cntr_create_osplay(&int_traits);

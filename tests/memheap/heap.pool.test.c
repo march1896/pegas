@@ -3,9 +3,9 @@
 #include <memheap/heap_global.h>
 #include <memheap/heap_walk.h>
 
-#include <memheap/heap_util.test.h>
+#include "../memheap/heap_util.test.h"
 
-#include <test_util.h>
+#include "../test_util.h"
 
 static void heap_spool_correct_test() {
 	struct heap_spool* testheap = heap_spool_spawn(

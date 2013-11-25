@@ -216,7 +216,7 @@ static void osplay_itr_set_obj(iterator citr, const unknown* n_ref) {
 static const unknown* osplay_itr_get_ref(const_iterator citr) {
 	const struct osplay_itr* itr   = (const struct osplay_itr*)citr;
 	const struct osplay_node* node = NULL;
-	struct osplay* container = itr->container;
+	//struct osplay* container = itr->container;
 
 	dbg_assert(itr->__cast == osplay_itr_cast);
 	dbg_assert(itr->current != NULL);
@@ -681,7 +681,6 @@ void splayset_insert_s(Object* o, const unknown* __ref) {
 	osplay_attach_sentinel(osplay);
 
 	if (duplicated != NULL) {
-		struct osplay_node* dup_node = container_of(duplicated, struct osplay_node, link);
 		dbg_assert(osplay_splaylink_compare(&node->link, duplicated, osplay->content_traits.__compare_to) == 0);
 		
 		allocator_dealloc(osplay->allocator, node);
@@ -849,7 +848,6 @@ void splayset_itr_remove(Object* o, iterator itr) {
 	struct osplay* osplay    = (struct osplay*)o;
 	struct osplay_itr* oitr  = (struct osplay_itr*)itr;
 	struct osplay_node* node = container_of(oitr->current, struct osplay_node, link);
-	const void* obj_ref      = node->reference;
 
 	dbg_assert(oitr->__cast == osplay_itr_cast);
 	dbg_assert(oitr->current != NULL);

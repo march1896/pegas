@@ -5,13 +5,13 @@
 #include "cntr2/iarray.h"
 #include "cntr2/iqueue.h"
 #include "cntr2/istack.h"
-#include "cntr2/ifactory.h"
+#include <cntr2/ifactory.h>
 
 #include "ele.data.h"
 #include "test_util.h"
-#include "cntr2/iarray.test.h"
-#include "cntr2/iqueue.test.h"
-#include "cntr2/istack.test.h"
+#include "iarray.test.h"
+#include "iqueue.test.h"
+#include "istack.test.h"
 
 static void oarray_correctness_test() {
 	Object* a = NULL;

@@ -1,11 +1,11 @@
 #include "cntr2/istack.h"
-#include "cntr2/iitr.h"
+#include <cntr2/iitr.h>
 
 #include "istack.test.h"
 #include "test_util.h"
 #include "ele.data.h"
 
-#include "memheap/heap_global.h"
+#include <memheap/heap_global.h>
 
 static void stack_test_basic_itr_operation(Object* stack, struct test_data_desc* td_desc) {
 	address *test_data_addr   = td_desc->data_repo;
@@ -110,8 +110,6 @@ static void stack_test_basic_operation(Object* stack, struct test_data_desc* td_
 
 	/* test intersect push and pop */
 	{
-		intptr_t element = 0;
-
 		dbg_assert(istack_empty(stack));
 
 		istack_push(stack, test_data_addr[1]);

@@ -26,10 +26,10 @@ endif
 ar_exe             := $(AR)
 ar_flags           := cr
 
-#ld_exe             := $(LD)
+ld_exe             := $(LD)
 ld_exe             := $(CC)
 ld_flags_front     :=
-#ld_flags_back      := -demangle -dynamic -arch x86_64 -macosx_version_min 10.8.0 -lSystem /usr/bin/../lib/clang/4.2/lib/darwin/libclang_rt.osx.a
+ld_flags_back      := -demangle -dynamic -arch x86_64 -macosx_version_min 10.8.0 -lSystem /usr/bin/../lib/clang/4.2/lib/darwin/libclang_rt.osx.a
 ld_flags_back      :=
 
 endif

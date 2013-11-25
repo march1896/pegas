@@ -6,7 +6,7 @@
 #include "test_util.h"
 #include "ele.data.h"
 
-#include "memheap/heap_global.h"
+#include <memheap/heap_global.h>
 
 struct counter_t {
 	int count; /* count of element */
@@ -178,7 +178,7 @@ static void mset_test_basic_itr_operation(Object* mset, struct test_data_desc* t
 
 static void mset_test_basic_operation(Object* mset, struct test_data_desc* td_desc) {
 	address *test_data_addr   = td_desc->data_repo;
-	unknown_traits *td_traits = td_desc->data_traits;
+	//unknown_traits *td_traits = td_desc->data_traits;
 	imset_clear(mset);
 	dbg_assert(imset_empty(mset));
 
@@ -368,7 +368,7 @@ void mset_test_memory(Object* mset) {
 
 void mset_test_bench(Object* mset, struct test_data_desc* td_desc) {
 	address *test_data_addr   = td_desc->data_repo;
-	unknown_traits *td_traits = td_desc->data_traits;
+	//unknown_traits *td_traits = td_desc->data_traits;
 	__mset = mset;
 	__data_diff_type = 100;
 	__data_max_count = 10;

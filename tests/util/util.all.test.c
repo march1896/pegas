@@ -1,4 +1,4 @@
-#include <test_util.h>
+#include "../test_util.h"
 
 extern void llrb_link_test();
 extern void splay_link_test();

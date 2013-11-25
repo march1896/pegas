@@ -1,11 +1,11 @@
 #include "cntr2/iset.h"
-#include "cntr2/iitr.h"
+#include <cntr2/iitr.h>
 
 #include "iset.test.h"
 #include "test_util.h"
 #include "ele.data.h"
 
-#include "memheap/heap_global.h"
+#include <memheap/heap_global.h>
 
 static void set_test_basic_itr_operation(Object* set, struct test_data_desc* td_desc) {
 	address *test_data_addr   = td_desc->data_repo;
@@ -99,7 +99,7 @@ static void set_test_basic_itr_operation(Object* set, struct test_data_desc* td_
 
 static void set_test_basic_operation(Object* set, struct test_data_desc* td_desc) {
 	address *test_data_addr   = td_desc->data_repo;
-	unknown_traits *td_traits = td_desc->data_traits;
+	//unknown_traits *td_traits = td_desc->data_traits;
 
 	iset_clear(set);
 	dbg_assert(iset_empty(set));
@@ -150,7 +150,6 @@ static void set_test_basic_operation(Object* set, struct test_data_desc* td_desc
 	dbg_assert(iset_size(set) == 4);
 	{
 		bool bool_res = false;
-		void* old_ref = 0;
 
 		/* remove elements one by one */
 
@@ -224,7 +223,6 @@ static void set_test_basic_operation(Object* set, struct test_data_desc* td_desc
 
 	dbg_assert(iset_empty(set) == true);
 	{
-		void* old_ref = NULL;
 		/* try to add same element to the set */
 
 		iset_insert(set, test_data_addr[1]);

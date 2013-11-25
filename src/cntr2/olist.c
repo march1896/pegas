@@ -9,7 +9,7 @@
 #include "ifactory.h"
 #include "oallocator.h"
 #include "util/list_link.h"
-#include "memheap/heap_global.h"
+#include <memheap/heap_global.h>
 
 /* this module defines double linked list(with sentinel) container, it implements 
  * ilist, iqueue, istack 
@@ -226,7 +226,7 @@ static void o_dlist_itr_set_obj(iterator citr, const unknown* n_ref) {
 static const unknown* o_dlist_itr_get_ref(const_iterator citr) {
 	const struct o_dlist_itr* itr   = (const struct o_dlist_itr*)citr;
 	const struct o_dlist_node* node = NULL;
-	struct o_dlist* container = itr->container;
+	//struct o_dlist* container = itr->container;
 
 	dbg_assert(itr->__cast == o_dlist_itr_cast);
 	dbg_assert(itr->current != NULL);

@@ -95,7 +95,6 @@ static void* heap_buddy_alloc_try(struct heap_buddy* pheap, int size) {
 	int bit = 0;
 
 	struct listlink *prop = NULL;
-	struct heap_buddy_block *pb = NULL;
 
 	for (bit = mlog2(size); bit < BUDDY_COUNT; bit ++) {
 		prop = blink_find(&pheap->buddy[bit], size);

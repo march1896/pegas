@@ -288,9 +288,11 @@ bool heap_llrb_dealloc_v(struct heap_llrb* pheap, void *buff, const char* file, 
 /* get block info part */
 void heap_llrb_get_blockinfo(void* mem_addr, /* out */ struct heap_blockinfo* info) {
 	struct block_c *pbc = block_com_from_data(mem_addr);
+    /*
 	struct heap_llrb_block *pb = container_of(pbc, struct heap_llrb_block, common);
 	struct block_c *prev = block_com_prev_adj(pbc);
 	struct block_c *next = block_com_next_adj(pbc);
+     */
 
 	if (mem_addr == NULL) {
 		return;

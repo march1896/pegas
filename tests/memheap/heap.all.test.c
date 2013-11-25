@@ -1,6 +1,6 @@
-#include <test_util.h>
+#include "../test_util.h"
 
-#include <memheap/heap_util.test.h>
+#include "heap_util.test.h"
 
 extern void heap_llrb_test();
 extern void heap_buddy_test();

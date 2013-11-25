@@ -9,7 +9,7 @@
 
 #include "oarray.h"
 #include "oallocator.h"
-#include "memheap/heap_global.h"
+#include <memheap/heap_global.h>
 
 enum list_interfaces {
 	e_object,
@@ -194,7 +194,6 @@ static inline unknown** BUFFER_AT(struct oarray* a, int index) {
 static unknown* oarray_itr_get_obj(const_iterator citr) {
 	const struct oarray_itr* itr   = (const struct oarray_itr*)citr;
 	struct oarray* container = itr->container;
-	unknown* __ref = NULL;
 
 	dbg_assert(itr->__cast == oarray_itr_cast);
 	dbg_assert(itr->current != -1);
@@ -706,7 +705,6 @@ const_iterator oarray_itr_begin(const Object* o) {
 
 const_iterator oarray_itr_end(const Object* o) {
 	struct oarray* a = (struct oarray*)o;
-	int idx_end = INDEX(a->buffer_length, a->idx_start, a->size);
 
 	a->itr_end.current = a->size;
 
