@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "cntr2/iobject.h"
-#include "cntr2/iarray.h"
-#include "cntr2/iqueue.h"
-#include "cntr2/istack.h"
+#include <cntr2/iobject.h>
+#include <cntr2/iarray.h>
+#include <cntr2/iqueue.h>
+#include <cntr2/istack.h>
 #include <cntr2/ifactory.h>
 
 #include "ele.data.h"

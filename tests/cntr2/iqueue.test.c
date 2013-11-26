@@ -1,11 +1,10 @@
-#include "cntr2/iqueue.h"
+#include <cntr2/iqueue.h>
 #include <cntr2/iitr.h>
+#include <memheap/heap_global.h>
 
 #include "iqueue.test.h"
 #include "test_util.h"
 #include "ele.data.h"
-
-#include <memheap/heap_global.h>
 
 static void queue_test_basic_itr_operation(Object* queue, struct test_data_desc* td_desc) {
 	address *test_data_addr   = td_desc->data_repo;

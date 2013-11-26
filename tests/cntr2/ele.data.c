@@ -1,5 +1,5 @@
 #include <memheap/heap_global.h>
-#include "cntr2/oo_model.h"
+#include <cntr2/oo_model.h>
 
 #include "ele.data.h"
 

@@ -1,12 +1,11 @@
 #include <cntr2/iset.h>
 #include <cntr2/iitr.h>
 #include <cntr2/ialgo.h>
+#include <memheap/heap_global.h>
 
 #include "imset.test.h"
 #include "test_util.h"
 #include "ele.data.h"
-
-#include <memheap/heap_global.h>
 
 
 static void mset_test_basic_itr_operation(Object* mset, struct test_data_desc* td_desc) {

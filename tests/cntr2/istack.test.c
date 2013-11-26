@@ -1,11 +1,10 @@
-#include "cntr2/istack.h"
+#include <cntr2/istack.h>
 #include <cntr2/iitr.h>
+#include <memheap/heap_global.h>
 
 #include "istack.test.h"
 #include "test_util.h"
 #include "ele.data.h"
-
-#include <memheap/heap_global.h>
 
 static void stack_test_basic_itr_operation(Object* stack, struct test_data_desc* td_desc) {
 	address *test_data_addr   = td_desc->data_repo;

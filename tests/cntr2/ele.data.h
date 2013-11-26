@@ -1,7 +1,7 @@
 #ifndef _CNTR2_TEST_ELEMENTDATA_H_
 #define _CNTR2_TEST_ELEMENTDATA_H_
 
-#include "cntr2/oo_model.h"
+#include <cntr2/oo_model.h>
 
 /* module test data */
 #define TD_NUM 100000
