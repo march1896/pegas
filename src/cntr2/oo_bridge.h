@@ -13,19 +13,24 @@
 #include <memheap/heap_def.h>
 #include <cntr2/oo_model.h>
 
+typedef struct unknown_traits_t unknown_traits;
+/* unknown_traits serve as the class of a non-oo-model object, since we could not get the class information
+ * from the object instance, we should pass the class info explicitly */
 typedef unknown* (*pf_ibridge_clone)(const unknown *x, pf_alloc alc, void* heap);
 typedef void     (*pf_ibridge_destroy)(const unknown *x, pf_dealloc alc, void* heap);
 typedef compres  (*pf_ibridge_compare)(const unknown *x, const unknown *y);
 typedef bool     (*pf_ibridge_equals)(const unknown *x, const unknown *y);
 typedef hashcode (*pf_ibridge_hashcode)(const unknown *x);
 
-typedef struct unknown_traits_t {
+struct unknown_traits_t {
 	pf_ibridge_destroy  __destroy;
 	pf_ibridge_clone    __clone;
 	pf_ibridge_compare  __compare_to;
 	pf_ibridge_equals   __equals;
 	pf_ibridge_hashcode __hashcode;
-} unknown_traits;
+	// TODO: how to pass the information if the one type traits info depends on other object or traits.
+	void*               __type_depends;
+};
 
 typedef long long longint;
 extern unknown_traits pointer_traits;
