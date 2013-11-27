@@ -287,7 +287,7 @@ int dfa_accept_string( const p_dfa dfa, const char* text ) {
 	if ( pnl == NULL ) return 0;
 
 	/* push front and push back '\n' to enable match ^ $ */
-	len = strlen( text );
+	len = (int)strlen( text );
 	//str = (char*)t_alloc( sizeof( char )*(len + 10) );
 	str[0] = '\2';
 	for (i = 0; i < len; i ++ ) {

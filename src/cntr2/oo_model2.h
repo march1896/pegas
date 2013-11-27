@@ -1,211 +1,107 @@
-#ifndef _OO_MODEL_H_
-#define _OO_MODEL_H_
+#ifndef _OO_MODEL_2_H_
+#define _OO_MODEL_2_H_
 
-#include <cominc.h>
-
-typedef struct __class_t* __class;
-
-typedef __protocols (*pf_get_protocol)(const_unknown obj, unique_id protocol_id);
-
-/* every object belongs to some class */
-struct __object_t {
-	__class is_a;
-};
-typedef struct __object_t *object;
-
-/* for introspective */
-struct __type_info {
-	unique_id           id;
-	char*               name;
-};
-
-unknown dynamic_dispatch_msg(object obj, const char *msg_name, unknown param);
-
-struct msg_entry {
-	const char *name;
-
-	unknown    function;
-};
-
-struct __protocol_sample {
-	// a protocol is an object, so it has a pointer to its class
-	__class             is_a;
-
-	struct __type_info  info;
-
-	struct msg_table {
-		struct msg_entry method_0;
-		struct msg_entry method_1;
-	};
-};
-
-
-/* in order to dispatch a message at runtime, we should have a table which contains <msg_name, msg_function_entry, param_number> */
-
-/* in .h */
-struct protocol_base_object {
-	__class            is_a;
-	struct __type_info info;
-
-	struct msg_table {
-		struct msg_entry object_destroy;
-		struct msg_entry object_clone;
-		struct msg_entry object_equals;
-		struct msg_entry object_compare;
-	};
-} base_object;
-
-#define static_binding_dec(msg_name, msg_type) \
-	extern ret_type msg_name(object obj);
-
-#define static_binding_def(msg_name, msg_type) \
-	ret_type msg_name(object target) { \
-		protocol ptc = get_protocol(target, 
-
-
-void   object_destroy(object obj);
-object object_clone  (object obj);
-bool   object_equals (object obj, object other);
-int    object_compare(object obj, object other);
-
-#define static_bindmsg_0(ptc_type, msg_name, ret_type) \
-##ret_type## ##msg_name##(object obj) { \
-	protocol ptc = get_protocol(obj, ptc_type); \
-	return ptc->msg_tb.##msg_name##.function(obj); \
-}\
-
-#define static_bindmsg_1(ptc_type, msg_name, ret_type, param1_type, param1_name) \
-ret_type msg_name(object obj, param1_type param1_name) { \
-	protocol ptc = get_protocol(obj, ptc_type); \
-	return ptc->msg_table.##msg_name##.function(obj, param1_name); \
-}\
-
-/* in .c */
-static_dispatch(protocol_base_object, object_destroy);
-
-struct __class_t {
-	/* every class is an object, so it has a pointer to its class */
-	__class             is_a;
-
-	/* in addition, a class should carry the infomation for the type it presents */
-	struct __type_info  info;
-
-	/* a class should implements some protocol, so we could send to an object which belongs to this class some protocol msg */
-	pf_get_protocol     get_protocol;
-	protocol            protocols[0];
-};
-
-struct __protocol_t {
-	struct __type_info  info;
-
-	/* mothods list */
-};
-
-struct __class_t {
-	__class             is_a;
-
-	struct __type_info  info;
-	pf_get_protocol     get_protocol;
-
-	__protocol          protocols[0];
-};
-
-typedef struct __protocol_t* __protocal;
-
+#include <util/cominc.h>
 /*
  * For more detail about the oo model, please see oo_model.doc.h
  */
-typedef void*        unknown;
-typedef const void*  const_unknown;
-typedef unsigned int unique_id;
+typedef void         unknown;
 typedef void*        address;
+typedef unsigned int unique_id;
+typedef unsigned int hashcode;
+typedef int          compres;
 
-typedef unknown (*pf_cast)(unknown obj, unique_id type_id);
+/*
+ * link time unique id.
+ * we could not use this id at compile time, for example in switch case statement 
+ */
+#define DECLARE_UID(id_name) extern unique_id id_name
+#define DEFINE_UID(id_name) unique_id id_name = (unique_id)&id_name;
 
-typedef struct base_interface {
-	/* for interface, __offset is the offset of the interface from the object which implements it 
-	 * for example, the first interface's offset is 0, the second is 1. */
-	address                   __offset;
+typedef struct object_t Object;
+typedef unknown protocol;
+typedef protocol* (*pf_get_protocol)(const Object* obj, unique_id ptc_id);
 
-	unknown                   __vtable;
+struct class_info {
+	const char *name;
+	const char *description;
+};
 
-} iobject;
+typedef struct class_t {
+	/* we dont support inherit */
+	/* Class*          __parent; */
 
-typedef struct base_object {
-	/* for object, address is the abstract address the object */
-	address                   __offset;
+	pf_get_protocol    __get_protocol;
 
-	/* NOTE: this function could be in the virtual function table, but that will cause duplication */
-	pf_cast                   __cast;
+	struct class_info  __typeinfo;
 
-	/* the object should know how many interfaces it has */
-	struct base_interface     __iftable[1];
-
-	/* the object running context */
-	//allocator                 __allocator;
+	protocol           __protocols[0];
 
 	/* object specific members, i.e. */
 	/*
 	int x;
 	struct someobject y;
 	*/
-} object;
+} Class;
 
-/* The above definition only defines the memory layout of object and interface, 
- * but does not define some common property of all 'objects' like 
- * destroy and clone, the below function does these. So they should typically 
- * in a interfaces vtable struct, and then in the object's vtable, like below,
-	struct __base_vtable {
-		pf_oo_destroy              __destroy;
-		pf_oo_clone                __clone;
-	};
- */
-typedef void (*pf_oo_destroy)(object* obj);
+struct object_t {
+	Class             *__is_a;
 
-/* An object should know how to clone itself, but the clone method has transitivity.
- * that is, if an object has a clone method, all objects that it inherits or contains should 
- * have clone too, but the oo_model is not completely. 
- * i.e. we can hold non-oo-object in the container, so the container does not 
- * how to clone element stored in the container. */
-typedef object* (*pf_oo_clone)(const object* obj);
+	/* resource for this object, like cpu, memory */
+	/*
+	allocator          __allocator;
+	thread             __thread;
+	*/
 
+	unknown           *__content;
+};
 
-#define __MAX_NUM_INTERFACE_PER_OBJECT 10
-/* 
- * get the object from a given interface
- */
-extern inline object* __object_from_interface(const iobject* inf);
+//bool __is_class_of(const Object *x, unique_id cls_id);
 
 /*
- * test if an unknown address is an object.
- * currently, this test is a little weak, since the only rule we base is that:
- * for any object, the first (void*) bytes saves the address itself.
+ * get the responder function via the message name 
  */
-extern inline bool __is_object(const_unknown x);
+unknown* __get_responder(const Object *x, const char *msg_name);
+
+unknown* __get_responder(const Object *x, unique_id ptc_id, const char *ptc_msg_name);
+
+#define declare_dispatch_function0(ptc_name, msg_name, ret_type) \
+	ret_type ptc_name##_##msg_name(Object *x);
+#define declare_dispatch_function1(ptc_name, msg_name, ret_type, p1_type) \
+	ret_type ptc_name##_##msg_name(Object *x, p1_type param1);
+#define declare_dispatch_function2(ptc_name, msg_name, ret_type, p1_type, p2_type) \
+	ret_type ptc_name##_##msg_name(Object *x, p1_type p1, p2_type p2);
+#define declare_dispatch_function3(ptc_name, msg_name, ret_type, p1_type, p2_type, p3_type) \
+	ret_type ptc_name##_##msg_name(Object *x, p1_type p1, p2_type p2, p3_type p3);
+#define declare_dispatch_function4(ptc_name, msg_name, ret_type, p1_type, p2_type, p3_type, p4_type) \
+	ret_type ptc_name##_##msg_name(Object *x, p1_type p1, p2_type p2, p3_type p3, p4_type p4);
+#define declare_dispatch_function5(ptc_name, msg_name, ret_type, p1_type, p2_type, p3_type, p4_type, p5_type) \
+	ret_type ptc_name##_##msg_name(Object *x, p1_type p1, p2_type p2, p3_type p3, p4_type p4, p5_type p5);
+
+#define define_dispatch_function0(ptc_name, msg_name, ret_type) \
+	ret_type ptc_name##_##msg_name(Object *x) { \
+		ptc_name##_protocol *ptc = x->__is_a->__get_protocol(x, ptc_name##_ptc_id); \
+		return ptc->##msg_name(x->__content); \
+	}
+#define define_dispatch_function1(ptc_name, msg_name, ret_type, p1_type) \
+	ret_type ptc_name##_##msg_name(Object *x, p1_type param1);
+#define define_dispatch_function2(ptc_name, msg_name, ret_type, p1_type, p2_type) \
+	ret_type ptc_name##_##msg_name(Object *x, p1_type p1, p2_type p2);
+#define define_dispatch_function3(ptc_name, msg_name, ret_type, p1_type, p2_type, p3_type) \
+	ret_type ptc_name##_##msg_name(Object *x, p1_type p1, p2_type p2, p3_type p3);
+#define define_dispatch_function4(ptc_name, msg_name, ret_type, p1_type, p2_type, p3_type, p4_type) \
+	ret_type ptc_name##_##msg_name(Object *x, p1_type p1, p2_type p2, p3_type p3, p4_type p4);
+#define define_dispatch_function5(ptc_name, msg_name, ret_type, p1_type, p2_type, p3_type, p4_type, p5_type) \
+	ret_type ptc_name##_##msg_name(Object *x, p1_type p1, p2_type p2, p3_type p3, p4_type p4, p5_type p5);
 
 /*
- * test if an unknown address is an interface.
- * if unknown x is an interface, we could found the base object's address,
- * if the deduced 'object' is a real object, then this is a interface.
- */
-extern inline bool __is_interface(const_unknown x);
-
-/* 
- * cast everything,
- * from object to interface, from interface to object, 
- * from interface to interface(not common in c++), from object to object(which will return NULL since we 
- * have only one layer of inherit, that is object inherit from interfaces.
- */
-extern inline unknown __cast(const_unknown x, unique_id id);
-
-/* 
  * cast a object to one of its interfaces if you know the offset of the interface in the object.
  */
-extern inline iobject* __fast_cast(const object* x, int ifoffset);
+extern inline _interface* __fast_cast(const Object* x, int ifoffset);
 
 /*
  * include the raw-pointer-object common processing functions.
  */
-#include <oo_ref.h>
+#include <cntr2/oo_bridge.h>
 
-#endif /* _OO_MODEL_H_ */
+#endif /* _OO_MODEL_2_H_ */
