@@ -204,7 +204,7 @@ static unknown* ollrb_itr_get_obj(const_iterator citr) {
 
 	node = container_of(itr->current, struct ollrb_node, link);
 
-	return container->content_traits.__clone(node->reference, (pf_alloc)__global_default_alloc, __global_default_heap);
+	return container->content_traits.__clone(&container->content_traits, node->reference, (pf_alloc)__global_default_alloc, __global_default_heap);
 }
 
 static void ollrb_itr_set_obj(iterator citr, const unknown* n_ref) {
@@ -674,7 +674,7 @@ void ollrb_insert_s(Object* o, const unknown* __ref) {
 
 		allocator_dealloc(ollrb->allocator, node);
 	} else {
-		node->reference = ollrb->content_traits.__clone(__ref, (pf_alloc)allocator_acquire, ollrb->allocator);
+		node->reference = ollrb->content_traits.__clone(&ollrb->content_traits, __ref, (pf_alloc)allocator_acquire, ollrb->allocator);
 		ollrb->size ++;
 	}
 }
@@ -686,7 +686,7 @@ void ollrb_replace_s(Object* o, const unknown* __ref) {
 	struct llrblink* duplicated = NULL;
 
 	/* just assign the reference, delay the clone operation if there is no duplicates */
-	node->reference = ollrb->content_traits.__clone(__ref, (pf_alloc)allocator_acquire, ollrb->allocator);
+	node->reference = ollrb->content_traits.__clone(&ollrb->content_traits, __ref, (pf_alloc)allocator_acquire, ollrb->allocator);
 
 	ollrb->root = llrb_insert_sv(ollrb->root, &node->link, ollrb_llrblink_compare, ollrb->content_traits.__compare_to, &duplicated);
 	ollrb_reassociate(ollrb);
@@ -714,7 +714,7 @@ void ollrb_insert_m(Object* o, const unknown* __ref) {
 	struct ollrb_node* node = (struct ollrb_node*)
 		allocator_alloc(ollrb->allocator, sizeof(struct ollrb_node));
 
-	node->reference = ollrb->content_traits.__clone(__ref, (pf_alloc)allocator_acquire, ollrb->allocator);
+	node->reference = ollrb->content_traits.__clone(&ollrb->content_traits, __ref, (pf_alloc)allocator_acquire, ollrb->allocator);
 
 	ollrb->root = llrb_insert_v(ollrb->root, &node->link, ollrb_llrblink_compare, ollrb->content_traits.__compare_to);
 	ollrb_reassociate(ollrb);
