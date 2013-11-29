@@ -199,7 +199,7 @@ static unknown* oarray_itr_get_obj(const_iterator citr) {
 	dbg_assert(itr->current != -1);
 
 	/* return a internal reference as the iitr.h header said */
-	return container->content_traits.__clone(&container->content_traits, *BUFFER_AT(container, itr->current), (pf_alloc)__global_default_alloc, __global_default_heap);
+	return container->content_traits.__clone(*BUFFER_AT(container, itr->current), (pf_alloc)__global_default_alloc, __global_default_heap);
 }
 
 static void oarray_itr_set_obj(iterator citr, const unknown* n_ref) {
@@ -214,7 +214,7 @@ static void oarray_itr_set_obj(iterator citr, const unknown* n_ref) {
 
 	/* then clone the new reference */
 	*BUFFER_AT(container, itr->current) = 
-		container->content_traits.__clone(&container->content_traits, n_ref, (pf_alloc)allocator_acquire, container->allocator);
+		container->content_traits.__clone(n_ref, (pf_alloc)allocator_acquire, container->allocator);
 }
 
 static const unknown* oarray_itr_get_ref(const_iterator citr) {
@@ -569,7 +569,7 @@ void oarray_add_front(Object* o, const unknown* __ref) {
 	if (a->idx_start < 0) 
 		a->idx_start += a->buffer_length;
 
-	a->buffer[a->idx_start] = a->content_traits.__clone(&a->content_traits, __ref, (pf_alloc)allocator_acquire, a->allocator);
+	a->buffer[a->idx_start] = a->content_traits.__clone(__ref, (pf_alloc)allocator_acquire, a->allocator);
 	a->size ++;
 
 	oarray_adjust_buffer(a);
@@ -581,7 +581,7 @@ void oarray_add_back(Object* o, const unknown* __ref) {
 
 	dbg_assert(a->size < a->buffer_length);
 
-	a->buffer[idx_end] = a->content_traits.__clone(&a->content_traits, __ref, (pf_alloc)allocator_acquire, a->allocator);
+	a->buffer[idx_end] = a->content_traits.__clone(__ref, (pf_alloc)allocator_acquire, a->allocator);
 
 	a->size ++;
 	oarray_adjust_buffer(a);

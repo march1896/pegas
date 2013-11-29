@@ -202,7 +202,7 @@ static unknown* o_dlist_itr_get_obj(const_iterator citr) {
 	node = container_of(itr->current, struct o_dlist_node, link);
 
 	/* return a internal reference as the iitr.h header said */
-	return container->content_traits.__clone(&container->content_traits, node->reference, (pf_alloc)__global_default_alloc, __global_default_heap);
+	return container->content_traits.__clone(node->reference, (pf_alloc)__global_default_alloc, __global_default_heap);
 }
 
 static void o_dlist_itr_set_obj(iterator citr, const unknown* n_ref) {
@@ -216,11 +216,11 @@ static void o_dlist_itr_set_obj(iterator citr, const unknown* n_ref) {
 	node = container_of(itr->current, struct o_dlist_node, link);
 	
 	/* first destroy the old reference */
-	container->content_traits.__destroy(&container->content_traits, node->reference, (pf_dealloc)allocator_release, container->allocator);
+	container->content_traits.__destroy(node->reference, (pf_dealloc)allocator_release, container->allocator);
 
 	/* then clone the new reference */
 	node->reference = 
-		container->content_traits.__clone(&container->content_traits, n_ref, (pf_alloc)allocator_acquire, container->allocator);
+		container->content_traits.__clone(n_ref, (pf_alloc)allocator_acquire, container->allocator);
 }
 
 static const unknown* o_dlist_itr_get_ref(const_iterator citr) {
@@ -488,7 +488,7 @@ void olist_add_front(Object* o, const unknown* __ref) {
 	struct o_dlist_node* n_node = (struct o_dlist_node*)
 		allocator_alloc(olist->allocator, sizeof(struct o_dlist_node));
 
-	n_node->reference = olist->content_traits.__clone(&container->content_traits, __ref, (pf_alloc)allocator_acquire, olist->allocator);
+	n_node->reference = olist->content_traits.__clone(__ref, (pf_alloc)allocator_acquire, olist->allocator);
 
 	list_insert_front(&olist->sentinel, &n_node->link);
 	olist->size ++;
@@ -500,7 +500,7 @@ void olist_add_back(Object* o, const unknown* __ref) {
 	struct o_dlist_node* n_node = (struct o_dlist_node*)
 		allocator_alloc(olist->allocator, sizeof(struct o_dlist_node));
 
-	n_node->reference = olist->content_traits.__clone(&container->content_traits, __ref, (pf_alloc)allocator_acquire, olist->allocator);
+	n_node->reference = olist->content_traits.__clone(__ref, (pf_alloc)allocator_acquire, olist->allocator);
 
 	list_insert_back(&olist->sentinel, &n_node->link);
 	olist->size ++;
@@ -742,7 +742,7 @@ void olist_insert_before(Object* o, iterator itr, const unknown* __ref) {
 	dbg_assert(oitr->container == olist);
 	dbg_assert(oitr->current != NULL);
 
-	n_node->reference = olist->content_traits.__clone(&container->content_traits, __ref, (pf_alloc)allocator_acquire, olist->allocator);
+	n_node->reference = olist->content_traits.__clone(__ref, (pf_alloc)allocator_acquire, olist->allocator);
 	list_link(&n_node->link, (&node->link)->prev, &node->link);
 
 	olist->size ++;
@@ -759,7 +759,7 @@ void olist_insert_after(Object* o, iterator itr, const unknown* __ref) {
 	dbg_assert(oitr->container == olist);
 	dbg_assert(oitr->current != NULL);
 
-	n_node->reference = olist->content_traits.__clone(&olist->content_traits, __ref, (pf_alloc)allocator_acquire, olist->allocator);
+	n_node->reference = olist->content_traits.__clone(__ref, (pf_alloc)allocator_acquire, olist->allocator);
 	list_link(&n_node->link, (&node->link), (&node->link)->next);
 
 	olist->size ++;
