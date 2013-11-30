@@ -87,4 +87,21 @@ typedef void (*pf_heap_walk)    (void* pheap, pf_process_block per_block_cb, voi
  */
 typedef void (*pf_heap_reclaim) (void* pheap);
 
+/* 
+ * this is struct is not used until new oo model is created, 
+ * and this struct is better than pass the content individually in programming practise.
+ */
+typedef struct heap_info_t {
+	void* handle;
+	pf_alloc __alloc;
+	pf_dealloc __dealloc;
+} heap_info;
+
+#ifdef _VERBOSE_ALLOC_DEALLOC_
+#define heap_alloc(heap, size)  __call4(heap->__alloc, heap->handle, size, __FILE__, __LINE__)
+#define heap_dealloc(heap, buff)  __call4(heap->__dealloc, heap->handle, buff, __FILE__, __LINE__)
+#else
+#define heap_alloc(heap, size)  __call2(heap->__alloc, heap->handle)
+#define heap_dealloc(heap, buff)  __call2(heap->__dealloc, heap->handle);
+#endif 
 #endif /* _HEAP_DEF_H_ */

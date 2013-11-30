@@ -4,23 +4,23 @@
 #include <cntr2/oo_model.h>
 #include <cntr2/idef.h>
 
-extern inline void     iobject_destroy        (Object* obj);
-extern inline Object*  iobject_clone          (const Object* obj);
-extern inline bool     iobject_equals         (const Object* obj, const Object* other);
-extern inline int      iobject_compare_to     (const Object* obj, const Object* other);
-extern inline hashcode iobject_hashcode       (const Object* obj);
+extern inline void     iobject_destroy        (_object* obj);
+extern inline _object*  iobject_clone          (const _object* obj);
+extern inline bool     iobject_equals         (const _object* obj, const _object* other);
+extern inline int      iobject_compare_to     (const _object* obj, const _object* other);
+extern inline hashcode iobject_hashcode       (const _object* obj);
 
-extern inline bool     iobject_distinguishable(const Object* obj_a, const Object* obj_b);
-extern inline bool     iobject_comparable     (const Object* obj_a, const Object* obj_b);
-extern inline bool     iobject_hashable       (const Object* obj);
+extern inline bool     iobject_distinguishable(const _object* obj_a, const _object* obj_b);
+extern inline bool     iobject_comparable     (const _object* obj_a, const _object* obj_b);
+extern inline bool     iobject_hashable       (const _object* obj);
 
 extern unknown_traits object_traits;
 
-typedef void     (*pf_iobject_destroy)    (Object* obj);
-typedef Object*  (*pf_iobject_clone)      (const Object* obj);
-typedef bool     (*pf_iobject_equals)     (const Object* obj, const Object* other);
-typedef int      (*pf_iobject_compare_to) (const Object* obj, const Object* other);
-typedef hashcode (*pf_iobject_hashcode)   (const Object* obj);
+typedef void     (*pf_iobject_destroy)    (_object* obj);
+typedef _object*  (*pf_iobject_clone)      (const _object* obj);
+typedef bool     (*pf_iobject_equals)     (const _object* obj, const _object* other);
+typedef int      (*pf_iobject_compare_to) (const _object* obj, const _object* other);
+typedef hashcode (*pf_iobject_hashcode)   (const _object* obj);
 
 struct iobject_vtable {
 	pf_iobject_destroy      __destroy;

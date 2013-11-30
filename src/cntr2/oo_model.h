@@ -40,13 +40,13 @@ typedef struct base_object {
 	int x;
 	struct someobject y;
 	*/
-} Object;
+} _object;
 
 #define __MAX_NUM_INTERFACE_PER_OBJECT 10
 /* 
  * get the object from a given interface
  */
-extern inline Object* __object_from_interface(const _interface* inf);
+extern inline _object* __object_from_interface(const _interface* inf);
 
 /*
  * test if an unknown address is an object.
@@ -75,7 +75,7 @@ extern inline unknown* __cast(const unknown* x, unique_id id);
 /* 
  * cast a object to one of its interfaces if you know the offset of the interface in the object.
  */
-extern inline _interface* __fast_cast(const Object* x, int ifoffset);
+extern inline _interface* __fast_cast(const _object* x, int ifoffset);
 
 /*
  * include the raw-pointer-object common processing functions.

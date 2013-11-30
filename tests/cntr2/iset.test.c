@@ -6,7 +6,7 @@
 #include "test_util.h"
 #include "ele.data.h"
 
-static void set_test_basic_itr_operation(Object* set, struct test_data_desc* td_desc) {
+static void set_test_basic_itr_operation(_object* set, struct test_data_desc* td_desc) {
 	address *test_data_addr   = td_desc->data_repo;
 	unknown_traits *td_traits = td_desc->data_traits;
 	iset_clear(set);
@@ -96,7 +96,7 @@ static void set_test_basic_itr_operation(Object* set, struct test_data_desc* td_
 	return;
 }
 
-static void set_test_basic_operation(Object* set, struct test_data_desc* td_desc) {
+static void set_test_basic_operation(_object* set, struct test_data_desc* td_desc) {
 	address *test_data_addr   = td_desc->data_repo;
 	//unknown_traits *td_traits = td_desc->data_traits;
 
@@ -277,7 +277,7 @@ static int __num_search;
 static int __data_diff_type; /* number of different values to store in the set */
 static int __data_max_count; /* max count of a single value */
 
-static Object* __set = NULL; /* to be tested */
+static _object* __set = NULL; /* to be tested */
 static intptr_t* data_count = NULL;
 
 static void __reset_data() {
@@ -348,15 +348,15 @@ static void set_bench_search_randomly() {
 	iset_clear(__set);
 }
 
-void set_test_basic(Object* set, struct test_data_desc* td_desc) {
+void set_test_basic(_object* set, struct test_data_desc* td_desc) {
 	set_test_basic_operation(set, td_desc);
 	set_test_basic_itr_operation(set, td_desc);
 }
 
-void set_test_memory(Object* set) {
+void set_test_memory(_object* set) {
 }
 
-void set_test_bench(Object* set, struct test_data_desc* td_desc) {
+void set_test_bench(_object* set, struct test_data_desc* td_desc) {
 	__set = set;
 	__data_diff_type = 100;
 	__data_max_count = 1;

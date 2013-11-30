@@ -43,4 +43,9 @@ extern pf_dealloc __global_default_dealloc;
 #define free(buff)   dealloc(heap_llrb_dealloc, (struct heap_llrb*)__global_heap_llrb, buff)
 */
 
+extern heap_info g_heap;
+extern heap_info g_sysheap;
+extern heap_info g_llrbheap;
+extern heap_info g_buddyheap;
+
 #endif /* _HEAP_GLOBAL_H_ */

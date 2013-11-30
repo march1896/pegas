@@ -8,7 +8,7 @@
 #include "ele.data.h"
 
 
-static void mset_test_basic_itr_operation(Object* mset, struct test_data_desc* td_desc) {
+static void mset_test_basic_itr_operation(_object* mset, struct test_data_desc* td_desc) {
 	address *test_data_addr   = td_desc->data_repo;
 	unknown_traits *td_traits = td_desc->data_traits;
 	imset_clear(mset);
@@ -165,7 +165,7 @@ static void mset_test_basic_itr_operation(Object* mset, struct test_data_desc* t
 	return;
 }
 
-static void mset_test_basic_operation(Object* mset, struct test_data_desc* td_desc) {
+static void mset_test_basic_operation(_object* mset, struct test_data_desc* td_desc) {
 	address *test_data_addr   = td_desc->data_repo;
 	//unknown_traits *td_traits = td_desc->data_traits;
 	imset_clear(mset);
@@ -262,7 +262,7 @@ static int __num_search;
 static int __data_diff_type; /* number of different values to store in the mset */
 static int __data_max_count; /* max count of a single value */
 
-static Object* __mset = NULL; /* to be tested */
+static _object* __mset = NULL; /* to be tested */
 static intptr_t* data_count = NULL;
 
 static void __reset_data() {
@@ -347,15 +347,15 @@ static void mset_bench_search_randomly() {
 	imset_clear(__mset);
 }
 
-void mset_test_basic(Object* mset, struct test_data_desc* td_desc) {
+void mset_test_basic(_object* mset, struct test_data_desc* td_desc) {
 	mset_test_basic_operation(mset, td_desc);
 	mset_test_basic_itr_operation(mset, td_desc);
 }
 
-void mset_test_memory(Object* mset) {
+void mset_test_memory(_object* mset) {
 }
 
-void mset_test_bench(Object* mset, struct test_data_desc* td_desc) {
+void mset_test_bench(_object* mset, struct test_data_desc* td_desc) {
 	address *test_data_addr   = td_desc->data_repo;
 	//unknown_traits *td_traits = td_desc->data_traits;
 	__mset = mset;

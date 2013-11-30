@@ -6,7 +6,7 @@
 #include "test_util.h"
 #include "ele.data.h"
 
-static void stack_test_basic_itr_operation(Object* stack, struct test_data_desc* td_desc) {
+static void stack_test_basic_itr_operation(_object* stack, struct test_data_desc* td_desc) {
 	address *test_data_addr   = td_desc->data_repo;
 	unknown_traits *td_traits = td_desc->data_traits;
 	istack_clear(stack);
@@ -76,7 +76,7 @@ static void stack_test_basic_itr_operation(Object* stack, struct test_data_desc*
 	return;
 }
 
-static void stack_test_basic_operation(Object* stack, struct test_data_desc* td_desc) {
+static void stack_test_basic_operation(_object* stack, struct test_data_desc* td_desc) {
 	address *test_data_addr   = td_desc->data_repo;
 	unknown_traits *td_traits = td_desc->data_traits;
 	istack_clear(stack);
@@ -194,7 +194,7 @@ static void stack_test_basic_operation(Object* stack, struct test_data_desc* td_
 	}
 }
 
-void stack_test_basic(Object* a, struct test_data_desc* td_desc) {
+void stack_test_basic(_object* a, struct test_data_desc* td_desc) {
 	stack_test_basic_operation(a, td_desc);
 	stack_test_basic_itr_operation(a, td_desc);
 }

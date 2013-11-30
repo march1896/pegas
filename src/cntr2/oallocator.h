@@ -35,16 +35,16 @@ extern inline allocator allocator_get_parent(allocator o);
 extern inline void      allocator_walk      (allocator o, pf_process_block per_block_cb, void* param);
 
 /* codes below is only useful for allocator implementors */
-typedef void   (*pf_allocator_join)       (Object* o);
+typedef void   (*pf_allocator_join)       (_object* o);
 #ifdef _VERBOSE_ALLOC_DEALLOC_
-typedef void*  (*pf_allocator_acquire)   (Object* o, int size, const char* file, int line);
-typedef bool   (*pf_allocator_release)   (Object* o, void* buff, const char* file, int line);
+typedef void*  (*pf_allocator_acquire)   (_object* o, int size, const char* file, int line);
+typedef bool   (*pf_allocator_release)   (_object* o, void* buff, const char* file, int line);
 #else 
-typedef void*  (*pf_allocator_acquire)  (Object* o, int size);
-typedef bool   (*pf_allocator_release)  (Object* o, void* buff);
+typedef void*  (*pf_allocator_acquire)  (_object* o, int size);
+typedef bool   (*pf_allocator_release)  (_object* o, void* buff);
 #endif
-typedef Object* (*pf_allocator_get_parent) (Object* o);
-typedef void   (*pf_allocator_walk)       (Object* o, pf_process_block per_block_cb, void* param);
+typedef _object* (*pf_allocator_get_parent) (_object* o);
+typedef void   (*pf_allocator_walk)       (_object* o, pf_process_block per_block_cb, void* param);
 
 
 struct allocator_vtable {

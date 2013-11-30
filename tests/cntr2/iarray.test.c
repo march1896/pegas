@@ -7,7 +7,7 @@
 #include "test_util.h"
 #include "ele.data.h"
 
-static void array_test_basic_itr_operation(Object* a, struct test_data_desc* td_desc) {
+static void array_test_basic_itr_operation(_object* a, struct test_data_desc* td_desc) {
 	address *test_data_addr   = td_desc->data_repo;
 	unknown_traits *td_traits = td_desc->data_traits;
 	iarray_clear(a);
@@ -129,7 +129,7 @@ static void array_test_basic_itr_operation(Object* a, struct test_data_desc* td_
 }
 
 /* TODO: iarray_at is not tested yet */
-static void array_test_basic_operation(Object* a, struct test_data_desc* td_desc) {
+static void array_test_basic_operation(_object* a, struct test_data_desc* td_desc) {
 	address *test_data_addr   = td_desc->data_repo;
 	unknown_traits *td_traits = td_desc->data_traits;
 	iarray_clear(a);
@@ -296,15 +296,15 @@ static void array_test_basic_operation(Object* a, struct test_data_desc* td_desc
 	}
 }
 
-void array_test_basic(Object* a, struct test_data_desc* td_desc) {
+void array_test_basic(_object* a, struct test_data_desc* td_desc) {
 	array_test_basic_operation(a, td_desc);
 	array_test_basic_itr_operation(a, td_desc);
 }
 
-void array_test_memory(Object* a) {
+void array_test_memory(_object* a) {
 }
 
-void array_test_bench(Object* a) {
+void array_test_bench(_object* a) {
 	/* should this exist, or it just compares with the raw array_link to show the overhead of 'virtual' functions */
 }
 

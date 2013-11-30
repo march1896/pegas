@@ -14,7 +14,7 @@
 #include "istack.test.h"
 
 static void olist_correctness_test() {
-	Object* a = NULL;
+	_object* a = NULL;
 	{
 		log_inc_tab(true);
 		log_printline("[as list]");

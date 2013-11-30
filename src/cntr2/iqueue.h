@@ -5,33 +5,33 @@
 #include <cntr2/oo_model.h>
 #include <cntr2/idef.h>
 
-extern inline       void     iqueue_clear       (Object* obj);
-extern inline       void     iqueue_foreach     (Object* obj, pf_ref_process_v process, void* context);
-extern inline       int      iqueue_size        (const Object* obj);
-extern inline       bool     iqueue_empty       (const Object* obj);
-extern inline const unknown* iqueue_front       (const Object* obj);
-extern inline const unknown* iqueue_back        (const Object* obj);
-extern inline       void     iqueue_push        (Object* obj, const unknown* __ref);
-extern inline       void     iqueue_pop         (Object* obj);
-extern inline       iterator iqueue_itr_create  (const Object* obj, itr_pos pos);
-extern inline       void     iqueue_itr_assign  (const Object* obj, iterator itr, itr_pos pos);
-extern inline const_iterator iqueue_itr_begin   (const Object* obj);
-extern inline const_iterator iqueue_itr_end     (const Object* obj);
+extern inline       void     iqueue_clear       (_object* obj);
+extern inline       void     iqueue_foreach     (_object* obj, pf_ref_process_v process, void* context);
+extern inline       int      iqueue_size        (const _object* obj);
+extern inline       bool     iqueue_empty       (const _object* obj);
+extern inline const unknown* iqueue_front       (const _object* obj);
+extern inline const unknown* iqueue_back        (const _object* obj);
+extern inline       void     iqueue_push        (_object* obj, const unknown* __ref);
+extern inline       void     iqueue_pop         (_object* obj);
+extern inline       iterator iqueue_itr_create  (const _object* obj, itr_pos pos);
+extern inline       void     iqueue_itr_assign  (const _object* obj, iterator itr, itr_pos pos);
+extern inline const_iterator iqueue_itr_begin   (const _object* obj);
+extern inline const_iterator iqueue_itr_end     (const _object* obj);
 
 /* below is only useful for the container implementer */
 /* the virtual functions that each container should implement */
-typedef       void     (*pf_iqueue_clear)       (Object* c);
-typedef       void     (*pf_iqueue_foreach)     (Object* c, pf_ref_process_v process, void* context);
-typedef       int      (*pf_iqueue_size)        (const Object* c);
-typedef       bool     (*pf_iqueue_empty)       (const Object* c);
-typedef const unknown* (*pf_iqueue_front)       (const Object* c);
-typedef const unknown* (*pf_iqueue_back)        (const Object* c);
-typedef       void     (*pf_iqueue_push)        (Object* c, const unknown* object);
-typedef       void     (*pf_iqueue_pop)         (Object* c);
-typedef       iterator (*pf_iqueue_itr_create)  (const Object* c, itr_pos pos);
-typedef       void     (*pf_iqueue_itr_assign)  (const Object* c, iterator itr, itr_pos pos);
-typedef const_iterator (*pf_iqueue_itr_begin)   (const Object* c);
-typedef const_iterator (*pf_iqueue_itr_end)     (const Object* c);
+typedef       void     (*pf_iqueue_clear)       (_object* c);
+typedef       void     (*pf_iqueue_foreach)     (_object* c, pf_ref_process_v process, void* context);
+typedef       int      (*pf_iqueue_size)        (const _object* c);
+typedef       bool     (*pf_iqueue_empty)       (const _object* c);
+typedef const unknown* (*pf_iqueue_front)       (const _object* c);
+typedef const unknown* (*pf_iqueue_back)        (const _object* c);
+typedef       void     (*pf_iqueue_push)        (_object* c, const unknown* object);
+typedef       void     (*pf_iqueue_pop)         (_object* c);
+typedef       iterator (*pf_iqueue_itr_create)  (const _object* c, itr_pos pos);
+typedef       void     (*pf_iqueue_itr_assign)  (const _object* c, iterator itr, itr_pos pos);
+typedef const_iterator (*pf_iqueue_itr_begin)   (const _object* c);
+typedef const_iterator (*pf_iqueue_itr_end)     (const _object* c);
 
 struct iqueue_vtable {
 	/* public */

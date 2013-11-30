@@ -79,6 +79,9 @@
     <ClCompile Include="..\..\tests\cntr2\ele.data.c">
       <Filter>Source Files\cntr2</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tests\oop\cls_builtintype.c">
+      <Filter>Source Files\oop</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
@@ -92,6 +95,9 @@
     </Filter>
     <Filter Include="Source Files\util">
       <UniqueIdentifier>{f4952aa1-f354-413f-b064-b69b2251a659}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\oop">
+      <UniqueIdentifier>{5762ae24-62ef-4c70-b3f3-2b609844d32d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

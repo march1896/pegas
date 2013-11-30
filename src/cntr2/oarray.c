@@ -360,16 +360,16 @@ static unknown* oarray_itr_cast(unknown* x, unique_id inf_id) {
 	return NULL;
 }
 
-Object* cntr_create_oarray(unknown_traits* content_traits) {
+_object* cntr_create_oarray(unknown_traits* content_traits) {
 	return oarray_create(content_traits, __global_default_allocator);
 }
-Object* cntr_create_oarray_a(unknown_traits* content_traits, allocator alc) {
+_object* cntr_create_oarray_a(unknown_traits* content_traits, allocator alc) {
 	return oarray_create(content_traits, alc);
 }
 
 static void oarray_adjust_buffer(struct oarray *a);
 static void oarray_itr_com_init(struct oarray_itr* itr, struct oarray* list);
-Object* oarray_create(unknown_traits* traits, allocator alc) {
+_object* oarray_create(unknown_traits* traits, allocator alc) {
 	struct oarray* a = NULL;
 	bool managed_allocator = false;
 
@@ -413,7 +413,7 @@ Object* oarray_create(unknown_traits* traits, allocator alc) {
 	oarray_itr_com_init(&a->itr_begin, a);
 	oarray_itr_com_init(&a->itr_end, a);
 
-	return (Object*)a;
+	return (_object*)a;
 }
 
 static void oarray_adjust_buffer(struct oarray *a) {
@@ -473,7 +473,7 @@ static void oarray_adjust_buffer(struct oarray *a) {
 	a->idx_start = 0;
 }
 
-void oarray_destroy(Object* o) {
+void oarray_destroy(_object* o) {
 	struct oarray* a = (struct oarray*)o;
 	allocator alc = a->allocator;
 	bool join_alc = a->allocator_join_ondispose;
@@ -487,20 +487,20 @@ void oarray_destroy(Object* o) {
 		allocator_join(alc);
 	}
 }
-Object* oarray_clone(const Object* o) {
+_object* oarray_clone(const _object* o) {
 	return NULL;
 }
-bool oarray_equals(const Object* o, const Object* other) {
+bool oarray_equals(const _object* o, const _object* other) {
 	return false;
 }
-int oarray_compare_to(const Object* o, const Object* other) {
+int oarray_compare_to(const _object* o, const _object* other) {
 	return 0;
 }
-hashcode oarray_hashcode(const Object* o) {
+hashcode oarray_hashcode(const _object* o) {
 	return 0;
 }
 
-void oarray_clear(Object* o) {
+void oarray_clear(_object* o) {
 	struct oarray* a = (struct oarray*)o;
 	int i = 0;
 
@@ -512,7 +512,7 @@ void oarray_clear(Object* o) {
 	oarray_adjust_buffer(a);
 }
 
-void oarray_foreach(Object* o, pf_ref_process_v process, void* context) {
+void oarray_foreach(_object* o, pf_ref_process_v process, void* context) {
 	struct oarray* a = (struct oarray*)o;
 	int i = 0;
 
@@ -521,19 +521,19 @@ void oarray_foreach(Object* o, pf_ref_process_v process, void* context) {
 	}
 }
 
-int oarray_size(const Object* o) {
+int oarray_size(const _object* o) {
 	const struct oarray* a = (const struct oarray*)o;
 
 	return a->size;
 }
 
-bool oarray_empty(const Object* o) {
+bool oarray_empty(const _object* o) {
 	const struct oarray* a = (const struct oarray*)o;
 
 	return a->size == 0;
 }
 
-const unknown* oarray_front(const Object* o) {
+const unknown* oarray_front(const _object* o) {
 	const struct oarray* a = (const struct oarray*)o;
 
 	if (a->size == 0) {
@@ -543,7 +543,7 @@ const unknown* oarray_front(const Object* o) {
 	return a->buffer[a->idx_start];
 }
 
-const unknown* oarray_back(const Object* o) {
+const unknown* oarray_back(const _object* o) {
 	struct oarray* a = (struct oarray*)o;
 
 	if (a->size == 0) {
@@ -553,7 +553,7 @@ const unknown* oarray_back(const Object* o) {
 	return *BUFFER_AT(a, a->size-1);
 }
 
-const unknown* oarray_at(const Object* o, int index) {
+const unknown* oarray_at(const _object* o, int index) {
 	struct oarray* a = (struct oarray*)o;
 
 	index = ((index % a->size) + a->size) % a->size;
@@ -561,7 +561,7 @@ const unknown* oarray_at(const Object* o, int index) {
 	return *BUFFER_AT(a, index);
 }
 
-void oarray_add_front(Object* o, const unknown* __ref) {
+void oarray_add_front(_object* o, const unknown* __ref) {
 	struct oarray* a = (struct oarray*)o;
 
 	dbg_assert(a->size < a->buffer_length);
@@ -575,7 +575,7 @@ void oarray_add_front(Object* o, const unknown* __ref) {
 	oarray_adjust_buffer(a);
 }
 
-void oarray_add_back(Object* o, const unknown* __ref) {
+void oarray_add_back(_object* o, const unknown* __ref) {
 	struct oarray* a = (struct oarray*)o;
 	int idx_end = INDEX(a->buffer_length, a->idx_start, a->size);
 
@@ -587,7 +587,7 @@ void oarray_add_back(Object* o, const unknown* __ref) {
 	oarray_adjust_buffer(a);
 }
 
-void oarray_remove_front(Object* o) {
+void oarray_remove_front(_object* o) {
 	struct oarray* a = (struct oarray*)o;
 
 	if (a->size <= 0)
@@ -605,7 +605,7 @@ void oarray_remove_front(Object* o) {
 	oarray_adjust_buffer(a);
 }
 
-void oarray_remove_back(Object* o) {
+void oarray_remove_back(_object* o) {
 	struct oarray* a = (struct oarray*)o;
 	int idx_last = INDEX(a->buffer_length, a->idx_start, a->size-1);
 
@@ -620,7 +620,7 @@ void oarray_remove_back(Object* o) {
 	oarray_adjust_buffer(a);
 }
 
-bool oarray_contains(const Object* o, const unknown* __ref) {
+bool oarray_contains(const _object* o, const unknown* __ref) {
 	struct oarray* a  = (struct oarray*)o;
 	int i = 0;
 
@@ -658,7 +658,7 @@ static void oarray_remove_at(struct oarray* a, int index) {
 	}
 }
 
-bool oarray_remove(Object* o, const unknown* __ref) {
+bool oarray_remove(_object* o, const unknown* __ref) {
 	struct oarray* a  = (struct oarray*)o;
 	int i = 0;
 
@@ -694,7 +694,7 @@ static void oarray_itr_com_init(struct oarray_itr* itr, struct oarray* a) {
 	/* itr->__current = NULL; */
 }
 
-const_iterator oarray_itr_begin(const Object* o) {
+const_iterator oarray_itr_begin(const _object* o) {
 	struct oarray* a = (struct oarray*)o;
 
 	/* if the list is empty, we just return the sentinel node */
@@ -703,7 +703,7 @@ const_iterator oarray_itr_begin(const Object* o) {
 	return (const_iterator)&a->itr_begin;
 }
 
-const_iterator oarray_itr_end(const Object* o) {
+const_iterator oarray_itr_end(const _object* o) {
 	struct oarray* a = (struct oarray*)o;
 
 	a->itr_end.current = a->size;
@@ -711,7 +711,7 @@ const_iterator oarray_itr_end(const Object* o) {
 	return (const_iterator)&a->itr_end;
 }
 
-iterator oarray_itr_create(const Object* o, itr_pos pos) {
+iterator oarray_itr_create(const _object* o, itr_pos pos) {
 	struct oarray* a = (struct oarray*)o;
 	struct oarray_itr* n_itr = (struct oarray_itr*)
 		allocator_alloc(a->allocator, sizeof(struct oarray_itr));
@@ -734,7 +734,7 @@ iterator oarray_itr_create(const Object* o, itr_pos pos) {
 	return (iterator)n_itr;
 }
 
-void oarray_itr_assign(const Object* o, iterator __itr, itr_pos pos) {
+void oarray_itr_assign(const _object* o, iterator __itr, itr_pos pos) {
 	struct oarray* a = (struct oarray*)o;
 	struct oarray_itr* itr = (struct oarray_itr*)__itr;
 
@@ -760,7 +760,7 @@ void oarray_itr_assign(const Object* o, iterator __itr, itr_pos pos) {
 	return;
 }
 
-void oarray_itr_find(const Object* o, iterator itr, const unknown* __ref) {
+void oarray_itr_find(const _object* o, iterator itr, const unknown* __ref) {
 	struct oarray* a    = (struct oarray*)o;
 	struct oarray_itr* oitr = (struct oarray_itr*)itr;
 	int i = 0;
@@ -780,7 +780,7 @@ void oarray_itr_find(const Object* o, iterator itr, const unknown* __ref) {
 	oitr->current = i;
 }
 
-void oarray_itr_remove(Object* o, iterator itr) {
+void oarray_itr_remove(_object* o, iterator itr) {
 	struct oarray* a         = (struct oarray*)o;
 	struct oarray_itr* oitr  = (struct oarray_itr*)itr;
 	int index                = oitr->current;

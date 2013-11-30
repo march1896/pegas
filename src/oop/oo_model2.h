@@ -1,7 +1,8 @@
 #ifndef _OO_MODEL_2_H_
 #define _OO_MODEL_2_H_
 
-#include <util/cominc.h>
+#include "../util/cominc.h"
+#include "../memheap/heap_def.h"
 /*
  * For more detail about the oo model, please see oo_model.doc.h
  */
@@ -19,52 +20,49 @@ typedef int          compres;
 
 typedef struct object_t Object;
 typedef unknown protocol;
-typedef protocol* (*pf_get_protocol)(const Object* obj, unique_id ptc_id);
-
-struct class_info {
-	const char *name;
-	const char *description;
-};
+typedef protocol* (*pf_get_protocol)(unique_id ptc_id);
+typedef unknown*  (*pf_get_responder)(unique_id ptc_id, const char *msg_name);
 
 typedef struct class_t {
 	/* we dont support inherit */
 	/* Class*          __parent; */
+	pf_get_protocol  get_protocol;
 
-	pf_get_protocol    __get_protocol;
+	pf_get_responder get_responder;
 
-	struct class_info  __typeinfo;
-
-	// not needed, the protocols are static variables
-	//protocol           *__protocols[0];
-
-	/* object specific members, i.e. */
-	/*
-	int x;
-	struct someobject y;
-	*/
+	const char       *name;
+	const char       *description;
 } Class;
 
+typedef unsigned int object_desc;
 struct object_t {
-	Class             *__is_a;
+	const Class *is_a;
 
-	/* resource for this object, like cpu, memory */
-	/*
-	allocator          __allocator;
-	thread             __thread;
-	*/
+	object_desc flags;
 
-	unknown           *__content;
+	int         ref_count;
+	heap_info   *object_heap;
+
+	unknown     *content;
+	heap_info   *content_heap;
 };
+
+Object        *object_create(heap_info *heap);
+void           object_init(Object *x, const Class *cls, unknown *__ref, heap_info *__ref_heap, bool owns);
+const unknown *object_getref(const Object *x);
+
+void           object_release(Object *x);
+void           object_attain(Object *x);
+int            object_refcount(const Object *x);
 
 //bool __is_class_of(const Object *x, unique_id cls_id);
 
-/*
- * get the responder function via the message name 
- */
-unknown *__get_responder(const Object *x, const char *msg_name);
-
+// get the responder function via the message name 
 unknown *__get_responder(const Object *x, unique_id ptc_id, const char *ptc_msg_name);
+// get the protocol struct via protocol id 
+protocol *__get_protocol(const Object *x, unique_id ptc_id);
 
+/*
 #define declare_dispatch_function_0(ptc_name, msg_name, ret_type) \
 	ret_type i##ptc_name##_##msg_name(Object *x);
 #define declare_dispatch_function_1(ptc_name, msg_name, ret_type, p1_type) \
@@ -129,5 +127,6 @@ unknown *__get_responder(const Object *x, unique_id ptc_id, const char *ptc_msg_
 	ret_type i##ptc_name##_##msg_name(Object *x, p1_type p1, p2_type p2, p3_type p3, p4_type p4);
 #define define_dispatch_function_const5(ptc_name, msg_name, ret_type, p1_type, p2_type, p3_type, p4_type, p5_type) \
 	ret_type i##ptc_name##_##msg_name(Object *x, p1_type p1, p2_type p2, p3_type p3, p4_type p4, p5_type p5);
+	*/
 
 #endif /* _OO_MODEL_2_H_ */

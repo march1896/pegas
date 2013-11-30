@@ -14,33 +14,33 @@
 
 /* if create without allocator, it will use the global_default_allocator
  * if the alc == NULL, the create_a will create with a multi-poll allocator for best efficiency */
-Object* cntr_create_oarray(unknown_traits* content_traits);
-Object* cntr_create_oarray_a(unknown_traits* content_traits, allocator alc);
+_object* cntr_create_oarray(unknown_traits* content_traits);
+_object* cntr_create_oarray_a(unknown_traits* content_traits, allocator alc);
 
-Object* cntr_create_olist(unknown_traits* content_traits);
-Object* cntr_create_olist_a(unknown_traits* content_traits, allocator alc);
+_object* cntr_create_olist(unknown_traits* content_traits);
+_object* cntr_create_olist_a(unknown_traits* content_traits, allocator alc);
 
-Object* cntr_create_ollrb(unknown_traits* content_traits);
-Object* cntr_create_ollrb_a(unknown_traits* content_traits, allocator alc);
+_object* cntr_create_ollrb(unknown_traits* content_traits);
+_object* cntr_create_ollrb_a(unknown_traits* content_traits, allocator alc);
 
-Object* cntr_create_osplay(unknown_traits* content_traits);
-Object* cntr_create_osplay_a(unknown_traits* content_traits, allocator alc);
+_object* cntr_create_osplay(unknown_traits* content_traits);
+_object* cntr_create_osplay_a(unknown_traits* content_traits, allocator alc);
 
-Object* cntr_create_oskiplist(unknown_traits* content_traits);
-Object* cntr_create_oskiplist_a(unknown_traits* content_traits, allocator alc);
+_object* cntr_create_oskiplist(unknown_traits* content_traits);
+_object* cntr_create_oskiplist_a(unknown_traits* content_traits, allocator alc);
 
 struct pair {
 	const void* key;
 	void*       value;
 };
 
-Object* cntr_create_ordmap(unknown_traits* key_traits, unknown_traits* value_traits);
+_object* cntr_create_ordmap(unknown_traits* key_traits, unknown_traits* value_traits);
 enum ordmap_driver {
 	ordmap_by_llrb,
 	ordmap_by_splay,
 	ordmap_by_skiplist,
 	ordmap_driver_count
 };
-Object* cntr_create_ordmap_v(unknown_traits* key_traits, unknown_traits* value_traits, allocator alc, enum ordmap_driver driver_type);
+_object* cntr_create_ordmap_v(unknown_traits* key_traits, unknown_traits* value_traits, allocator alc, enum ordmap_driver driver_type);
 
 #endif /* _INTERFACE_FACTORY_H_ */

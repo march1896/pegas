@@ -27,16 +27,16 @@
 
 #include <cntr2/oo_model.h>
 
-typedef Object* iqueue;
-typedef Object* istack;
-typedef Object* ilist;
-typedef Object* iset;
-typedef Object* imset;
+typedef _object* iqueue;
+typedef _object* istack;
+typedef _object* ilist;
+typedef _object* iset;
+typedef _object* imset;
 
-typedef Object* allocator;
+typedef _object* allocator;
 
-typedef Object* iterator;
-typedef const Object* const_iterator;
+typedef _object* iterator;
+typedef const _object* const_iterator;
 
 typedef enum iterator_position itr_pos;
 

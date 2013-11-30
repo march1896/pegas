@@ -4,30 +4,30 @@
 #include <cntr2/oo_model.h>
 #include <cntr2/idef.h>
 
-extern inline       void     iarray_clear           (Object* obj);
-extern inline       void     iarray_foreach         (Object* obj, pf_ref_process_v process, void* context);
-extern inline       int      iarray_size            (const Object* obj);
-extern inline       bool     iarray_empty           (const Object* obj);
-extern inline       void     iarray_add_front       (Object* obj, const unknown* __ref);
-extern inline       void     iarray_add_back        (Object* obj, const unknown* __ref);
-extern inline       void     iarray_remove_front    (Object* obj);
-extern inline       void     iarray_remove_back     (Object* obj);
-extern inline       bool     iarray_contains        (const Object* obj, const unknown* __ref);
-extern inline       bool     iarray_remove          (Object* obj, const unknown* __ref);
+extern inline       void     iarray_clear           (_object* obj);
+extern inline       void     iarray_foreach         (_object* obj, pf_ref_process_v process, void* context);
+extern inline       int      iarray_size            (const _object* obj);
+extern inline       bool     iarray_empty           (const _object* obj);
+extern inline       void     iarray_add_front       (_object* obj, const unknown* __ref);
+extern inline       void     iarray_add_back        (_object* obj, const unknown* __ref);
+extern inline       void     iarray_remove_front    (_object* obj);
+extern inline       void     iarray_remove_back     (_object* obj);
+extern inline       bool     iarray_contains        (const _object* obj, const unknown* __ref);
+extern inline       bool     iarray_remove          (_object* obj, const unknown* __ref);
 /* the return value is a reference managed by the iarray internally, modify it on your own risk */
-extern inline const unknown* iarray_front           (const Object* obj);
-extern inline const unknown* iarray_back            (const Object* obj);
-extern inline const unknown* iarray_at              (const Object* obj, int index);
+extern inline const unknown* iarray_front           (const _object* obj);
+extern inline const unknown* iarray_back            (const _object* obj);
+extern inline const unknown* iarray_at              (const _object* obj, int index);
 
 /* return the begin iterator of the container, this iterator is constant, 
  * you could only use it for comparison, dereferencing.
  * you can not move it or set reference on it. */
-extern inline const_iterator iarray_itr_begin       (const Object* obj);
-extern inline const_iterator iarray_itr_end         (const Object* obj);
-extern inline       iterator iarray_itr_create      (const Object* obj, itr_pos pos);
-extern inline       void     iarray_itr_assign      (const Object* obj, iterator itr, itr_pos pos);
-extern inline       void     iarray_itr_find        (const Object* obj, iterator itr, const unknown* __ref);
-extern inline       void     iarray_itr_remove      (Object* obj, iterator itr);
+extern inline const_iterator iarray_itr_begin       (const _object* obj);
+extern inline const_iterator iarray_itr_end         (const _object* obj);
+extern inline       iterator iarray_itr_create      (const _object* obj, itr_pos pos);
+extern inline       void     iarray_itr_assign      (const _object* obj, iterator itr, itr_pos pos);
+extern inline       void     iarray_itr_find        (const _object* obj, iterator itr, const unknown* __ref);
+extern inline       void     iarray_itr_remove      (_object* obj, iterator itr);
 /*
 {
 	iterator itr = iarray_itr_create(list, itr_begin);
@@ -41,26 +41,26 @@ extern inline       void     iarray_itr_remove      (Object* obj, iterator itr);
 
 /* below is only useful for the container implementer */
 /* the virtual functions that each container should implement */
-typedef       void     (*pf_iarray_clear)        (Object* obj);
-typedef       void     (*pf_iarray_foreach)      (Object* obj, pf_ref_process_v process, void* context);
-typedef       int      (*pf_iarray_size)         (const Object* obj);
-typedef       bool     (*pf_iarray_empty)        (const Object* obj);
-typedef const unknown* (*pf_iarray_front)        (const Object* obj);
-typedef const unknown* (*pf_iarray_back)         (const Object* obj);
-typedef const unknown* (*pf_iarray_at)           (const Object* obj, int index);
-typedef       void     (*pf_iarray_add_front)    (Object* obj, const unknown* n_ref);
-typedef       void     (*pf_iarray_add_back)     (Object* obj, const unknown* n_ref);
-typedef       void     (*pf_iarray_remove_front) (Object* obj);
-typedef       void     (*pf_iarray_remove_back)  (Object* obj);
-typedef       bool     (*pf_iarray_contains)     (const Object* obj, const unknown* __ref);
-typedef       bool     (*pf_iarray_remove)       (Object* obj, const unknown* __ref);
+typedef       void     (*pf_iarray_clear)        (_object* obj);
+typedef       void     (*pf_iarray_foreach)      (_object* obj, pf_ref_process_v process, void* context);
+typedef       int      (*pf_iarray_size)         (const _object* obj);
+typedef       bool     (*pf_iarray_empty)        (const _object* obj);
+typedef const unknown* (*pf_iarray_front)        (const _object* obj);
+typedef const unknown* (*pf_iarray_back)         (const _object* obj);
+typedef const unknown* (*pf_iarray_at)           (const _object* obj, int index);
+typedef       void     (*pf_iarray_add_front)    (_object* obj, const unknown* n_ref);
+typedef       void     (*pf_iarray_add_back)     (_object* obj, const unknown* n_ref);
+typedef       void     (*pf_iarray_remove_front) (_object* obj);
+typedef       void     (*pf_iarray_remove_back)  (_object* obj);
+typedef       bool     (*pf_iarray_contains)     (const _object* obj, const unknown* __ref);
+typedef       bool     (*pf_iarray_remove)       (_object* obj, const unknown* __ref);
 
-typedef const_iterator (*pf_iarray_itr_begin)    (const Object* obj);
-typedef const_iterator (*pf_iarray_itr_end)      (const Object* obj);
-typedef       iterator (*pf_iarray_itr_create)   (const Object* obj, itr_pos pos);
-typedef       void     (*pf_iarray_itr_assign)   (const Object* obj, /*out*/iterator itr, itr_pos pos);
-typedef       void     (*pf_iarray_itr_find)     (const Object* obj, /*out*/iterator itr, const unknown* __ref);
-typedef       void     (*pf_iarray_itr_remove)   (Object* obj, iterator itr);
+typedef const_iterator (*pf_iarray_itr_begin)    (const _object* obj);
+typedef const_iterator (*pf_iarray_itr_end)      (const _object* obj);
+typedef       iterator (*pf_iarray_itr_create)   (const _object* obj, itr_pos pos);
+typedef       void     (*pf_iarray_itr_assign)   (const _object* obj, /*out*/iterator itr, itr_pos pos);
+typedef       void     (*pf_iarray_itr_find)     (const _object* obj, /*out*/iterator itr, const unknown* __ref);
+typedef       void     (*pf_iarray_itr_remove)   (_object* obj, iterator itr);
 
 struct iarray_vtable {
 	/* public */

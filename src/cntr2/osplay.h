@@ -5,32 +5,32 @@
 #include <cntr2/oallocator.h>
 
 /* if alc is NULL, create_v will create an osplay with multi-pool allocator to gain best efficiency */
-Object*         splayset_create          (unknown_traits* content_traits, allocator alc);
-void            splayset_destroy         (Object* o);
-Object*         splayset_clone           (const Object* o);
-bool            splayset_equals          (const Object* o, const Object* other);
-int             splayset_compare_to      (const Object* o, const Object* other);
-hashcode        splayset_hashcode        (const Object* o);
-void            splayset_clear           (Object* o);
-int             splayset_size            (const Object* o);
-bool            splayset_empty           (const Object* o);
-void            splayset_insert_s        (Object* o, const unknown* __ref);
-void            splayset_replace_s       (Object* o, const unknown* __ref);
-void            splayset_insert_m        (Object* o, const unknown* __ref);
-bool            splayset_contains        (const Object* o, const unknown* __ref);
-int             splayset_count_m         (const Object* o, const unknown* __ref);
-bool            splayset_remove_s        (Object* o, const unknown* __ref);
-int             splayset_remove_m        (Object* o, const unknown* __ref);
+_object*         splayset_create          (unknown_traits* content_traits, allocator alc);
+void            splayset_destroy         (_object* o);
+_object*         splayset_clone           (const _object* o);
+bool            splayset_equals          (const _object* o, const _object* other);
+int             splayset_compare_to      (const _object* o, const _object* other);
+hashcode        splayset_hashcode        (const _object* o);
+void            splayset_clear           (_object* o);
+int             splayset_size            (const _object* o);
+bool            splayset_empty           (const _object* o);
+void            splayset_insert_s        (_object* o, const unknown* __ref);
+void            splayset_replace_s       (_object* o, const unknown* __ref);
+void            splayset_insert_m        (_object* o, const unknown* __ref);
+bool            splayset_contains        (const _object* o, const unknown* __ref);
+int             splayset_count_m         (const _object* o, const unknown* __ref);
+bool            splayset_remove_s        (_object* o, const unknown* __ref);
+int             splayset_remove_m        (_object* o, const unknown* __ref);
 
-iterator        splayset_itr_create      (const Object* o, itr_pos pos);
-void            splayset_itr_assign      (const Object* o, iterator itr, itr_pos pos);
-void            splayset_itr_find_s      (const Object* o, iterator itr, const unknown* __ref);
-void            splayset_itr_find_lower_m(const Object* o, iterator itr, const unknown* __ref);
-void            splayset_itr_find_upper_m(const Object* o, iterator itr, const unknown* __ref);
-void            splayset_itr_remove      (Object* o, iterator itr);
+iterator        splayset_itr_create      (const _object* o, itr_pos pos);
+void            splayset_itr_assign      (const _object* o, iterator itr, itr_pos pos);
+void            splayset_itr_find_s      (const _object* o, iterator itr, const unknown* __ref);
+void            splayset_itr_find_lower_m(const _object* o, iterator itr, const unknown* __ref);
+void            splayset_itr_find_upper_m(const _object* o, iterator itr, const unknown* __ref);
+void            splayset_itr_remove      (_object* o, iterator itr);
 
-const_iterator  splayset_itr_begin       (const Object* o);
-const_iterator  splayset_itr_end         (const Object* o);
+const_iterator  splayset_itr_begin       (const _object* o);
+const_iterator  splayset_itr_end         (const _object* o);
 
 // TODO: should we have the detailed implementation for each container just for a virtual function call 
 // performance?

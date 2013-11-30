@@ -9,7 +9,7 @@
 #include "imset.test.h"
 
 static void ollrb_as_set_basic_test() {
-	Object* a;
+	_object* a;
 	a = cntr_create_ollrb(&int_traits);
 	test_run_single_v("int", (pf_test_case_v)set_test_basic, a, &int_test_desc);
 	iobject_destroy(a);
@@ -36,7 +36,7 @@ static void ollrb_as_set_basic_test() {
 }
 
 static void ollrb_as_mset_basic_test() {
-	Object* a = cntr_create_ollrb(&int_traits);
+	_object* a = cntr_create_ollrb(&int_traits);
 	test_run_single_v("int", (pf_test_case_v)mset_test_basic, a, &int_test_desc);
 	iobject_destroy(a);
 
@@ -62,7 +62,7 @@ static void ollrb_as_mset_basic_test() {
 }
 
 static void ollrb_as_set_bench_test() {
-	Object* a = cntr_create_ollrb_a(&int_traits, NULL);
+	_object* a = cntr_create_ollrb_a(&int_traits, NULL);
 	test_run_bench_v("int", (pf_test_case_v)set_test_bench, a, &int_test_desc);
 	iobject_destroy(a);
 
@@ -76,7 +76,7 @@ static void ollrb_as_set_bench_test() {
 }
 
 static void ollrb_as_mset_bench_test() {
-	Object* a = cntr_create_ollrb_a(&int_traits, NULL);
+	_object* a = cntr_create_ollrb_a(&int_traits, NULL);
 	test_run_bench_v("int", (pf_test_case_v)mset_test_bench, a, &int_test_desc);
 	iobject_destroy(a);
 

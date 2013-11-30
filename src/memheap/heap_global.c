@@ -84,3 +84,28 @@ pf_dealloc __global_buddy_dealloc = (pf_dealloc)heap_buddy_dealloc;
 void*      __global_default_heap    = (void*)&__global_static_heap_buddy;;
 pf_alloc   __global_default_alloc   = (pf_alloc)heap_buddy_alloc;
 pf_dealloc __global_default_dealloc = (pf_dealloc)heap_buddy_dealloc;
+
+heap_info g_sysheap = {
+	NULL,
+	(pf_alloc)heap_sysd_alloc,
+	(pf_dealloc)heap_sysd_dealloc
+};
+
+heap_info g_llrbheap = {
+	(void*)&__global_static_heap_llrb,
+	(pf_alloc)heap_llrb_alloc,
+	(pf_dealloc)heap_llrb_dealloc
+};
+
+heap_info g_buddyheap = {
+	(void*)&__global_static_heap_buddy,
+	(pf_alloc)heap_buddy_alloc,
+	(pf_dealloc)heap_buddy_dealloc
+};
+
+heap_info g_heap = {
+	(void*)&__global_static_heap_buddy,
+	(pf_alloc)heap_buddy_alloc,
+	(pf_dealloc)heap_buddy_dealloc
+};
+
